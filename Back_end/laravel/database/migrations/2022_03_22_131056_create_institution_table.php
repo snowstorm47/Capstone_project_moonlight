@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('institution', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->refrences('id')->on('users')->onDelete('cascade');
+            $table->string('institutionName')->unique();
+            $table->foreignId('user_id')->constrained('users');
             $table->string('phoneNumber');
             $table->string('location');
             $table->timestamps();
