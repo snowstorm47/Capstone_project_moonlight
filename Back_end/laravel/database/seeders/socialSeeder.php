@@ -6,8 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-
-class usersSeeder extends Seeder
+class socialSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,12 +16,13 @@ class usersSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('users')->insert([
-            'name'=>'Abdellah Hussien',
-            'email'=>'Abedellahussien@gmail.com',
-            'password'=>'1234',
-            'position'=>'student'
-        ]);
-        
+        DB::table('social_media_link')->insert([
+            'user_id'=>1,
+            'link'=>'AbdellahHussien@yahoo.com'
+        ],
+        ['user_id'=>2,
+        'link'=>'AbdellahHussien@yahoo.com'
+        ]
+    );
     }
 }
