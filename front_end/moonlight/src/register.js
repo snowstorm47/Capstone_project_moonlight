@@ -38,7 +38,7 @@ const Register = () => {
             <CDBSelect options={option} selected="Sign up as" className="select" />
           </div>
           <label htmlFor="defaultRegisterName" className="text-muted m-0">
-            Your name
+            Enter Name 
           </label>
           <CDBInput id="defaultRegisterName" className="mt-n3" type="text" />
           <label htmlFor="defaultRegisterEmail" className="text-muted m-0">

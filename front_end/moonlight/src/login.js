@@ -23,7 +23,7 @@ const Login = () => {
                     Your password
                  </label>
                   <CDBInput id="defaultRegisterEmail" className="mt-n3" type="password" />
-                    <a href="#" style={{textDecoration:'none'}}>forgot password?</a>
+                    <Link to='/forgot'>forgot password?</Link>
                   <Link to="/landing" style={{textDecoration:'none'}}>
                   <CDBBtn type="submit" color="warning" circle className="btn-block-login mt-4 mx-auto">
                     Login
