@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('notificationTitle');
             $table->string('notificationDetail');
             $table->string('notificationImage');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('sender_id')->constrained('users');
+            $table->foreignId('reciever_id')->constrained('users');
+            $table->string('seen_status');
 
         });
     }

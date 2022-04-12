@@ -9,5 +9,15 @@ class notification extends Model
 {
     use HasFactory;
     public $table = "notification";
+    public $fillable=[
+        'image',
+        'title',
+        'description',
+        'sender_id',
+        'reciever_id',
+        'seen_status',
+
+    ];
+
     public $timestamps = false;
 }
