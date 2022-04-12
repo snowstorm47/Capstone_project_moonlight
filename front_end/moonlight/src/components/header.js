@@ -3,20 +3,21 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Link } from 'react-router-dom';
-import './header.css';
+import '../styles/header.css';
 const Header = () => {
     return ( 
         <div className="body">
-            <Navbar bg="light" variant="light">
+            <Navbar variant="light">
              <Container>
                 <Navbar.Brand to="/landing">Moonlight</Navbar.Brand>
                     <Nav className="me-auto">
-                        
-                        <Nav.Link to="/landing">Home</Nav.Link>
-                         <Nav.Link to="/news">News Feed</Nav.Link>
-                         <Nav.Link to="/notification">Notifications</Nav.Link>
-                         <Nav.Link to="/about">About</Nav.Link>
-                         <Nav.Link to="/contact">Contact Us</Nav.Link>
+                       
+                        <Link to="/landing">Home</Link>
+                         <Link to="/news">News Feed</Link>
+                         <Link to="/notification">Notifications</Link>
+                         <Link to="/about">About</Link>
+                         <Link to="/contact" className='notification'>Contact Us</Link>
+
                          <Link to="/register" className='sign'>
                          Sign up
                          </Link>
