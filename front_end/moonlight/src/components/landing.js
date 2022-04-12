@@ -1,15 +1,15 @@
-import './landing.css';
-import './footer.css'; 
+import '../styles/landing.css';
+import '../styles/footer.css'; 
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 
 import Col from 'react-bootstrap/Col';
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.css';
-import image1 from './image4.jpg';
-import image2 from './image2.jpg';
-import image3 from './image3.jpg';
-import image4 from './image5.jpg';
+import image1 from '../assets/image4.jpg';
+import image2 from '../assets/image2.jpg';
+import image3 from '../assets/image3.jpg';
+import image4 from '../assets/image5.jpg';
 
 
 

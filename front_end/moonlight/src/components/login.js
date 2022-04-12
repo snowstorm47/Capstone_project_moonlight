@@ -2,12 +2,12 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { CDBInput, CDBCard, CDBCardBody, CDBBtn, CDBContainer} from 'cdbreact';
 import { Link } from 'react-router-dom'; 
-import './register.css'
-import images from './image2.jpg';
+import '../styles/register.css'
+import images from '../assets/image2.jpg';
 
 const Login = () => {
     return ( 
-      <div className="body" style={{backgroundImage:`url(${images})`, backgroundSize: 'cover', maxHeight: 'fit-content'}}>
+      <div className="body" style={{}}>
        <CDBContainer className="d-flex align-items-center justify-content-center min-vh-100">
          <CDBCard style={{ width: '24rem', borderRadius: '20px', height: '23rem', border: 'none' }}>
            <CDBCardBody className="mx-4">

@@ -1,16 +1,17 @@
-import './register.css'
+import './styles/register.css'
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Redirect,
 } from "react-router-dom";
-import Register from './register';
-import Login from './login';
-import Landing from './landing';
-import Footer from './footer';
-import Header from './header';
-import Forgot from './forgot';
+import Register from './components/register';
+import Login from './components/login';
+import Landing from './components/landing';
+import Footer from './components/footer';
+import Header from './components/header';
+import Forgot from './components/forgot';
+import Notification from './components/Notification';
 
 function App() {
   return (
@@ -28,6 +29,9 @@ function App() {
        <Routes>
          <Route path='/forgot' element={<Forgot />}/>
        </Routes>
+       <Routes>
+         <Route path='/notification' element={<Notification/>}/>
+        </Routes>
        <Footer/>
     </Router>
   

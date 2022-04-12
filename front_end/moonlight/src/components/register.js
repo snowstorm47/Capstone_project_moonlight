@@ -1,11 +1,11 @@
 import { CDBInput, CDBCard, CDBCardBody, CDBBtn, CDBContainer, CDBSelect } from 'cdbreact';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import image from './image3.jpg';
+import image from '../assets/image3.jpg';
 
 
 import 'bootstrap/dist/css/bootstrap.css';
-import './register.css'
+import '../styles/register.css';
 const Register = () => {
   
     const [option] = useState([
@@ -26,7 +26,7 @@ const Register = () => {
     return (
 
 
-<div className="body" style={{backgroundImage:`url(${image})`,  backgroundSize: 'cover', maxHeight: 'fit-content',  }}>
+<div className="body" style={{}}>
 
  <CDBContainer className="d-flex">
       <CDBCard className="card1">
