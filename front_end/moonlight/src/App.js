@@ -12,7 +12,20 @@ import Footer from './components/footer';
 import Header from './components/header';
 import Forgot from './components/forgot';
 import Notification from './components/Notification';
+import axios from 'axios';
 
+//to generate csrf token 
+axios.defaults.baseURL="http://localhost:8000/";
+//to get data in json format
+axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.withCredentials = true;
+//for logout to get the token otherwise unauthorized
+axios.interceptors.request.use(function(config){
+  const token =localStorage.getItem('auth_token');
+  config.headers.Authorization = token ? `Bearer ${token}` : '';
+  return config;
+});
 function App() {
   return (
     <Router>
@@ -29,9 +42,9 @@ function App() {
        <Routes>
          <Route path='/forgot' element={<Forgot />}/>
        </Routes>
-       {/* <Routes>
+       <Routes>
          <Route path='/notification' element={<Notification/>}/>
-        </Routes> */}
+        </Routes>
        <Footer/>
     </Router>
   
