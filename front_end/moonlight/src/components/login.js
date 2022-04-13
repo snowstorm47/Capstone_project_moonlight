@@ -3,7 +3,7 @@ import { CDBInput, CDBCard, CDBCardBody, CDBBtn, CDBContainer } from "cdbreact";
 import { Link } from "react-router-dom";
 import "../styles/register.css";
 import { useNavigate } from "react-router-dom";
-import swal from "sweetalert";
+//import swal from "sweetalert";
 import images from "../assets/image2.jpg";
 import axios from "axios";
 import React, { useState } from "react";
@@ -38,11 +38,11 @@ const Login = () => {
 					localStorage.setItem("auth_name", res.data.name);
 					localStorage.setItem("auth_id", res.data.id);
 					localStorage.setItem("auth_position", res.data.position);
-					swal("success", res.data.message, "success");
+					//swal("success", res.data.message, "success");
 					console.log(res.data.name);
 					navigate("/");
 				} else if (res.data.status === 401) {
-					swal("warning", res.data.message, "warning");
+					//swal("warning", res.data.message, "warning");
 				} else {
 					setLogin({ ...loginInput, error_list: res.data.validation_errors });
 				}
