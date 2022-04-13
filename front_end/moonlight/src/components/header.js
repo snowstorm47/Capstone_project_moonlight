@@ -12,11 +12,11 @@ const Header = () => {
                 <Navbar.Brand to="/landing">Moonlight</Navbar.Brand>
                     <Nav className="me-auto">
                        
-                        <Link to="/landing">Home</Link>
-                         <Link to="/news">News Feed</Link>
-                         <Link to="/notification">Notifications</Link>
-                         <Link to="/about">About</Link>
-                         <Link to="/contact" className='notification'>Contact Us</Link>
+                        <Link to="/landing" className="home_link">Home</Link>
+                         <Link to="/news" className="news_link">News Feed</Link>
+                         <Link to="/notification" className="notification_link">Notifications</Link>
+                         <Link to="/about" className="about_link">About</Link>
+                         <Link to="/contact" className='contact_link'>Contact Us</Link>
 
                          <Link to="/register" className='sign'>
                          Sign up

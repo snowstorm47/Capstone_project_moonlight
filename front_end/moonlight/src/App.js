@@ -29,9 +29,9 @@ function App() {
        <Routes>
          <Route path='/forgot' element={<Forgot />}/>
        </Routes>
-       <Routes>
+       {/* <Routes>
          <Route path='/notification' element={<Notification/>}/>
-        </Routes>
+        </Routes> */}
        <Footer/>
     </Router>
   
