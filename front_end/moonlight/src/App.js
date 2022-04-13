@@ -13,6 +13,7 @@ import Header from './components/header';
 import Forgot from './components/forgot';
 import Notification from './components/Notification';
 import axios from 'axios';
+import AboutUs from './components/AboutUs';
 
 //to generate csrf token 
 axios.defaults.baseURL="http://localhost:8000/";
@@ -45,6 +46,9 @@ function App() {
        <Routes>
          <Route path='/notification' element={<Notification/>}/>
         </Routes>
+        <Routes>
+         <Route path='/aboutUs' element={<AboutUs />}/>
+       </Routes>
        <Footer/>
     </Router>
   
