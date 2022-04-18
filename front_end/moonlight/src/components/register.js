@@ -98,11 +98,11 @@ const Register = () => {
           </div>
           {/* <div style={{color:"green"}}>{registerInput.success_list}</div> */}
           <div className="select">
-          <label>
-              Gender:  
+          <label className="select_label">
+              Sign up as:  
           </label> 
               <select value={registerInput.position} name="position" onChange={handleInput}>
-                  <option value="Institution">Institution</option>
+                  <option value="Hiring Company">Hiring Company</option>
                   <option value="Student">Student</option>
                   <option value="Instructor">Instructor/Teacher</option>
 
