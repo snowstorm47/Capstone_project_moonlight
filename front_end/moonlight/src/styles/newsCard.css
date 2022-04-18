@@ -31,12 +31,16 @@
 	width: 65%;
 	display: flex;
 	flex-direction: column;
-	padding-left: 15px;
 }
 .detail {
 	font-size: 10pt;
 	overflow: hidden;
+	width: 100%;
 	font-weight: bold;
+}
+.detail h4 {
+	font-size: 11pt;
+	font-family: bold;
 }
 .profileImageAndName {
 	display: flex;

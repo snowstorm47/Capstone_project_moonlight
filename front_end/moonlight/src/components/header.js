@@ -14,7 +14,7 @@ const Header = () => {
 						<Link to="/landing" className="home_link">
 							Home
 						</Link>
-						<Link to="/news" className="news_link">
+						<Link to="/Newsfeed" className="news_link">
 							News Feed
 						</Link>
 						<Link to="/notification" className="notification_link">

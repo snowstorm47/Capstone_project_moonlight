@@ -5,6 +5,10 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Contracts\Auth\PasswordBroker\RESET_LINK_SENT;
+use Illuminate\Auth\Events\PasswordReset;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -92,4 +96,50 @@ class AuthController extends Controller
             'message' => 'Logged out Successfully'
         ]);
     }
+    
+    
+    public function forgotPassword(Request $request){
+        $validator = Validator::make($request->all(),[
+            'email'=>'required|max:191',
+       ]);
+        $status = Password::sendResetLink(
+        $request->only('email')
+    );
+    
+       if($sent=Password::RESET_LINK_SENT)
+       {return response()->json([
+            'status' => 200,
+            'status2'=>$sent,
+            'email'=> $request->email,
+            'message' => 'a message with a reset link has been sent to your email'
+        ]);
+}
+ 
+    }
+
+
+    public function resetPassword(Request $request){
+        $request->validate([
+        'token' => 'required',
+        'password' => 'required|min:8|confirmed',
+    ]);
+  
+    $status = Password::reset(
+        $request->only( 'password', 'password_confirmation', 'token'),
+        function ($user, $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+ 
+            $user->save();
+ 
+            event(new PasswordReset($user));
+        }
+    );
+ 
+     return response()->json([
+            'status' => 200,
+            'message' => 'password reset successfully'
+        ]);
+}
 }

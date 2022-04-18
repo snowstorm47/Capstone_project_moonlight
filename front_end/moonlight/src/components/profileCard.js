@@ -12,20 +12,29 @@ function ProfileCard() {
 				</div>
 			</div>
 			<div className="lowerContainer">
-				<p className="title">Bettelehem Abayneh</p>
-				<p
-					className="subcontent"
-					style={{ textAlign: "center", marginBottom: "20px" }}
+				<h1 className="title">Bettelehem Abayneh</h1>
+				<h4
+					style={{
+						marginBottom: "20px",
+						fontSize: "10pt",
+						textAlign: "center",
+					}}
 				>
 					addis ababa university
-				</p>
-				<p className="title">Experience</p>
-				<p className="companyName" style={{ paddingLeft: "20px" }}>
+				</h4>
+				<h1 className="title">Experience</h1>
+				<h1 className="companyName" style={{}}>
 					Berbera
-				</p>
-				<p className="subcontent" style={{ paddingLeft: "20px" }}>
+				</h1>
+				<h1 className="subcontent" style={{}}>
 					Developer
-				</p>
+				</h1>
+				<h1 className="companyName" style={{}}>
+					zafree
+				</h1>
+				<h1 className="subcontent" style={{}}>
+					Developer
+				</h1>
 			</div>
 		</div>
 	);

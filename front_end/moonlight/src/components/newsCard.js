@@ -26,11 +26,11 @@ function NewsCard() {
 					<div className="universityName">Addis Abeba University</div>
 				</div>
 				<div className="detail">
-					<p>
+					<h4>
 						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima
 						numquam similique fugiat repudiandae? Expedita nulla adipisci
 						laudantium deserunt, voluptate eius vero
-					</p>
+					</h4>
 				</div>
 			</div>
 		</div>
