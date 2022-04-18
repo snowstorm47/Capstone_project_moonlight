@@ -11,13 +11,14 @@ import {
 
 const { Header, Sider, Content } = Layout;
 const Newsfeed = () => {
-    const 
-	const state = {
-		collapsed: false,
-	};
+	const state = [
+		{
+			collapsed: false,
+		},
+	];
 
 	const toggle = () => {
-		setState({
+		this.setState({
 			collapsed: !state.collapsed,
 		});
 	};
