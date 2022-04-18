@@ -1,9 +1,9 @@
-import './styles/register.css'
+import "./styles/register.css";
 import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Redirect,
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Redirect,
 } from "react-router-dom";
 import Register from './components/register';
 import Login from './components/login';

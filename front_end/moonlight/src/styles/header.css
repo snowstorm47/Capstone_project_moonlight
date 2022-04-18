@@ -1,56 +1,54 @@
 .me-auto {
-    margin-left: 24rem;
-  
+	margin-left: 22rem;
 }
-.home_link{
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-    margin-left: 1rem;
-    margin-top: 0.5rem;
+.home_link {
+	font-weight: bold;
+	color: black;
+	text-decoration: none;
+	margin-left: 1rem;
+	margin-top: 0.5rem;
 }
-.news_link{
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-    margin-left: 1rem;
-    margin-top: 0.5rem;
+.news_link {
+	font-weight: bold;
+	color: black;
+	text-decoration: none;
+	margin-left: 1rem;
+	margin-top: 0.5rem;
 }
-.about_link{
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-    margin-left: 1rem;
-    margin-top: 0.5rem;
+.about_link {
+	font-weight: bold;
+	color: black;
+	text-decoration: none;
+	margin-left: 1rem;
+	margin-top: 0.5rem;
 }
-.contact_link{
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-    margin-left: 1rem;
-    margin-top: 0.5rem;
+.contact_link {
+	font-weight: bold;
+	color: black;
+	text-decoration: none;
+	margin-left: 1rem;
+	margin-top: 0.5rem;
 }
-.notification_link{
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-    margin-left: 1rem;
-    margin-top: 0.5rem;
+.notification_link {
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+	margin-left: 1rem;
+	margin-top: 0.5rem;
 }
 
 .sign {
-    text-decoration: solid;
-    color: darkorange;
-    font-weight: bold;
-    margin-top: 0.5rem;
-    margin-left: 4rem;
+	text-decoration: solid;
+	color: darkorange;
+	font-weight: bold;
+	margin-top: 0.5rem;
+	margin-left: 4rem;
 }
 
 .log {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-    margin-top: 0.5rem;
-    margin-left: 1rem;
-
+	text-decoration: none;
+	color: black;
+	font-weight: bold;
+	margin-top: 0.5rem;
+	margin-left: 1rem;
 }
