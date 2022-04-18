@@ -41,6 +41,9 @@ class AuthController extends Controller
                 'status'=>200,
                 'email'=> $user->email,
                 'token'=> $token,
+                'name'=>$user->name,
+                'position'=>$user->position,
+                'id'=>$user->id,
                 'message'=>'Registered Successfully'
             ]);
         }
@@ -78,6 +81,9 @@ class AuthController extends Controller
                 'status'=>200,
                 'email'=> $user->email,
                 'token'=> $token,
+                'id'=> $user->id,
+                'name'=>$user->name,
+                'position'=>$user->position,
                 'message'=>'Logged in Successfully'
             ]);
         }
