@@ -16,7 +16,6 @@
 }
 .links:hover {
 	box-shadow: inset 100px 0 0 0 yellow;
-	color: white;
 }
 .all {
 	width: 100%;

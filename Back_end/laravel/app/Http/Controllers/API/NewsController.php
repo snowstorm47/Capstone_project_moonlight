@@ -49,7 +49,7 @@ if($validator->fails()) {
     }
     public function showMyInstitution(Request $request)
     {
-        $News=News::all();
+        $News=News::find($request->id);
         return Response()->json([
             "data"=>[$News]
         ]);
