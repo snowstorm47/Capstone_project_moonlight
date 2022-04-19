@@ -1,16 +1,11 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
-import Newsfeed from "./pages/newsFeed";
+import "antd/dist/antd.css";
+import { BrowserRouter, Routes, Route, Redirect } from "react-router-dom";
+import Newsfeed from "./pages/newstrial";
 
 function App() {
-	return (
-		<div className="App">
-			<Routes>
-				<Route path="/newsfeed" element={<Newsfeed />} />
-			</Routes>
-		</div>
-	);
+	return <div></div>;
 }
 
 export default App;

@@ -1,64 +1,38 @@
-import { Layout, Menu } from "antd";
 import React, { useState } from "react";
+import { Layout, Menu, Breadcrumb } from "antd";
+import "../styles/newsFeed.css";
 
-import {
-	MenuUnfoldOutlined,
-	MenuFoldOutlined,
-	UserOutlined,
-	VideoCameraOutlined,
-	UploadOutlined,
-} from "@ant-design/icons";
+const { Header, Content, Footer } = Layout;
 
-const { Header, Sider, Content } = Layout;
 const Newsfeed = () => {
-	const state = [
-		{
-			collapsed: false,
-		},
-	];
+	const [state, setState] = useState(false);
 
 	const toggle = () => {
-		this.setState({
-			collapsed: !state.collapsed,
-		});
+		setState(!state);
 	};
 	return (
-		<Layout>
-			<Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+		<Layout className="layout">
+			<Header style={{ backgroundColor: "white" }}>
 				<div className="logo" />
-				<Menu theme="light" mode="inline" defaultSelectedKeys={["1"]}>
-					<Menu.Item key="1" icon={<UserOutlined />}>
-						NewsFeed
-					</Menu.Item>
-					<Menu.Item key="2" icon={<VideoCameraOutlined />}>
-						Posts
-					</Menu.Item>
-					<Menu.Item key="3" icon={<UploadOutlined />}>
-						Notification
-					</Menu.Item>
+				<Menu theme="light" mode="horizontal" defaultSelectedKeys={["2"]}>
+					<Menu.Item key="1">News feed</Menu.Item>
+					<Menu.Item key="2">Posts</Menu.Item>
+					<Menu.Item key="3">Notification</Menu.Item>
+					<Menu.Item key="4">Aboutus</Menu.Item>
+					<Menu.Item key="5">ContactUs</Menu.Item>
+					<Menu.Item key="6">Login</Menu.Item>
 				</Menu>
-			</Sider>
-			<Layout className="site-layout">
-				<Header className="site-layout-background" style={{ padding: 0 }}>
-					{React.createElement(
-						state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-						{
-							className: "trigger",
-							onClick: this.toggle,
-						}
-					)}
-				</Header>
-				<Content
-					className="site-layout-background"
-					style={{
-						margin: "24px 16px",
-						padding: 24,
-						minHeight: 280,
-					}}
-				>
-					Content
-				</Content>
-			</Layout>
+			</Header>
+			<Content style={{ padding: "0 50px" }}>
+				<div className="site-layout-content">
+					<div className="leftContainer"></div>
+					<div className="centerContainer"></div>
+					<div className="rightContainer"></div>
+				</div>
+			</Content>
+			<Footer style={{ textAlign: "center" }}>
+				Ant Design ©2018 Created by Ant UED
+			</Footer>
 		</Layout>
 	);
 };
