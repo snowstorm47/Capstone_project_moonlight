@@ -10,6 +10,9 @@ const Recomendation = () => {
 		{
 			title: "Amanuel Zerihun",
 		},
+		{
+			title: "Yabsera Daniel",
+		},
 	];
 	return (
 		<Card

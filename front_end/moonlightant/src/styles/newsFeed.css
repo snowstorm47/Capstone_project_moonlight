@@ -1,38 +1,17 @@
-#components-layout-demo-custom-trigger .trigger {
-	padding: 0 24px;
-	font-size: 18px;
-	line-height: 64px;
-	cursor: pointer;
-	transition: color 0.3s;
+.rightContainer {
+	width: 25%;
+	justify-content: center;
+	display: flex;
 }
-
-#components-layout-demo-custom-trigger .trigger:hover {
-	color: #1890ff;
+.centerContainer {
+	width: 50%;
 }
-
-#components-layout-demo-custom-trigger .logo {
-	height: 32px;
-	margin: 16px;
-	background: rgba(255, 255, 255, 0.3);
+.leftContainer {
+	width: 25%;
 }
-
-.site-layout .site-layout-background {
-	background: #fff;
-}
-.site-layout-content {
-	min-height: 280px;
-	padding: 24px;
-	background: #fff;
-	height: 1200px;
-}
-#components-layout-demo-top .logo {
-	float: left;
-	width: 120px;
-	height: 31px;
-	margin: 16px 24px 16px 0;
-	background: rgba(255, 255, 255, 0.3);
-}
-.ant-row-rtl #components-layout-demo-top .logo {
-	float: right;
-	margin: 16px 0 16px 24px;
+.newsContainer {
+	display: flex;
+	width: 100%;
+	background-color: #f0f2f5;
+	flex-direction: row;
 }
