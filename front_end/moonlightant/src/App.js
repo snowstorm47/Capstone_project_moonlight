@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Newsfeed from "./pages/newsFeed";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
+import Notification from "./pages/Notification";
 import 'antd/dist/antd.css';
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/newsfeed" element={<Newsfeed />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/notification" element={<Notification />} />
         </Routes>
       </Router>
     </div>
