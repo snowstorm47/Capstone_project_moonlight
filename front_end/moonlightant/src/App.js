@@ -6,9 +6,11 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
 import 'antd/dist/antd.css';
+import Navbar from "./pages/Navbar";
 function App() {
   return (
     <div className="App">
+      <Navbar/>
       <Router>
         <Routes>
           <Route path="/newsfeed" element={<Newsfeed />} />
