@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Newsfeed from "./pages/newsFeed";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
+import Notification from "./pages/Notification";
 import { Layout, Menu, Breadcrumb } from "antd";
 import "antd/dist/antd.css";
 const { Header, Content, Footer, Sider } = Layout;
@@ -17,10 +18,10 @@ function App() {
 						<a href="/newsfeed"> News Feed</a>
 					</Menu.Item>
 					<Menu.Item key="2">
-						<a href="/post"> post</a>
+						<a href="#"> post</a>
 					</Menu.Item>
 					<Menu.Item key="3">
-						<a href="/Notification"> Notification</a>
+						<a href="/notification"> Notification</a>
 					</Menu.Item>
 					<Menu.Item key="4">
 						<a href="/aboutus"> Aboutus</a>
@@ -36,6 +37,7 @@ function App() {
 					<Route path="/newsfeed" element={<Newsfeed />} />
 					<Route path="/aboutus" element={<AboutUs />} />
 					<Route path="/contactus" element={<ContactUs />} />
+					<Route path="/notification" element={<Notification />} />
 				</Routes>
 			</Router>
 			<Footer style={{ textAlign: "center" }}>

@@ -9,12 +9,14 @@ const Navbar = () => {
     <Layout className="layout">
       <Header style={{ backgroundColor: "white" }}>
         <div className="logo" />
-        <Menu theme="light" mode="horizontal" defaultSelectedKeys={["2"]}>
+        <Menu theme="light" mode="horizontal" 
+        defaultSelectedKeys={["1"]}
+        >
           <Menu.Item key="1">
             <a href="newsfeed">News feed</a>
           </Menu.Item>
           <Menu.Item key="2" >
-            <a href="">Posts</a>
+            <a href="#">Posts</a>
           </Menu.Item>
           <Menu.Item key="3" >
             <a href="notification">Notification</a>
