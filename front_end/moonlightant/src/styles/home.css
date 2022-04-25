@@ -1,0 +1,19 @@
+.homeContainer {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+}
+.wordCarosel {
+	width: 50%;
+	align-items: center;
+	justify-content: center;
+	padding-left: 90px;
+	padding-top: 50px;
+	color: black;
+}
+.image {
+	width: 50%;
+}
+.illustration {
+	width: auto;
+}
