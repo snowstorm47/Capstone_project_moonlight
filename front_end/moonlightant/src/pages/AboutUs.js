@@ -56,7 +56,7 @@ function AboutUs() {
         <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
           <br />
           <br />
-          <TeamOutlined style={{ fontSize: "2em", color: "#FFBF00" }} />
+          <TeamOutlined style={{ fontSize: "2em", color: "blue" }} />
           <br />
           Our Team
           <br />
@@ -73,7 +73,7 @@ function AboutUs() {
         <Col xs={{ span: 11, offset: 1 }} lg={{ span: 6, offset: 2 }}>
           <br />
           <br />
-          <AimOutlined style={{ fontSize: "2em", color: "#FFBF00" }} />
+          <AimOutlined style={{ fontSize: "2em", color: "blue" }} />
           <br />
           Our Mission
           <br />
@@ -89,7 +89,7 @@ function AboutUs() {
         <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
           <br />
           <br />
-          <BulbOutlined style={{ fontSize: "2em", color: "#FFBF00" }} />
+          <BulbOutlined style={{ fontSize: "2em", color: "blue" }} />
           <br />
           Our Vision
           <br />

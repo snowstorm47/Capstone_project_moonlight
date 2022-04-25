@@ -13,11 +13,11 @@ const Navbar = () => {
           <Menu.Item key="1">
             <a href="newsfeed">News feed</a>
           </Menu.Item>
-          <Menu.Item key="2" href="">
-            <a>Posts</a>
+          <Menu.Item key="2" >
+            <a href="">Posts</a>
           </Menu.Item>
-          <Menu.Item key="3" href="notification">
-            Notification
+          <Menu.Item key="3" >
+            <a href="notification">Notification</a>
           </Menu.Item>
           <Menu.Item key="4">
             <a href="aboutus">Aboutus</a>

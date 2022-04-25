@@ -1,44 +1,164 @@
-import { Component } from 'react';
-import { Layout, Menu, Icon } from 'antd';
-import { DashboardOutlined, PieChartOutlined } from '@ant-design/icons';
+import { Component, useState } from "react";
+import { Layout, Menu, Icon, Col, Row, Badge } from "antd";
+import {
+  DashboardOutlined,
+  BankOutlined,
+  CheckCircleOutlined,
+  UserOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import NotificationAdd from "./NotificationAdd";
+import NotificationInstitution from "./NotificationInstitution";
+import NotificationUser from "./NotificationUser";
+import NotificationSeen from "./NotificationSeen";
 const { Header, Footer, Sider, Content } = Layout;
 
 // Introduce submenu components
 const SubMenu = Menu.SubMenu;
 
-export default class Notification extends Component {
-  render() {
-    return (
+const Notification = () => {
+  const [selectedMenuItem, setSelectedMenuItem] = useState("add");
+
+  const componentsSwtich = (key) => {
+    switch (key) {
+      case "add":
+        return <NotificationAdd />;
+      case "institution":
+        return <NotificationInstitution />;
+      case "user":
+        return <NotificationUser/>
+      // case "suitcase":
+      //   return <h3>item3</h3>;
+      case "seen":
+        return <NotificationSeen/>
+      default:
+        break;
+    }
+  };
+  // const state = {
+  //   collapsed: false,
+  // };
+
+  // const onCollapse = (collapsed) => {
+  //   this.setState({ collapsed });
+  // };
+  // const toggle = () => {
+  //   this.setState({
+  //     collapsed: !this.state.collapsed,
+  //   });
+  // };
+
+  return (
+    <Layout>
+      <Sider
+        width={256}
+        style={{ 
+          minHeight: "90vh",
+         }}
+        // collapsible
+        // collapsed={this.state.collapsed}
+        // onCollapse={this.onCollapse}
+      >
+        <div
+          style={{
+            height: "32px",
+            background: "rgba(255,255,255,.2)",
+            color: "white",
+            margin: "16px",
+          }}
+        >
+          {" "}
+          Menu
+        </div>
+        <Menu
+          theme="dark"
+          mode="inline"
+          selectedKeys={selectedMenuItem}
+          onClick={(e) => setSelectedMenuItem(e.key)}
+          
+        >
+          <Menu.Item key="add">
+            <PlusCircleOutlined />
+            <span>Add</span>
+          </Menu.Item>
+
+          <Menu.Item key="institution"
+            style={{
+              paddingBottom:"20px"
+            }}
+          >
+            <BankOutlined />
+            <span
+              style={{
+                color: "#dddddd",
+              }}
+            >
+              Institution
+            </span>
+            <Badge
+              count={99}
+              overflowCount={10}
+              status="warning"
+              offset={[20, 20]}
+            ></Badge>
+          </Menu.Item>
+          <Menu.Item key="user"
+            style={{
+              paddingBottom:"20px"
+            }}
+          >
+            <UserOutlined />
+            <span>User</span>
+            <Badge
+              count={99}
+              overflowCount={10}
+              status="warning"
+              offset={[20, 20]}
+            ></Badge>
+          </Menu.Item>
+          {/* <Menu.Item key="suitcase">
+            <span>Suitcase</span>
+            <Badge
+              count={0}
+              overflowCount={10}
+              status="warning"
+              offset={[20, 20]}
+            ></Badge>
+          </Menu.Item> */}
+          <Menu.Item key="seen"
+            style={{
+              paddingBottom:"20px"
+            }}
+          >
+            <CheckCircleOutlined />
+            <span>Seen</span>
+            <Badge
+              count={0}
+              overflowCount={10}
+              status="warning"
+              offset={[20, 20]}
+            ></Badge>
+          </Menu.Item>
+        </Menu>
+      </Sider>
       <Layout>
-        <Sider width={256} style={{ minHeight: '100vh' }}>
-          <div style={{ height: '32px', background: 'rgba(255,255,255,.2)', margin: '16px' }} />
-          <Menu theme='dark' mode='inline' defaultSelectedKeys={['1']}>
-            <Menu.Item key='1'>
-              <PieChartOutlined /> 
-              <span>Helloworld</span>
-            </Menu.Item>
-            <SubMenu
-              key='sub1'
-              title={ 
-                <span>
-                  <DashboardOutlined />
-                  <span>Dashboard</span>
-                </span>
-              }>
-              <Menu.Item key='2'>Analysis page</Menu.Item>
-              <Menu.Item key='3'>Monitoring page</Menu.Item>
-              <Menu.Item key='4'>Workbench</Menu.Item>
-            </SubMenu>
-          </Menu>
-        </Sider>
-        <Layout>
-          <Header style={{ background: '#fff', textAlign: 'center', padding: 0 }}>Header</Header>
-          <Content style={{ margin: '24px 16px 0' }}>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>{this.props.children}</div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
-        </Layout>
+        <Row>
+          <Col span={20}>
+            <Content
+              style={{
+                margin: "40px 180px",
+                padding: 24,
+                background: "#fff",
+                minHeight: 280,
+              }}
+            >
+              {componentsSwtich(selectedMenuItem)}
+            </Content>
+          </Col>
+        </Row>
       </Layout>
-    );
-  }
-}
+    </Layout>
+  );
+};
+export default Notification;

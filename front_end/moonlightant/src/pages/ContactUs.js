@@ -15,7 +15,7 @@ const ContactUs = () => {
     style={{
       backgroundColor:"#010449",
       marginLeft:40,
-      marginTop:100,
+      marginTop:30,
       marginRight:40
       }}>
         <Row>
@@ -83,33 +83,51 @@ const ContactUs = () => {
           marginLeft:30
         }}
       >     Moonlight@gmail.com</Text><br/>
-      <FacebookFilled 
+      <Button ghost type="text" icon={
+      <FacebookFilled
+      style={{
+        color: "#ffffff",
+        fontSize:"2.5em",
+      }}
+      />}
       style={{ 
-        fontSize: "1.5em", 
+        fontSize: "1em", 
         color: "#ffffff",
         marginTop:200,
         marginLeft:-150,
         marginRight:10
-        }}
-      />
+        }
+      } />
+      <Button ghost type="text"
+        icon={
       <TwitterSquareFilled 
+      style={{
+        fontSize:"2.5em"
+      }}
+      />
+      } 
       style={{ 
-        fontSize: "1.5em", 
+        fontSize: "1em", 
         color: "#ffffff",
         marginTop:200,
         marginLeft:-110,
         marginRight:10
-        }}
-      />
+        }}/>
+      <Button ghost type="text"  icon={
       <InstagramFilled 
+      style={{
+        fontSize:"2.5em"
+      }}
+      />
+      } 
       style={{ 
-        fontSize: "1.5em", 
+        fontSize: "1em", 
         color: "#ffffff",
         marginTop:200,
         marginLeft:-100,
         marginRight:70
-        }}
-      />
+        }}/>
+      
           </Col>
           <Col
            span={12}>
