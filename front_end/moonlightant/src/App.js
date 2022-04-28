@@ -5,6 +5,8 @@ import Newsfeed from "./pages/newsFeed";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
+import SignUp from "./pages/signup";
+import SignIn from "./pages/signin";
 import { Layout, Menu, Breadcrumb } from "antd";
 import "antd/dist/antd.css";
 const { Header, Content, Footer, Sider } = Layout;
@@ -24,12 +26,14 @@ function App() {
 						<a href="/notification"> Notification</a>
 					</Menu.Item>
 					<Menu.Item key="4">
-						<a href="/aboutus"> Aboutus</a>
+						<a href="/aboutus"> About us</a>
 					</Menu.Item>
 					<Menu.Item key="5">
 						<a href="/contactus"> Contact Us</a>
 					</Menu.Item>
-					<Menu.Item key="6">Login</Menu.Item>
+					<Menu.Item key="6">
+						<a href="/signin"> Login </a> 
+					</Menu.Item>
 				</Menu>
 			</Header>
 			<Router>
@@ -38,6 +42,8 @@ function App() {
 					<Route path="/aboutus" element={<AboutUs />} />
 					<Route path="/contactus" element={<ContactUs />} />
 					<Route path="/notification" element={<Notification />} />
+					<Route path="/signin" element={<SignIn/>}/>
+					<Route path="/signup" element={<SignUp/>}/>
 				</Routes>
 			</Router>
 			<Footer style={{ textAlign: "center" }}>
