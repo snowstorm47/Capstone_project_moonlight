@@ -14,10 +14,10 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const data = [
   {
-    title: "Ant Design Title 1",
+    title: "Seen Title 1",
   },
   {
-    title: "Ant Design Title 2",
+    title: "Seen Title 2",
   },
 ];
 // Introduce submenu components

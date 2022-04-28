@@ -26,10 +26,10 @@ const SubMenu = Menu.SubMenu;
 
 const data = [
   {
-    title: "Ant Design Title 1",
+    title: "Institution Title 1",
   },
   {
-    title: "Ant Design Title 2",
+    title: "Institution Title 2",
   },
 ];
 const NotificationInstitution = () => {
