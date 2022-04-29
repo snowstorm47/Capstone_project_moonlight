@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Newsfeed from "./pages/newsFeed";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
+import Notification from "./pages/Notification";
+import SignUp from "./pages/signup";
+import SignIn from "./pages/signin";
 import { Layout, Menu, Breadcrumb } from "antd";
 import {
 	BellOutlined,
@@ -30,7 +33,7 @@ function App() {
 					}}
 				>
 					<div className="logo" />
-					<Menu theme="light" mode="horizontal" defaultSelectedKeys={["1"]}>
+					<Menu theme="light" mode="horizontal">
 						<Menu.Item key="0">
 							<Link to="/">
 								<HomeOutlined /> Home
@@ -82,6 +85,9 @@ function App() {
 						<Route path="/aboutus" element={<AboutUs />} />
 						<Route path="/contactus" element={<ContactUs />} />
 						<Route path="/post" element={<Post />} />
+						<Route path="/notification" element={<Notification />} />
+						<Route path="/signin" element={<SignIn />} />
+						<Route path="/signup" element={<SignUp />} />
 					</Routes>
 				</Content>
 				<Footer style={{ textAlign: "center" }}>

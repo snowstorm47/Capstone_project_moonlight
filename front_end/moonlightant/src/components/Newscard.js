@@ -59,7 +59,7 @@ const Newscard = (props) => {
 							key="list-vertical-message"
 						/>,
 					]}
-					extra={<img width={272} alt="logo" src={mainimage} />}
+					extra={<img width="272" alt="logo" src={mainimage} />}
 				>
 					<List.Item.Meta
 						style={{ textAlign: "left" }}
