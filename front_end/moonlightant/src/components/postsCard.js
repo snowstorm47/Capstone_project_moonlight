@@ -25,9 +25,9 @@ const postCard = () => {
 			]}
 		>
 			<Card bordered={false}>
-				<p>
+				<span>
 					new real estate near bole medhanaialem, very happy with the purchase
-				</p>
+				</span>
 			</Card>
 			<Meta
 				avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}

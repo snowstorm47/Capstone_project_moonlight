@@ -30,7 +30,7 @@ const Newsfeed = () => {
 					allowClear
 					enterButton="Search"
 					size="large"
-					style={{ padding: "40px 0" }}
+					style={{ padding: "40px 20px" }}
 					onSearch={onSearch}
 				/>
 				<NewsCard />

@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { Drawer, Button, Upload } from "antd";
+import { Drawer, Button, Upload, Popover } from "antd";
 import { Form, Input } from "antd";
-import {
-	UploadOutlined,
-	InboxOutlined,
-	RightCircleFilled,
-} from "@ant-design/icons";
+import { UploadOutlined, InboxOutlined, SendOutlined } from "@ant-design/icons";
 import "../styles/newscreate.css";
 
 const NewsDrawer = () => {
@@ -36,14 +32,20 @@ const NewsDrawer = () => {
 
 	return (
 		<>
-			<Button
-				type="primary"
-				icon={<UploadOutlined />}
-				onClick={showDrawer}
-				shape="circle"
-				size="large"
-				className="openButton"
-			></Button>
+			<Popover content="create news">
+				<Button
+					type="primary"
+					style={{
+						position: "fixed",
+						bottom: 30,
+					}}
+					icon={<UploadOutlined />}
+					onClick={showDrawer}
+					shape="circle"
+					size="large"
+					className="openButton"
+				></Button>
+			</Popover>
 
 			<Drawer
 				title="Create News"
@@ -54,35 +56,31 @@ const NewsDrawer = () => {
 				<Form
 					{...layout}
 					name="nest-messages"
-					style={{ justifyContent: "center" }}
+					style={{
+						display: "flex",
+						flexDirection: "column",
+					}}
 					onFinish={onFinish}
 				>
-					<Form.Item
-						name={["user", "Title"]}
-						style={{ width: "100%" }}
-						required
-					>
+					<Form.Item name={["user", "Title"]} required>
 						<label required>Title</label>
 						<Input />
 					</Form.Item>
-					<Form.Item
-						name={["user", "Body"]}
-						style={{
-							justifyContent: "flex-start",
-							display: "flex",
-						}}
-						required
-					>
+					<Form.Item name={["user", "Body"]} required>
 						<label>Body</label>
-						<Input.TextArea size="large" />
+						<Input.TextArea size="large" style={{ width: "100%" }} />
 					</Form.Item>
-					<Form.Item style={{ width: "100%" }}>
+					<Form.Item>
 						<Form.Item
 							name="dragger"
 							valuePropName="fileList"
 							getValueFromEvent={normFile}
 						>
-							<Upload.Dragger name="files" action="/upload.do">
+							<Upload.Dragger
+								name="files"
+								action="/upload.do"
+								style={{ width: "100%" }}
+							>
 								<p className="ant-upload-drag-icon">
 									<InboxOutlined />
 								</p>
@@ -99,6 +97,7 @@ const NewsDrawer = () => {
 						style={{ width: "100%" }}
 					>
 						Submit
+						<SendOutlined />
 					</Button>
 				</Form>
 			</Drawer>

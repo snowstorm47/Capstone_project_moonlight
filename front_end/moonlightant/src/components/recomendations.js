@@ -20,8 +20,10 @@ const Recomendation = () => {
 			extra={<a href="#">More</a>}
 			bordered={true}
 			style={{
-				width: "100%",
+				width: 320,
+				position: "fixed",
 				textAlign: "left",
+				borderRadius: 10,
 				marginTop: 30,
 				marginRight: 10,
 				marginLeft: 10,

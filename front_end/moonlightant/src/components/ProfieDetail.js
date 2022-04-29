@@ -11,8 +11,10 @@ const ProfileDetail = () => {
 				marginRight: 10,
 				marginLeft: 10,
 				width: 250,
+				position: "fixed",
 				height: 500,
 				borderRadius: 10,
+				backgroundImage: `url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs8XGHyMmmTM7yi39nHzdGsfyCU7xl0_LwRQ&usqp=CAU")`,
 			}}
 		>
 			<Avatar
@@ -36,7 +38,7 @@ const ProfileDetail = () => {
 					marginLeft: -25,
 				}}
 			>
-				<h3>John Doe</h3>
+				<h3>Jane Doe</h3>
 				<span style={{ color: "gray" }}>Developer</span>
 			</Card>
 			<Card

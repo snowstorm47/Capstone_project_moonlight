@@ -30,20 +30,16 @@ const Newscard = (props) => {
 				onChange: (page) => {
 					console.log(page);
 				},
-				pageSize: 3,
+				pageSize: 7,
 			}}
 			dataSource={listData}
-			footer={
-				<div>
-					<b>ant design</b> footer part
-				</div>
-			}
 			renderItem={(item) => (
 				<List.Item
 					style={{
 						textAlign: "left",
 						backgroundColor: "white",
 						margin: "10px 0",
+						borderRadius: 10,
 					}}
 					key={item.title}
 					actions={[
