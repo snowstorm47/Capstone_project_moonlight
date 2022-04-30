@@ -85,7 +85,13 @@ const Home = () => {
 			</div>
 			<div className="newsContainerHome">
 				<div style={{ width: "100%" }}>
-					<h2 style={{ fontWeight: "bold" }}>Latest News</h2>
+					<h2
+						style={{
+							fontWeight: "bold",
+						}}
+					>
+						Latest News
+					</h2>
 				</div>
 
 				<div>

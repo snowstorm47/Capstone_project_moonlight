@@ -69,7 +69,7 @@ function App() {
 							</Link>
 						</Menu.Item>
 						<Menu.Item key="6" style={{ marginLeft: "auto" }}>
-							<Link to="/login">Login</Link>
+							<Link to="/signin">Login</Link>
 						</Menu.Item>
 						<Menu.Item key="7">
 							<Link to="/signup" style={{ left: "auto" }}>
