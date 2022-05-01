@@ -1,65 +1,45 @@
-import { Layout, Menu } from "antd";
 import React, { useState } from "react";
-
-import {
-	MenuUnfoldOutlined,
-	MenuFoldOutlined,
-	UserOutlined,
-	VideoCameraOutlined,
-	UploadOutlined,
-} from "@ant-design/icons";
-
-const { Header, Sider, Content } = Layout;
+import "../styles/newsFeed.css";
+import food from "../assets/p.jpg";
+import NewsCard from "../components/Newscard";
+import { Input, Space } from "antd";
+import { AudioOutlined } from "@ant-design/icons";
+import ProfileDetail from "../components/ProfieDetail";
+import NewsDrawer from "../components/createNewsDrawer";
+import Recomendation from "../components/recomendations";
+const { Search } = Input;
 const Newsfeed = () => {
-	const state = [
-		{
-			collapsed: false,
-		},
-	];
+	const suffix = (
+		<AudioOutlined
+			style={{
+				fontSize: 16,
+				color: "#1890ff",
+			}}
+		/>
+	);
+	const onSearch = (value) => console.log(value);
 
-	const toggle = () => {
-		this.setState({
-			collapsed: !state.collapsed,
-		});
-	};
 	return (
-		<Layout>
-			<Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-				<div className="logo" />
-				<Menu theme="light" mode="inline" defaultSelectedKeys={["1"]}>
-					<Menu.Item key="1" icon={<UserOutlined />}>
-						NewsFeed
-					</Menu.Item>
-					<Menu.Item key="2" icon={<VideoCameraOutlined />}>
-						Posts
-					</Menu.Item>
-					<Menu.Item key="3" icon={<UploadOutlined />}>
-						Notification
-					</Menu.Item>
-				</Menu>
-			</Sider>
-			<Layout className="site-layout">
-				<Header className="site-layout-background" style={{ padding: 0 }}>
-					{React.createElement(
-						state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-						{
-							className: "trigger",
-							onClick: this.toggle,
-						}
-					)}
-				</Header>
-				<Content
-					className="site-layout-background"
-					style={{
-						margin: "24px 16px",
-						padding: 24,
-						minHeight: 280,
-					}}
-				>
-					Content
-				</Content>
-			</Layout>
-		</Layout>
+		<div className="newsContainer">
+			<div className="rightContainer">
+				<ProfileDetail />
+			</div>
+			<div className="centerContainer">
+				<Search
+					placeholder="search"
+					allowClear
+					enterButton="Search"
+					size="large"
+					style={{ padding: "40px 20px" }}
+					onSearch={onSearch}
+				/>
+				<NewsCard />
+			</div>
+			<div className="leftContainer">
+				<Recomendation />
+				<NewsDrawer />
+			</div>
+		</div>
 	);
 };
 
