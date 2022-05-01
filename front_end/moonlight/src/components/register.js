@@ -90,7 +90,7 @@ const Register = () => {
 	// ]);
 
 	return (
-		<div className="body" style={{}}>
+		<><div className="body" style={{}}>
 			<CDBContainer className="d-flex">
 				<CDBCard className="card1">
 					<CDBCardBody className="mx-4">
@@ -121,8 +121,7 @@ const Register = () => {
 								type="text"
 								name="name"
 								onChange={handleInput}
-								value={registerInput.name}
-							/>
+								value={registerInput.name} />
 							<div style={{ color: "red" }}>
 								{registerInput.error_list.name}
 							</div>
@@ -135,8 +134,7 @@ const Register = () => {
 								type="email"
 								name="email"
 								onChange={handleInput}
-								value={registerInput.email}
-							/>
+								value={registerInput.email} />
 							<div style={{ color: "red" }}>
 								{registerInput.error_list.email}
 							</div>
@@ -152,8 +150,7 @@ const Register = () => {
 								type="password"
 								name="password"
 								onChange={handleInput}
-								value={registerInput.password}
-							/>
+								value={registerInput.password} />
 							<div style={{ color: "red" }}>
 								{registerInput.error_list.password}
 							</div>
@@ -168,8 +165,7 @@ const Register = () => {
 								className="mt-n3"
 								type="password"
 								name="confirmPassword"
-								onChange={handleInput}
-							/>
+								onChange={handleInput} />
 							<div style={{ color: "red" }}>
 								{registerInput.error_list.password}
 							</div>
@@ -188,65 +184,63 @@ const Register = () => {
 					</CDBCardBody>
 				</CDBCard>
 			</CDBContainer>
-		</div>
-	);
-};
+		</div><div className="body" style={{}}>
 
+				<CDBContainer className="d-flex">
+					<CDBCard className="card1">
+						<CDBCardBody className="mx-4">
+							<form onSubmit={registerSubmit}>
+								<div className="text-center">
+									<p className="h2"> Sign up </p>
+								</div>
+								{/* <div style={{color:"green"}}>{registerInput.success_list}</div> */}
+								<div className="select">
+									<label className="select_label">
+										Sign up as:
+									</label>
+									<select value={registerInput.position} name="position" onChange={handleInput}>
+										<option value="Hiring Company">Hiring Company</option>
+										<option value="Student">Student</option>
+										<option value="Instructor">Instructor/Teacher</option>
 
-<div className="body" style={{}}>
+									</select>
+								</div>
+								<label htmlFor="defaultRegisterName" className="text-muted m-0">
+									Enter Name
+								</label>
+								<CDBInput id="defaultRegisterName" className="mt-n3" type="text" name="name" onChange={handleInput} value={registerInput.name} />
+								<div style={{ color: "red" }}>{registerInput.error_list.name}</div>
+								<label htmlFor="defaultRegisterEmail" className="text-muted m-0">
+									Your email
+								</label>
+								<CDBInput id="defaultRegisterEmail" className="mt-n3" type="email" name="email" onChange={handleInput} value={registerInput.email} />
+								<div style={{ color: "red" }}>{registerInput.error_list.email}</div>
+								<label htmlFor="defaultRegisterPassword" className="text-muted m-0">
+									Your password
+								</label>
+								<CDBInput id="defaultRegisterPasswordConfirm" className="mt-n3" type="password" name="password" onChange={handleInput} value={registerInput.password} />
+								<div style={{ color: "red" }}>{registerInput.error_list.password}</div>
+								<label htmlFor="defaultRegisterPassword" className="text-muted m-0">
+									Confirm Your password
+								</label>
+								<CDBInput id="defaultRegisterPassword" className="mt-n3" type="password" name="confirmPassword" onChange={handleInput} />
+								<div style={{ color: "red" }}>{registerInput.error_list.password}</div>
+								<div style={{ color: "red" }}>{registerInput.confirm_error}</div>
+								{/* <Link to="/login" style={{textDecoration:'none'}}> */}
+								<CDBBtn type="submit" color="warning" circle className="btn-block-register">
+									Register
+								</CDBBtn>
+								{/* </Link> */}
+							</form>
+						</CDBCardBody>
+					</CDBCard>
+				</CDBContainer>
+			</div></>
 
- <CDBContainer className="d-flex">
-      <CDBCard className="card1">
-        <CDBCardBody className="mx-4">
-          <form onSubmit={registerSubmit}>
-          <div className="text-center">
-            <p className="h2" > Sign up </p>
-          </div>
-          {/* <div style={{color:"green"}}>{registerInput.success_list}</div> */}
-          <div className="select">
-          <label className="select_label">
-              Sign up as:  
-          </label> 
-              <select value={registerInput.position} name="position" onChange={handleInput}>
-                  <option value="Hiring Company">Hiring Company</option>
-                  <option value="Student">Student</option>
-                  <option value="Instructor">Instructor/Teacher</option>
-
-              </select>
-          </div>
-          <label htmlFor="defaultRegisterName" className="text-muted m-0">
-            Enter Name 
-          </label>
-          <CDBInput id="defaultRegisterName" className="mt-n3" type="text" name="name" onChange={handleInput}  value={registerInput.name} />
-          <div style={{color:"red"}}>{registerInput.error_list.name}</div>
-          <label htmlFor="defaultRegisterEmail" className="text-muted m-0">
-            Your email
-          </label>
-          <CDBInput id="defaultRegisterEmail" className="mt-n3" type="email" name="email" onChange={handleInput} value={registerInput.email} />
-          <div style={{color:"red"}}>{registerInput.error_list.email}</div>
-          <label htmlFor="defaultRegisterPassword" className="text-muted m-0">
-            Your password
-          </label>
-          <CDBInput id="defaultRegisterPasswordConfirm" className="mt-n3" type="password" name="password" onChange={handleInput}  value={registerInput.password} />
-          <div style={{color:"red"}}>{registerInput.error_list.password}</div>
-          <label htmlFor="defaultRegisterPassword" className="text-muted m-0"  >
-            Confirm Your password
-          </label>
-          <CDBInput id="defaultRegisterPassword" className="mt-n3" type="password" name="confirmPassword" onChange={handleInput} />
-          <div style={{color:"red"}}>{registerInput.error_list.password}</div>
-          <div style={{color:"red"}}>{registerInput.confirm_error}</div>
-                    {/* <Link to="/login" style={{textDecoration:'none'}}> */}
-            <CDBBtn type="submit" color="warning" circle className="btn-block-register" >
-            Register
-          </CDBBtn>
-        {/* </Link> */}
-        </form>
-        </CDBCardBody>
-      </CDBCard>
-    </CDBContainer>
-</div>
 
      );
+	 
 }
+
  
 export default Register;
