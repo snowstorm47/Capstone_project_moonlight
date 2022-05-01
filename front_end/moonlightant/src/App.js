@@ -1,17 +1,16 @@
-import './App.css';
-import 'antd/dist/antd.css';
-// import AboutUs from './AboutUs';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import logo from "./logo.svg";
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Newsfeed from "./pages/newsFeed";
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-      {/* <Route path='/aboutus' element= { <AboutUs />  }/> */}
-
-      </Routes>
-    </Router>
-  );
+	return (
+		<div className="App">
+			<Routes>
+				<Route path="/newsfeed" element={<Newsfeed />} />
+			</Routes>
+		</div>
+	);
 }
 
 export default App;
