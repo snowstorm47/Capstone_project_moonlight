@@ -1,5 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
+import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Newsfeed from "./pages/newsFeed";
 import AboutUs from "./pages/AboutUs";
@@ -19,6 +20,20 @@ import {
 import "antd/dist/antd.css";
 import Post from "./pages/post";
 import Home from "./pages/Home";
+
+//to generate csrf token
+axios.defaults.baseURL = "http://localhost:8000/";
+//to get data in json format
+axios.defaults.headers.post["Accept"] = "application/json";
+axios.defaults.headers.post["Content-Type"] = "application/json";
+axios.defaults.withCredentials = true;
+//for logout to get the token otherwise unauthorized
+axios.interceptors.request.use(function (config) {
+	const token = localStorage.getItem("auth_token");
+	config.headers.Authorization = token ? `Bearer ${token}` : "";
+	return config;
+});
+
 const { Header, Content, Footer, Sider } = Layout;
 function App() {
 	return (
