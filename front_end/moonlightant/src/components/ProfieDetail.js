@@ -3,6 +3,16 @@ import { Card, Avatar } from "antd";
 import { AntDesignOutlined } from "@ant-design/icons";
 import food from "../assets/man.jpg";
 const ProfileDetail = () => {
+	const skills = [
+		"#developer",
+		"#react",
+		"#laravel",
+		"#mongodb",
+		"#mysql",
+		"#laravel",
+		"#mongodb",
+		"#mysql",
+	];
 	return (
 		<Card
 			title=""
@@ -65,12 +75,23 @@ const ProfileDetail = () => {
 					marginRight: -25,
 					marginLeft: -25,
 					paddingBottom: 20,
+					marginBottom: 0,
 					textAlign: "left",
 				}}
 			>
-				<p style={{ color: "gray" }}>#developer</p>
-				<p style={{ color: "gray" }}>#React</p>
-				<p style={{ color: "gray" }}>#java</p>
+				{skills.map((skill) => (
+					<button
+						style={{
+							color: "white",
+							borderRadius: 100,
+							border: 0,
+							margin: 2,
+							backgroundColor: "#0080ff",
+						}}
+					>
+						{skill}
+					</button>
+				))}
 			</Card>
 		</Card>
 	);

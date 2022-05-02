@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { List, Avatar, Space } from "antd";
 import profileimage from "../assets/f.jpg";
 import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
 import mainimage from "../assets/p.jpg";
 import "../styles/newsCard.css";
+import axios from "axios";
 const Newscard = (props) => {
 	const IconText = ({ icon, text }) => (
 		<Space>
@@ -11,6 +12,12 @@ const Newscard = (props) => {
 			{text}
 		</Space>
 	);
+	const [state, setState] = useState();
+	useEffect(() => {
+		axios.get("api/newsfeed").then((response) => {
+			setState(response.data.newsdata);
+		});
+	}, []);
 	const listData = [];
 	for (let i = 0; i < 23; i++) {
 		listData.push({
@@ -32,16 +39,18 @@ const Newscard = (props) => {
 				},
 				pageSize: 7,
 			}}
-			dataSource={listData}
+			dataSource={state}
 			renderItem={(item) => (
 				<List.Item
 					style={{
+						boxShadow: "9px 10px 5px 0px rgba(0,0,0,0.09)",
+
 						textAlign: "left",
 						backgroundColor: "white",
 						margin: "10px 0",
 						borderRadius: 10,
 					}}
-					key={item.title}
+					key={item.id}
 					actions={[
 						<IconText
 							icon={StarOutlined}
@@ -63,11 +72,11 @@ const Newscard = (props) => {
 				>
 					<List.Item.Meta
 						style={{ textAlign: "left" }}
-						avatar={<Avatar src={item.avatar} />}
-						title={<a href={item.href}>{item.title}</a>}
-						description={item.description}
+						avatar={<Avatar src={mainimage} />}
+						title={<a href={item.href}>Addis Ababa University</a>}
+						description="Wed,01/02/2022"
 					/>
-					{item.content}
+					{item.body}
 				</List.Item>
 			)}
 		/>

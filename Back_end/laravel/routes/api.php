@@ -18,6 +18,7 @@ use App\Http\Controllers\API\notificationController;
 */
 
 Route::post('createNews',[NewsController::class,'store']);
+Route::get('newsfeed',[NewsController::class,'show']);
 Route::post('register',[AuthController::class, 'register']);
 Route::post('login',[AuthController::class, 'login']);
 Route::post('postNotification',[notificationController::class, 'postNotification']);

@@ -41,7 +41,8 @@ if($validator->fails()) {
     {
         $News=News::all();
         return Response()->json([
-            "data"=>[$News]
+            "newsdata"=>$News,
+            "status"=>200,
         ]);
     }
     public function showMyInstitution(Request $request)

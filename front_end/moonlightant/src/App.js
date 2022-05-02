@@ -8,7 +8,7 @@ import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
 import SignUp from "./pages/signup";
 import SignIn from "./pages/signin";
-import { Layout, Menu, Breadcrumb, Icon, Avatar, Dropdown } from "antd";
+import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
 import {
 	BellOutlined,
 	BookOutlined,
@@ -154,7 +154,7 @@ function App() {
 					<Route path="/signup" element={<SignUp />} />
 				</Routes>
 			</Content>
-			<Footer style={{ textAlign: "center" }}>
+			<Footer style={{ textAlign: "center", marginBottom: "auto" }}>
 				Ant Design ©2018 Created by Ant UED
 			</Footer>
 		</div>
