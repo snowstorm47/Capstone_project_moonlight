@@ -8,7 +8,7 @@ import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
 import SignUp from "./pages/signup";
 import SignIn from "./pages/signin";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout, Menu, Breadcrumb, Icon, Avatar, Dropdown } from "antd";
 import {
 	BellOutlined,
 	BookOutlined,
@@ -16,10 +16,15 @@ import {
 	UserSwitchOutlined,
 	NotificationOutlined,
 	HomeOutlined,
+	UserOutlined,
+	EditFilled,
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import Post from "./pages/post";
 import Home from "./pages/Home";
+import food from "./assets/man.jpg";
+import { useNavigate } from "react-router-dom";
+import IconContext from "@ant-design/icons/lib/components/Context";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -36,79 +41,122 @@ axios.interceptors.request.use(function (config) {
 
 const { Header, Content, Footer, Sider } = Layout;
 function App() {
+	const navigate = useNavigate();
+	const logoutSubmit = (e) => {
+		axios.post("/api/logout").then((res) => {
+			if (res.data.status === 200) {
+				localStorage.removeItem("auth_token");
+				localStorage.removeItem("auth_email");
+				navigate("/");
+			} else {
+			}
+		});
+	};
+	const menu = (
+		<Menu selectable={true} style={{ width: "150px" }}>
+			<Menu.Item key="1" onClick={logoutSubmit}>
+				<UserOutlined style={{ paddingLeft: "2.5px", paddingRight: "5px" }} />
+				Logout
+			</Menu.Item>
+			<Menu.Item key="2">
+				<EditFilled style={{ paddingLeft: "2.5px", paddingRight: "5px" }} />
+				Edit Profile
+			</Menu.Item>
+		</Menu>
+	);
+	var AuthButtons = "";
+
+	if (!localStorage.getItem("auth_token")) {
+		AuthButtons = (
+			<>
+				<Menu.Item key="6" style={{ marginLeft: "auto" }}>
+					<Link to="/signin">Login</Link>
+				</Menu.Item>
+				<Menu.Item key="7">
+					<Link to="/signup" style={{ left: "auto" }}>
+						Sign Up
+					</Link>
+				</Menu.Item>
+			</>
+		);
+	} else {
+		AuthButtons = (
+			<Menu.Item key="7" style={{ marginLeft: "auto", borderColor: "white" }}>
+				<Dropdown overlay={menu} placement="bottomRight">
+					<Avatar
+						size={50}
+						src={food}
+						style={{ zIndex: 10, border: "2px solid #1890ff" }}
+					/>
+				</Dropdown>
+			</Menu.Item>
+		);
+	}
 	return (
 		<div className="App">
-			<Router>
-				<Header
-					style={{
-						backgroundColor: "white",
-						position: "fixed",
-						zIndex: 1,
-						width: "100%",
-					}}
-				>
-					<div className="logo" />
-					<Menu theme="light" mode="horizontal">
-						<Menu.Item key="0">
-							<Link to="/">
-								<HomeOutlined /> Home
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="1">
-							<Link to="/newsfeed">
-								<ReadOutlined /> News Feed
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="2">
-							<Link to="/post">
-								{" "}
-								<BookOutlined />
-								post
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="3">
-							<Link to="/Notification">
-								<BellOutlined /> Notification
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="4">
-							<Link to="/aboutus">
-								<NotificationOutlined /> Aboutus
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="5">
-							<Link to="/contactus">
-								{" "}
-								<UserSwitchOutlined />
-								Contact Us
-							</Link>
-						</Menu.Item>
-						<Menu.Item key="6" style={{ marginLeft: "auto" }}>
-							<Link to="/signin">Login</Link>
-						</Menu.Item>
-						<Menu.Item key="7">
-							<Link to="/signup" style={{ left: "auto" }}>
-								Sign Up
-							</Link>
-						</Menu.Item>
-					</Menu>
-				</Header>
-				<Content style={{ padding: "50px 0 0 0" }}>
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/newsfeed" element={<Newsfeed />} />
-						<Route path="/aboutus" element={<AboutUs />} />
-						<Route path="/contactus" element={<ContactUs />} />
-						<Route path="/post" element={<Post />} />
-						<Route path="/notification" element={<Notification />} />
-						<Route path="/signin" element={<SignIn />} />
-						<Route path="/signup" element={<SignUp />} />
-					</Routes>
-				</Content>
-				<Footer style={{ textAlign: "center" }}>
-					Ant Design ©2018 Created by Ant UED
-				</Footer>
-			</Router>
+			<Header
+				style={{
+					backgroundColor: "white",
+					position: "fixed",
+					zIndex: 1,
+					width: "100%",
+					height: "auto",
+				}}
+			>
+				<div className="logo" />
+				<Menu theme="light" mode="horizontal">
+					<Menu.Item key="0">
+						<Link to="/">
+							<HomeOutlined /> Home
+						</Link>
+					</Menu.Item>
+					<Menu.Item key="1">
+						<Link to="/newsfeed">
+							<ReadOutlined /> News Feed
+						</Link>
+					</Menu.Item>
+					<Menu.Item key="2">
+						<Link to="/post">
+							{" "}
+							<BookOutlined />
+							post
+						</Link>
+					</Menu.Item>
+					<Menu.Item key="3">
+						<Link to="/Notification">
+							<BellOutlined /> Notification
+						</Link>
+					</Menu.Item>
+					<Menu.Item key="4">
+						<Link to="/aboutus">
+							<NotificationOutlined /> Aboutus
+						</Link>
+					</Menu.Item>
+					<Menu.Item key="5">
+						<Link to="/contactus">
+							{" "}
+							<UserSwitchOutlined />
+							Contact Us
+						</Link>
+					</Menu.Item>
+					{AuthButtons}
+				</Menu>
+			</Header>
+			<Content style={{ padding: "50px 0 0 0" }}>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/newsfeed" element={<Newsfeed />} />
+					<Route path="/aboutus" element={<AboutUs />} />
+					<Route path="/contactus" element={<ContactUs />} />
+					<Route path="/post" element={<Post />} />
+					<Route path="/notification" element={<Notification />} />
+					<Route path="/signin" element={<SignIn />} />
+					<Route path="/signup" element={<SignUp />} />
+				</Routes>
+			</Content>
+			<Footer style={{ textAlign: "center" }}>
+				Ant Design ©2018 Created by Ant UED
+			</Footer>
 		</div>
 	);
 }
