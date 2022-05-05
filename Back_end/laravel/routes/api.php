@@ -28,7 +28,7 @@ Route::post('forgotPassword',[AuthController::class,"forgotPassword"])->middlewa
 Route::post('resetPassword',[AuthController::class,"resetPassword"]);
 Route::put('updateNotification',[notificationController::class, 'updateNotification']);
 Route::middleware(['auth:sanctum'])->group(function() {
-    Route::post('logout',[AuthController::class, 'logout']);
+Route::post('logout',[AuthController::class, 'logout']);
 
 });
 

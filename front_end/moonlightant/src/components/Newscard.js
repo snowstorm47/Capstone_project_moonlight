@@ -5,7 +5,10 @@ import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
 import mainimage from "../assets/p.jpg";
 import "../styles/newsCard.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 const Newscard = (props) => {
+	const navigate = useNavigate();
 	const IconText = ({ icon, text }) => (
 		<Space>
 			{React.createElement(icon)}
@@ -18,17 +21,7 @@ const Newscard = (props) => {
 			setState(response.data.newsdata);
 		});
 	}, []);
-	const listData = [];
-	for (let i = 0; i < 23; i++) {
-		listData.push({
-			href: mainimage,
-			title: `Addis ababa science and technology`,
-			avatar: profileimage,
-			description: "Wed,01/02/2022",
-			content:
-				"We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-		});
-	}
+
 	return (
 		<List
 			itemLayout="vertical"
@@ -42,6 +35,7 @@ const Newscard = (props) => {
 			dataSource={state}
 			renderItem={(item) => (
 				<List.Item
+					onClick={() => navigate("news", state)}
 					style={{
 						boxShadow: "9px 10px 5px 0px rgba(0,0,0,0.09)",
 
@@ -68,15 +62,32 @@ const Newscard = (props) => {
 							key="list-vertical-message"
 						/>,
 					]}
-					extra={<img width="272" alt="logo" src={mainimage} />}
+					extra={
+						<img
+							width="272"
+							alt="logo"
+							src={"http://localhost:8000/uploads/NewsPictures/" + item.image}
+						/>
+					}
 				>
 					<List.Item.Meta
-						style={{ textAlign: "left" }}
+						style={{
+							textAlign: "left",
+						}}
 						avatar={<Avatar src={mainimage} />}
-						title={<a href={item.href}>Addis Ababa University</a>}
-						description="Wed,01/02/2022"
+						title={<a href={item.href}>{item.institutionName}</a>}
+						description={item.created_at}
 					/>
-					{item.body}
+					<div
+						style={{
+							height: "100px",
+
+							overflow: "hidden",
+							textOverflow: "ellipsis",
+						}}
+					>
+						{item.body}
+					</div>
 				</List.Item>
 			)}
 		/>

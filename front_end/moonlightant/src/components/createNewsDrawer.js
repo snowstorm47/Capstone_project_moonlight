@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Drawer, Button, Upload, Popover, Card } from "antd";
+import { Drawer, Button, Upload, Popover, Card, message } from "antd";
 import { Form, Input } from "antd";
 import { UploadOutlined, InboxOutlined, SendOutlined } from "@ant-design/icons";
 import "../styles/newscreate.css";
@@ -11,23 +11,36 @@ const NewsDrawer = () => {
 		labelCol: { span: 8 },
 		wrapperCol: { span: 16 },
 	};
+	// const fData = new formData();
+
 	const [news, setNews] = useState({
 		title: "",
 		body: "",
 		id: "1",
 		image: "",
 	});
-
 	const handleInput = (e) => {
-		e.persist();
 		setNews({ ...news, [e.target.name]: e.target.value });
 	};
 	const handleSubmit = async () => {
 		console.log(news);
+		const fData = new FormData();
+		fData.append("image", news.image);
+		fData.append("title", news.title);
+		fData.append("body", news.body);
+		fData.append("id", "1");
 		axios.get("/sanctum/csrf-cookie").then((response) => {
-			axios.post("api/createNews", news);
+			axios.post("api/createNews", fData).then((response) => {
+				console.log(response);
+				if (response.data.message == "success") {
+					message.info("News created succesfully");
+					onClose();
+				} else {
+					message.error("News was not created. Please try again");
+				}
+			});
 		});
-		onClose();
+
 		setNews({ ...news, title: "", body: "" });
 	};
 	const showDrawer = () => {
@@ -37,6 +50,7 @@ const NewsDrawer = () => {
 	const onClose = () => {
 		setVisible(false);
 	};
+
 	const normFile = (e) => {
 		console.log("Upload event:", e);
 
@@ -45,9 +59,6 @@ const NewsDrawer = () => {
 		}
 
 		return e && e.fileList;
-	};
-	const onFinish = (values) => {
-		console.log("Rceived values of form: ", "values");
 	};
 
 	return (
@@ -73,9 +84,8 @@ const NewsDrawer = () => {
 				onClose={onClose}
 				visible={visible}
 			>
-				<Card>
+				<Card bordered={false}>
 					<Form
-						{...layout}
 						name="nest-messages"
 						method="POST"
 						style={{
@@ -105,8 +115,11 @@ const NewsDrawer = () => {
 							>
 								<Upload.Dragger
 									name="image"
-									action="/upload.do"
-									onChange={handleInput}
+									type="file"
+									multiple={false}
+									onChange={(e) =>
+										setNews({ ...news, image: e.fileList[0].originFileObj })
+									}
 									style={{ width: "100%" }}
 								>
 									<p className="ant-upload-drag-icon">
@@ -121,7 +134,9 @@ const NewsDrawer = () => {
 						<Button
 							type="primary"
 							htmlType="submit"
-							onClick={handleSubmit}
+							onClick={() => {
+								handleSubmit();
+							}}
 							style={{ width: "100%" }}
 						>
 							Submit

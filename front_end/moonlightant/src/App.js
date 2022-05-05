@@ -25,6 +25,7 @@ import Home from "./pages/Home";
 import food from "./assets/man.jpg";
 import { useNavigate } from "react-router-dom";
 import IconContext from "@ant-design/icons/lib/components/Context";
+import NewsDetail from "./pages/newsDetailPage";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -152,6 +153,7 @@ function App() {
 					<Route path="/notification" element={<Notification />} />
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/signup" element={<SignUp />} />
+					<Route path="newsfeed/news" element={<NewsDetail />} />
 				</Routes>
 			</Content>
 			<Footer style={{ textAlign: "center", marginBottom: "auto" }}>

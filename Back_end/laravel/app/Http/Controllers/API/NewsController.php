@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -15,7 +16,7 @@ class NewsController extends Controller
       public function store(Request $request)
     { 
          $validator = Validator::make($request->all(),[
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required',
             'title'=>'required',
             'body'=>'required',
             
@@ -39,7 +40,8 @@ if($validator->fails()) {
     }
     public function show(Request $request)
     {
-        $News=News::all();
+        
+        $News=News::join('institution','institution.id','=','news.institution_id')->get(['institution.institutionName','news.title','news.body','news.created_at','news.image']);
         return Response()->json([
             "newsdata"=>$News,
             "status"=>200,
