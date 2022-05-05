@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "../styles/newsFeed.css";
 import food from "../assets/p.jpg";
-
+import PostDrawer from "../components/createPostDrawer";
 import { Input, Space } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
 import ProfileDetail from "../components/ProfieDetail";
-import NewsDrawer from "../components/createNewsDrawer";
 import Recomendation from "../components/recomendations";
 import PostCard from "../components/postsCard";
 import "../styles/newsFeed.css";
+import axios from "axios";
+
 const { Search } = Input;
 const Post = () => {
 	const suffix = (
@@ -42,7 +43,7 @@ const Post = () => {
 			</div>
 			<div className="leftContainer">
 				<Recomendation />
-				<NewsDrawer />
+				<PostDrawer />
 			</div>
 		</div>
 	);
