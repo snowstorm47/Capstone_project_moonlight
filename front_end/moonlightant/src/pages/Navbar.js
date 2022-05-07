@@ -13,7 +13,7 @@ const Navbar = () => {
         defaultSelectedKeys={["1"]}
         >
           <Menu.Item key="1">
-            <a href="newsfeed">News feed</a>
+            <a href="newsfeed">News Feed</a>
           </Menu.Item>
           <Menu.Item key="2" >
             <a href="#">Posts</a>
@@ -22,10 +22,10 @@ const Navbar = () => {
             <a href="notification">Notification</a>
           </Menu.Item>
           <Menu.Item key="4">
-            <a href="aboutus">Aboutus</a>
+            <a href="aboutus">About Us</a>
           </Menu.Item>
           <Menu.Item key="5">
-            <a href="contactus">ContactUs</a>
+            <a href="contactus">Contact Us</a>
           </Menu.Item>
           <Menu.Item key="6">
             <a href="login">Login</a>

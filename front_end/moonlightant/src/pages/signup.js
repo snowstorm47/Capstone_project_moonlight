@@ -1,136 +1,143 @@
-// import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
+import {Link} from 'react-router-dom';
+import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
-import { Select } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-;
+import { useState } from 'react';
+import AsStudent from './asStudent'
+import AsHiringCompany from './asHiringcompany';
+import AsInstractor from './asInstractor';
+import AsInstitute from './asInstitute';
 
 const theme = createTheme();
 
-export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+export default function SignInSide() {
+
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
+
+  const[selectItems,setselectItems] =useState('student');
+
+  const handleClick = (key) => {
+      switch (key) {
+      case "student":
+        return <AsStudent />;
+      case "institute":
+        return <AsInstitute />;
+      case "instractor":
+        return <AsInstractor/>
+      case "hire":
+        return <AsHiringCompany/>
+      default:
+        break;
+    }
+
+  }
+
 
   return (
     <ThemeProvider theme={theme}>
-
+      <Grid container component="main" sx={{ height: '100vh' }} >
         <CssBaseline />
-
-        <Box
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
           sx={{
-             marginTop:3,
-              mx: 12,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
+            backgroundImage: 'linear-gradient(to bottom right, blue[500], blue[900])',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, mb: 7,  
-            
-              mx: 12,
+      >
+        <div style={{textAlign:'center', color:'black', marginTop:'5rem', fontWeight:'bold'}}>
+
+          <h2 style={{ textDecoration:'underline',color:'black', fontWeight:'bold'}}>  Sign Up As  </h2>
+
+        <p>Please Choose the way you would like to sign up as, there are four choices that are provided.To sign up as an institiution please select the provided button, please make sure you choose the correct form for avoid problems!  </p>
+
+        </div>
+
+          <div>
+            <Grid>
+              <Box
+              sx={{
+              my: 8,
+              mx: 4,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-          
-           }}>
-            <Grid  sm={12} md={12}  item xs={12}>
-         
-            <Grid item xs={12} sx={{ mt: 1 }} >
-            <InputLabel htmlFor="grouped-native-select">Sign up as</InputLabel>
-            <Select style={{width:'30rem'}}>
-            <MenuItem > Hiring Company</MenuItem>
-            <MenuItem >Institute</MenuItem>
-            <MenuItem >Student</MenuItem>
-        </Select>
-              </Grid>
+            }}
+              >
+                <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: 3, mb: 2  , pl:10.5, pr:10.5  }}
+                key="student"
+                value={selectItems}
+                onClick={(e)=>setselectItems("student")}
+              >
+                Student
+              </Button>
 
-              <Grid item xs={12} sx={{ mt: 1 }} >
-                <TextField
-                  autoComplete="given-name"
-                  name="fullName"
-                  required
-                  fullWidth
-                  id="fullName"
-                  label="Full Name"
-                  autoFocus
-                />
-              </Grid>
+              <Button
+                type="submit"
+                variant="contained"
+                key="institute"
+                sx={{ mt: 3, mb: 2,  pl:10, pr:10   }}
+                 onClick={(e)=>setselectItems("institute")}
+              >
+                Institute
+              </Button>
+
+                <Button
+                type="submit"
+                variant="contained"
+                key="instractor"
+                sx={{ mt: 3, mb: 2, pl:9, pr:9 }}
+                 onClick={(e)=>setselectItems("instractor")}
+              >
+                Instractor
+              </Button>
+
+                <Button
+                type="submit"
+                variant="contained"
+                key="hire"
+                sx={{ mt: 3, mb: 2,  pl:7, pr:7  }}
+                 onClick={(e)=>setselectItems("hire")}
+              >
+                Hiring Company
+              </Button>
+
+              </Box>
+            </Grid>
            
-              <Grid item xs={12} sx={{ mt: 1 }}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12} sx={{ mt: 1 }}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
+          </div>
+        
 
-              <Grid item xs={12} sx={{ mt: 1 }}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirm password"
-                  label="Confirm Password"
-                  type="password"
-                  id="password"
-                />
-              </Grid>
-             
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to='/signin'>
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-            
-          </Box>
-          
-        </Box>
-       
+      </Grid>
+     
+          {
+            handleClick(selectItems)
+          }
+      </Grid>
     </ThemeProvider>
   );
 }

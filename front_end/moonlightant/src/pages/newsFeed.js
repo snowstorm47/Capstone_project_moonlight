@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../styles/newsFeed.css";
-import food from "../assets/p.jpg";
 import NewsCard from "../components/Newscard";
 import { Input, Space } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
