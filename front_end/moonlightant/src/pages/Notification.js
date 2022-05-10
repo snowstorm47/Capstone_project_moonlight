@@ -151,6 +151,7 @@ const Notification = () => {
                 padding: 24,
                 background: "#fff",
                 minHeight: 280,
+                marginTop: "7em"
               }}
             >
               {componentsSwtich(selectedMenuItem)}

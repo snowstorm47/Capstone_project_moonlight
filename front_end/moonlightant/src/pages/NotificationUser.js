@@ -10,6 +10,9 @@ import {
   CheckOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
+import axios from "axios";
+import { React,useEffect } from "react";
+
 const { Header, Footer, Sider, Content } = Layout;
 
 const data = [
@@ -20,18 +23,43 @@ const data = [
     title: "User Title 2",
   },
 ];
-// Introduce submenu components
-const SubMenu = Menu.SubMenu;
+const NotificationUser = () =>{
 
-const NotificationUser = () => {
-  const [visible, setVisible] = useState(true);
-  const handleClose = () => {
-    setVisible(false);
-  };
+  const [notificationUser, setNotificationUser] = useState({
+    phoneNumber:'',
+    name:'',
+    position:'',
+    startDate:'',
+    endDate:'',
+    sex:'',
+    institution:'',
+    companyName:'',
+    startDateClass:'',
+    endDateClass:'',
+    skill:[],
+    error_list: []
+});
+const id = localStorage.getItem('auth_id');
+    useEffect(() => {
+            
+            axios.get(`/api/viewNotification/${id}`).then(res => {
+
+              if(res.data.status === 200)
+              {
+                  // setEditProfile(res.data);
+                  // setSkillList(res.data.skill); 
+                  // console.log(skillList);      
+              }
+              else
+              {
+                  console.log('couldnt retrieve data');
+              }
+        });
+        },[]);
 
   return (
    <div>
-        {visible ? (
+        
           <List
           itemLayout="horizontal"
           dataSource={data}
@@ -79,8 +107,9 @@ const NotificationUser = () => {
             </List.Item>
           )}
         />
-        ) : null}
+      
      </div>
   );
 };
+
 export default NotificationUser;
