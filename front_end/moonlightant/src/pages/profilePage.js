@@ -10,7 +10,7 @@ import { Divider } from "antd";
 // import Sider from "antd/lib/layout/Sider";
 import moment from 'moment';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import './App.css';
+// import '/App.css';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -54,7 +54,7 @@ function onSearch(val) {
     console.log('search:', val);
 }
 
-function ProfilePageP(){
+function ProfilePage(){
     <Avatar icon={<UserOutlined />} />
     return (
         <Row className="row1">
@@ -88,13 +88,11 @@ function ProfilePageP(){
             <Col className="row3" span={9}>
                 <Divider>Profile Page</Divider>
                 <Col>
-                    <Form.Item label="First Name">
+                    <Form.Item label="Full Name">
                         <Input />
                     </Form.Item>
                     
-                    <Form.Item label="Last Name">
-                        <Input />
-                    </Form.Item>  
+                    
                 </Col>
 
                 <Col> 
@@ -146,8 +144,6 @@ function ProfilePageP(){
                             Today: [moment(), moment()],
                             'This Month': [moment().startOf('month'), moment().endOf('month')],
                             }}
-                            showTime
-                            format="YYYY/MM/DD HH:mm:ss"
                             onChange={onChange}
                         />
                     </Space>
@@ -193,7 +189,7 @@ function ProfilePageP(){
                             </Form.Item>
                     </Form>
                 </Col>
-                <Divider>Employement History</Divider>                    
+                <Divider>Employment History</Divider>                    
                 <Col >
                     <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off" title="Employment History">
                         <Form.List name="users">
@@ -225,8 +221,6 @@ function ProfilePageP(){
                                                 Today: [moment(), moment()],
                                                 'This Month': [moment().startOf('month'), moment().endOf('month')],
                                                 }}
-                                                showTime
-                                                format="YYYY/MM/DD HH:mm:ss"
                                                 onChange={onChange}
                                                 />
                                             </Space>
@@ -239,7 +233,7 @@ function ProfilePageP(){
                                 
                                 <Form.Item>
                                     <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                        Add field
+                                        Add Field
                                     </Button>
                                 </Form.Item>
                                 </>
@@ -258,4 +252,4 @@ function ProfilePageP(){
     );
 }
 
-export default ProfilePageP;
+export default ProfilePage;
