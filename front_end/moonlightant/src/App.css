@@ -36,3 +36,27 @@
 		transform: rotate(360deg);
 	}
 }
+
+.row{
+	margin: 0.5em;
+	border-right: inset;
+	padding-right: 1em;
+	background-color: #0080ff;
+  }
+  
+  .row1{
+	margin: 3em;
+  }
+  
+  .row2{
+	margin: 0.5em;
+	/* margin-top: 4.6em; */
+	
+  }
+  
+  .row3{
+	margin: 0.5em;
+	text-align: left;
+	border-right: inset;
+	padding-right: 1em;
+  }

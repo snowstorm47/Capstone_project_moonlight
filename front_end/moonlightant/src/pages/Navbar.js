@@ -30,6 +30,9 @@ const Navbar = () => {
           <Menu.Item key="6">
             <a href="login">Login</a>
           </Menu.Item>
+          <Menu.Item key="7">
+            <a href="profilePage">Profile</a>
+          </Menu.Item>
         </Menu>
       </Header>
     </Layout>

@@ -8,6 +8,7 @@ import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
 import SignUp from "./pages/signup";
 import SignIn from "./pages/signin";
+import ProfilePageP from "./pages/profilePage";
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
 import {
 	BellOutlined,
@@ -154,6 +155,7 @@ function App() {
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
+					<Route path="/profilePage" element={ <ProfilePageP/> }/>
 				</Routes>
 			</Content>
 			<Footer style={{ textAlign: "center", marginBottom: "auto" }}>
