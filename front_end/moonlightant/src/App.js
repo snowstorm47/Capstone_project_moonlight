@@ -27,6 +27,7 @@ import food from "./assets/man.jpg";
 import { useNavigate } from "react-router-dom";
 import IconContext from "@ant-design/icons/lib/components/Context";
 import NewsDetail from "./pages/newsDetailPage";
+import ProfilePage from "./pages/profilePage";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -155,7 +156,11 @@ function App() {
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
+<<<<<<< HEAD
 					<Route path="/profilePage" element={ <ProfilePageP/> }/>
+=======
+					<Route path="editProfile" element={<ProfilePage />} />
+>>>>>>> 6c0f48c6ef0e66c01750359b06b3923593ce50a1
 				</Routes>
 			</Content>
 			<Footer style={{ textAlign: "center", marginBottom: "auto" }}>
