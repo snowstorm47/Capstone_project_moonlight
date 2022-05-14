@@ -58,7 +58,6 @@ const Home = () => {
 								class="cssbuttons-io-button"
 								onClick={() => navigate("signup")}
 							>
-								{" "}
 								Get started
 								<div class="icon">
 									<svg
@@ -88,6 +87,8 @@ const Home = () => {
 					<h2
 						style={{
 							fontWeight: "bold",
+							fontFamily: " Arial, Helvetica, sans-serif",
+							alignSelf: "flex-start",
 						}}
 					>
 						Latest News

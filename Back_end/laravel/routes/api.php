@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\NewsController;
+use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\notificationController;
 use App\Http\Controllers\API\profileController;
@@ -18,8 +19,10 @@ use App\Http\Controllers\API\institutionRegistration;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::post('createPost',[PostController::class,'store']);
+Route::get('posts',[PostController::class,'show']);
 Route::post('createNews',[NewsController::class,'store']);
+Route::get('newsfeed',[NewsController::class,'show']);
 Route::post('register',[AuthController::class, 'register']);
 Route::post('login',[AuthController::class, 'login']);
 Route::post('postNotification',[notificationController::class, 'postNotification']);
@@ -42,7 +45,7 @@ Route::get('all-institution',[institutionRegistration::class, 'allinstitution'])
 Route::delete('deleteInstitution/{id}',[institutionRegistration::class,'deleteInstitution']);
 
 Route::middleware(['auth:sanctum'])->group(function() {
-    Route::post('logout',[AuthController::class, 'logout']);
+Route::post('logout',[AuthController::class, 'logout']);
 
 });
 

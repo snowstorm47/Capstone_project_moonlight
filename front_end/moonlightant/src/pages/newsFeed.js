@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/newsFeed.css";
 import food from "../assets/p.jpg";
 import NewsCard from "../components/Newscard";
@@ -7,6 +7,7 @@ import { AudioOutlined } from "@ant-design/icons";
 import ProfileDetail from "../components/ProfieDetail";
 import NewsDrawer from "../components/createNewsDrawer";
 import Recomendation from "../components/recomendations";
+import axios from "axios";
 const { Search } = Input;
 const Newsfeed = () => {
 	const suffix = (
@@ -17,6 +18,7 @@ const Newsfeed = () => {
 			}}
 		/>
 	);
+
 	const onSearch = (value) => console.log(value);
 
 	return (
@@ -37,6 +39,7 @@ const Newsfeed = () => {
 			</div>
 			<div className="leftContainer">
 				<Recomendation />
+
 				<NewsDrawer />
 			</div>
 		</div>

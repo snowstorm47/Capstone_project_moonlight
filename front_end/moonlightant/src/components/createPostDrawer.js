@@ -5,7 +5,7 @@ import { UploadOutlined, InboxOutlined, SendOutlined } from "@ant-design/icons";
 import "../styles/newscreate.css";
 import axios from "axios";
 
-const NewsDrawer = () => {
+const PostDrawer = () => {
 	const [visible, setVisible] = useState(false);
 	const layout = {
 		labelCol: { span: 8 },
@@ -14,7 +14,6 @@ const NewsDrawer = () => {
 	// const fData = new formData();
 
 	const [news, setNews] = useState({
-		title: "",
 		body: "",
 		id: "1",
 		image: "",
@@ -26,22 +25,21 @@ const NewsDrawer = () => {
 		console.log(news);
 		const fData = new FormData();
 		fData.append("image", news.image);
-		fData.append("title", news.title);
 		fData.append("body", news.body);
 		fData.append("id", "1");
 		axios.get("/sanctum/csrf-cookie").then((response) => {
-			axios.post("api/createNews", fData).then((response) => {
+			axios.post("api/createPost", fData).then((response) => {
 				console.log(response);
 				if (response.data.message == "success") {
-					message.info("News created succesfully");
+					message.info("Post created succesfully");
 					onClose();
 				} else {
-					message.error("News was not created. Please try again");
+					message.error("Post was not created. Please try again");
 				}
 			});
 		});
 
-		setNews({ ...news, title: "", body: "" });
+		setNews({ ...news, body: "" });
 	};
 	const showDrawer = () => {
 		setVisible(true);
@@ -79,7 +77,7 @@ const NewsDrawer = () => {
 			</Popover>
 
 			<Drawer
-				title="Create News"
+				title="Create Post"
 				placement="right"
 				onClose={onClose}
 				visible={visible}
@@ -93,10 +91,10 @@ const NewsDrawer = () => {
 							flexDirection: "column",
 						}}
 					>
-						<Form.Item name={["user", "Title"]} required>
+						{/* <Form.Item name={["user", "Title"]} required>
 							<label required>Title</label>
 							<Input name="title" value={news.title} onChange={handleInput} />
-						</Form.Item>
+						</Form.Item> */}
 						<Form.Item name={["user", "Body"]} required>
 							<label>Body</label>
 							<Input.TextArea
@@ -149,4 +147,4 @@ const NewsDrawer = () => {
 	);
 };
 
-export default NewsDrawer;
+export default PostDrawer;

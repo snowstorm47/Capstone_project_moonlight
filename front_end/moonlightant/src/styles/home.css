@@ -22,12 +22,12 @@
 }
 .newsContainerHome {
 	justify-content: center;
-	background-color: #f0f0f0;
+	background-color: white;
 	width: 100%;
 	padding-top: 30px;
 	flex-direction: column;
-	padding-left: 25%;
-	padding-right: 25%;
+	padding-left: 3%;
+	padding-right: 47%;
 }
 .wordCaroselContainer {
 	width: 50%;

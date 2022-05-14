@@ -4,36 +4,31 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\News;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
-
-
-class NewsController extends Controller
+class PostController extends Controller
 {
-    //
       public function store(Request $request)
     { 
          $validator = Validator::make($request->all(),[
             'image' => 'required',
-            'title'=>'required',
             'body'=>'required',
             
         ]);
-if($validator->fails()) {
+        if($validator->fails()) {
             return response()->json(["status" => "failed", "message" => "Validation error", "errors" => $validator->errors()]);
         }
         else{
             $file= $request->file('image');
             $filename= date('YmdHi').$file->getClientOriginalName();
             $file-> move(public_path('uploads/NewsPictures'), $filename);
-            $News=new News;
-            $News->title= $request->title;
-            $News->body= $request->body;
-            $News->institution_id=$request->id;
-            $News->image=$filename;
-            $News->save();
+            $Post=new Post;
+            $Post->body= $request->body;
+            $Post->user_id=$request->id;
+            $Post->image=$filename;
+            $Post->save();
             return response()->json(['message'=>'success']);
         }
             
@@ -41,17 +36,17 @@ if($validator->fails()) {
     public function show(Request $request)
     {
         
-        $News=News::join('institution','institution.id','=','news.institution_id')->get(['institution.institutionName','news.title','news.body','news.created_at','news.image']);
+        $Post=Post::join('users','users.id','=','posts.user_id')->get(['users.name','posts.body','posts.created_at','posts.image']);
         return Response()->json([
-            "newsdata"=>$News,
+            "postdata"=>$Post,
             "status"=>200,
         ]);
     }
     public function showMyInstitution(Request $request)
     {
-        $News=News::find($request->id);
+        $Post=Post::find($request->id);
         return Response()->json([
-            "data"=>[$News]
+            "data"=>[$Post]
         ]);
     }
 
@@ -64,9 +59,9 @@ if($validator->fails()) {
      */
     public function edit(Request $request)
     {
-        $News=News::find($request->id);
+        $Post=Post::find($request->id);
         return Response()->json([
-            "data"=>[$News]
+            "data"=>[$Post]
         ]);
     }
 
@@ -79,10 +74,10 @@ if($validator->fails()) {
      */
     public function update(Request $request)
     {
-        $News=News::find($request->id);
-        $News->title= $request->title;
-        $News->description= $request->description;
-        $News->save();
+        $Post=Post::find($request->id);
+        $Post->title= $request->title;
+        $Post->description= $request->description;
+        $Post->save();
     }
 
     /**
@@ -93,7 +88,8 @@ if($validator->fails()) {
      */
     public function destroy(Request $request)
     {
-        $News=News::find($request->id);
-        $News->delete();
+        $Post=Post::find($request->id);
+        $Post->delete();
     }
 }
+
