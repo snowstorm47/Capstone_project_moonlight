@@ -63,7 +63,7 @@ function App() {
 			</Menu.Item>
 			<Menu.Item key="2">
 				<EditFilled style={{ paddingLeft: "2.5px", paddingRight: "5px" }} />
-				Edit Profile
+				<Link to="profilepage">Edit Profile</Link>
 			</Menu.Item>
 		</Menu>
 	);
@@ -156,11 +156,7 @@ function App() {
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
-<<<<<<< HEAD
-					<Route path="/profilePage" element={ <ProfilePageP/> }/>
-=======
-					<Route path="editProfile" element={<ProfilePage />} />
->>>>>>> 6c0f48c6ef0e66c01750359b06b3923593ce50a1
+					<Route path="profilepage" element={<ProfilePage/>}/>
 				</Routes>
 			</Content>
 			<Footer style={{ textAlign: "center", marginBottom: "auto" }}>
