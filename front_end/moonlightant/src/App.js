@@ -26,6 +26,7 @@ import food from "./assets/man.jpg";
 import { useNavigate } from "react-router-dom";
 import IconContext from "@ant-design/icons/lib/components/Context";
 import NewsDetail from "./pages/newsDetailPage";
+import NewsfeedStudent from "./pages/newsfeedstudent";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -156,7 +157,11 @@ function App() {
 					<Route path="newsfeed/news" element={<NewsDetail />} />
 				</Routes>
 			</Content>
-			<Footer style={{ textAlign: "center", marginBottom: "auto" }}>
+			<Footer
+				style={{
+					textAlign: "center",
+				}}
+			>
 				Ant Design ©2018 Created by Ant UED
 			</Footer>
 		</div>

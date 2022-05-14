@@ -19,12 +19,13 @@ const Recomendation = () => {
 			title="Recomendations"
 			extra={<a href="#">More</a>}
 			bordered={true}
+			className="cards"
 			style={{
 				width: 320,
 				position: "fixed",
 				textAlign: "left",
-				borderRadius: 10,
 				marginTop: 30,
+				borderRadius: 10,
 				marginRight: 10,
 				marginLeft: 10,
 			}}
