@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Layout } from "antd";
 import { Form, Input, Button, Typography } from "antd";
 import { Select } from "antd";
-import { DatePicker, Space,List } from "antd";
+import { DatePicker, Space, List } from "antd";
 import { Avatar, Image } from "antd";
-import { UserOutlined, CloseOutlined } from "@ant-design/icons";
+import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Divider } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AddSkill from "../components/AddSkill";
@@ -36,21 +35,21 @@ function ProfilePageP() {
     startDate: "",
     endDate: "",
     sex: "",
-    institution: "",
-    // college:"",
-    // department:"",
+    institution_id: "",
+    college_id: "",
+    department_id: "",
     companyName: "",
     startDateClass: "",
     endDateClass: "",
     skill: [],
     employmentHistory: [],
-    newSkill:"",
+    newSkill: "",
     error_list: [],
   });
-  
-//   const [skill,setSkill]= useState({
-//       newSkill:""
-//   });
+
+  //   const [skill,setSkill]= useState({
+  //       newSkill:""
+  //   });
 
   useEffect(() => {
     axios.get(`/api/all-institution`).then((res) => {
@@ -87,40 +86,54 @@ function ProfilePageP() {
     // e.persist();
 
     setEditProfile({ ...editProfile, [e.target.name]: e.target.value });
-    
   };
 
-  const deleteSkill = (id,e) => {
+  const deleteSkill = (id, e) => {
     axios.get("/sanctum/csrf-cookie").then((res) => {
-        console.log("inside csrf");
-  
-        axios.delete(`/api/deleteSkill/${id}`).then((res) => {
-          if (res.data.status === 200) {
-            console.log("skill deleted");
-          } else {
-            console.log("skill not deleted");
-          }
-        });
-      }, []);
+      console.log("inside csrf");
+
+      axios.delete(`/api/deleteSkill/${id}`).then((res) => {
+        if (res.data.status === 200) {
+          console.log("skill deleted");
+        } else {
+          console.log("skill not deleted");
+        }
+      });
+    }, []);
+  };
+
+  const deleteEmploymentHistory = (id) => {
+    axios.get("/sanctum/csrf-cookie").then((res) => {
+      console.log("inside csrf");
+
+      axios.delete(`/api/deleteEmployment/${id}`).then((res) => {
+        if (res.data.status === 200) {
+          console.log("employment deleted");
+        } else {
+          console.log("employment not deleted");
+        }
+      });
+    }, []);
   };
 
   const updateProfile = (e) => {
     console.log("update");
     // e.preventDefault();
-
+    console.log(editProfile.college_id);
+    console.log(editProfile.sex);
     const data = {
       phoneNumber: editProfile.phoneNumber,
       sex: editProfile.sex,
-      position: editProfile.position,
+      // position: editProfile.position,
       name: editProfile.name,
-      startDate: editProfile.startDate,
-      endDate: editProfile.endDate,
+      // startDate: editProfile.startDate,
+      // endDate: editProfile.endDate,
       startDateClass: editProfile.startDateClass,
       endDateClass: editProfile.endDateClass,
-      institution: editProfile.institution,
-      //   department: editProfile.department,
-      //   college: editProfile.college,
-      companyName: editProfile.companyName,
+      institution_id: editProfile.institution_id,
+      department_id: editProfile.department_id,
+      college_id: editProfile.college_id,
+      // companyName: editProfile.companyName,
     };
     const id = localStorage.getItem("auth_id");
     axios.get("/sanctum/csrf-cookie").then((res) => {
@@ -145,41 +158,38 @@ function ProfilePageP() {
 
   <Avatar icon={<UserOutlined />} />;
   return (
-    
-    
-      <Row className="row1" style={{ margin: "3em", marginLeft: "0em" }}>
+    <Row className="row1" style={{ margin: "3em", marginLeft: "0em" }}>
       <span>{success}</span>
-      
-        <Col
-          className="row"
-          span={5}
-          style={{
-            margin: "0.5em",
-            paddingRight: "1.5em",
-            paddingTop: "8em",
-          }}
-        >
-          
-          <Col>
-            <div className="image1">
-              <Image
-                width={190}
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                // size={100}
-                style={{ borderRadius: "100px", alignContent: "left" }}
-              />
-            </div>
-          </Col>
+
+      <Col
+        className="row"
+        span={5}
+        style={{
+          margin: "0.5em",
+          paddingRight: "1.5em",
+          paddingTop: "8em",
+        }}
+      >
+        <Col>
+          <div className="image1">
+            <Image
+              width={190}
+              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+              // size={100}
+              style={{ borderRadius: "100px", alignContent: "left" }}
+            />
+          </div>
         </Col>
-            
-        <Col
-          className="row3"
-          span={9}
-          style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
-        >
-          <Form onFinish={updateProfile}>
+      </Col>
+
+      <Col
+        className="row3"
+        span={9}
+        style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
+      >
+        <Form onFinish={updateProfile}>
           <Divider>Profile Page</Divider>
-          
+
           <Col>
             <Form.Item label="Full Name">
               <Input
@@ -212,72 +222,82 @@ function ProfilePageP() {
           </Col>
 
           <Col>
-            <label>Gender:</label>
-            <Select
-              defaultValue=" "
+            
+            <Form.Item
+            
+            >
+              <label>Gender:</label>
+            <select
               style={{ width: 120, padding: 10, marginLeft: "3.7em" }}
-              name="sex"
+              name="sex" 
               onChange={handleInput}
               value={editProfile.sex}
             >
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
-            </Select>
+              <option value="male">Male</option>
+              <option  value="female">Female</option>
+            </select>
+            </Form.Item>
           </Col>
 
           <Col>
             <Divider>Academic</Divider>
-            <Select
+            <Form.Item>
+            <select
               placeholder="Select an Institution"
               style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-              name="institutionName"
+              name="institution_id"
               onChange={handleInput}
-              value={editProfile.institution}
+              value={editProfile.institution_id}
             >
               {institutionList.map((item) => {
                 return (
-                  <Option value={item.id} key={item.id}>
+                  <option value={item.id} key={item.id}>
                     {item.institutionName}
-                  </Option>
+                  </option>
                 );
               })}
-            </Select>
+            </select>
+            </Form.Item>
           </Col>
 
           <Col>
-            <Select
+          <Form.Item>
+            <select
               placeholder="Select a College"
               style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-              name="collegeName"
+              name="college_id"
               onChange={handleInput}
-              //   value={editProfile.college}
+              value={editProfile.college_id}
             >
               {collegeList.map((item) => {
                 return (
-                  <Option value={item.id} key={item.id}>
+                  <option value={item.id} key={item.id}>
                     {item.collegeName}
-                  </Option>
+                  </option>
                 );
               })}
-            </Select>
+            </select>
+            </Form.Item>
           </Col>
 
           <Col>
-            <Select
+          <Form.Item>
+            <select
               placeholder="Select a Department"
               style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-              name="departmentName"
+              name="department_id"
               onChange={handleInput}
-              //   value={editProfile.department}
+              value={editProfile.department_id}
             >
               {departmentList.map((item) => {
                 return (
-                  <Option value={item.id} key={item.id}>
+                  <option value={item.id} key={item.id}>
                     {item.departmentName}
-                  </Option>
+                  </option>
                 );
               })}
-            </Select>
+            </select>
+            </Form.Item>
           </Col>
 
           <Col>
@@ -319,114 +339,121 @@ function ProfilePageP() {
               {/* <span>{editProfile.error_list.endDateClass}</span> */}
             </Space>
           </Col>
-
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
           <Divider>Skills</Divider>
           <Col>
-            
             {skillList.map((item) => (
-					<button
-                    key={item.id}
-                    value={item.skill}
-						style={{
-							color: "white",
-							borderRadius: 100,
-							border: 0,
-							margin: 2,
-							backgroundColor: "#0080ff",
-						}}
-					>
-						{item.skill}
-                        
-                        <CloseOutlined size="2px"/>
-					</button>
-				))}
+              <button
+                key={item.id}
+                value={item.skill}
+                style={{
+                  color: "white",
+                  borderRadius: 100,
+                  border: 0,
+                  margin: 2,
+                  backgroundColor: "#0080ff",
+                }}
+              >
+                {item.skill}
+
+                <Button
+                  type="text"
+                  onClick={() => deleteSkill(item.id)}
+                  icon={<CloseOutlined size="2px" />}
+                />
+              </button>
+            ))}
           </Col>
-          
+
           {/* </Col> */}
           <Divider>Employment History</Divider>
           <Col>
-          {visible ? (
-            <List
-          itemLayout="horizontal"
-          dataSource={editProfile.employmentHistory}
-          renderItem={(item) => (
-            <List.Item
-            style={{
-              marginBottom:"1em"
-            }}
-            >
-              <List.Item.Meta
-
-                title={
-                  <a
-                    href="#"
+            {visible ? (
+              <List
+                itemLayout="horizontal"
+                dataSource={editProfile.employmentHistory}
+                renderItem={(item) => (
+                  <List.Item
                     style={{
-                      marginLeft: "0em",
+                      marginBottom: "1em",
                     }}
                   >
-                    {item.companyName}
-                  </a>
-                }
-                description=
-                {item.position}
-                style={{
-                  textAlign:"left"
-                }}
+                    <List.Item.Meta
+                      title={
+                        <a
+                          href="#"
+                          style={{
+                            marginLeft: "0em",
+                          }}
+                        >
+                          {item.companyName}
+                        </a>
+                      }
+                      description={item.position}
+                      style={{
+                        textAlign: "left",
+                      }}
+                    />
+                    <br />
+                    <br />
+                    <div
+                      style={{
+                        marginTop: "5em",
+                        marginRight: "9rem",
+                      }}
+                    >
+                      Start Date : {item.startDate}
+                    </div>
+                    <div
+                      style={{
+                        marginTop: "5em",
+                      }}
+                    >
+                      End Date : {item.endDate}
+                    </div>
+                    <List.Item
+                      actions={[
+                        <Button
+                          type="text"
+                          key="list-loadmore-edit"
+                          icon={<EditOutlined />}
+                        />,
+                        <Button
+                          type="text"
+                          onClick={() => deleteEmploymentHistory(item.id)}
+                          key="list-loadmore-more"
+                          icon={<CloseOutlined />}
+                        />,
+                      ]}
+                    ></List.Item>
+                  </List.Item>
+                )}
               />
-              <br/>
-              <br/>
-              <div
-              style={{
-                marginTop:"5em",
-                marginRight:"9rem"
-              }}
-              >Start Date : {item.startDate}</div>
-              <div
-              style={{
-                marginTop:"5em"
-              }}
-              >End Date : {item.endDate}</div>
-              <List.Item
-                actions={[
-                  <a key="list-loadmore-edit">
-                    <CheckOutlined />
-                  </a>,
-                  <a key="list-loadmore-more">
-                    <CloseOutlined />
-                  </a>,
-                ]}
-              ></List.Item>
-            </List.Item>
-          )}
-        />
-        ) : null}
+            ) : null}
           </Col>
-          <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
-      </Form>
-        </Col>
-        
-        
-        <Col
-          className="row2"
-          span={9}
-          style={{ margin: "0.5em", paddingLeft: "1.5em", paddingTop: "3em" }}
-        >
-          <Col>
-        <Divider>Add Skill</Divider>
-          <AddSkill/>
+          
+      </Col>
+
+      <Col
+        className="row2"
+        span={9}
+        style={{ margin: "0.5em", paddingLeft: "1.5em", paddingTop: "3em" }}
+      >
+        <Col>
+          <Divider>Add Skill</Divider>
+          <AddSkill />
         </Col>
         <Col>
-        <Divider>Add Employment History</Divider>
-               <AddEmploymentHistory/>       
+          <Divider>Add Employment History</Divider>
+          <AddEmploymentHistory />
         </Col>
-        </Col>
-        
-      </Row>
-      
+      </Col>
+    </Row>
   );
 }
 
