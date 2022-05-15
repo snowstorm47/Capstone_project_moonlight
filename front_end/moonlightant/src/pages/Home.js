@@ -1,4 +1,6 @@
 import { Card, Carousel } from "antd";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import illustration from "../assets/homeillustration.png";
 import Newscard from "../components/Newscard";
@@ -11,6 +13,14 @@ const Home = () => {
 		textAlign: "left",
 		background: "white",
 	};
+	const [state, setState] = useState();
+	const [loading, setLoading] = useState(true);
+	useEffect(() => {
+		axios.get("api/newsfeed").then((response) => {
+			setState(response.data.newsdata);
+			setLoading(false);
+		});
+	}, []);
 	return (
 		<div className="homeContainer">
 			<div className="topContainer">
@@ -96,7 +106,7 @@ const Home = () => {
 				</div>
 
 				<div>
-					<Newscard />
+					<Newscard state={state} />
 				</div>
 			</div>
 		</div>
