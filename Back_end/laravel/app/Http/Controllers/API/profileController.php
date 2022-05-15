@@ -21,14 +21,14 @@ class profileController extends Controller
             
             'phoneNumber'=>'required|max:13|min:10',
             'sex'=>'required',
-            'companyName'=>'required',
+            // 'companyName'=>'required',
             'name'=>'required|max:191',
-            'position'=>'required',
-            'startDate'=>'required',
-            'endDate'=>'required|after:startDate',
+            // 'position'=>'required',
+            // 'startDate'=>'required',
+            // 'endDate'=>'required|after:startDate',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
-            'skill'=>'required'
+            // 'skill'=>'required'
 
         ]);
         
@@ -51,23 +51,26 @@ class profileController extends Controller
                 // $classEnd = $request->input('endDateClass');
                 $student ->endDateClass = $request->input('endDateClass');
                 $student ->sex = $request->input('sex');
+                $student ->institution_id = $request->input('institution_id');
+                $student ->college_id = $request->input('college_id');
+                $student ->department_id = $request->input('department_id');
                 $student ->StartDateClass = $request->input('startDateClass');
                 $resultStudent = $student->save();
 
-                $employment_history= employmentHistory::where('user_id','=',$id)->first();
-                $employment_history ->companyName = $request->input('companyName');
-                $employment_history ->endDate = $request->input('endDate');
-                $employment_history ->position = $request->input('position');
-                $employment_history ->startDate = $request->input('startDate');
-                $resultEmployment_history = $employment_history->save();
+                // $employment_history= employmentHistory::where('user_id','=',$id)->first();
+                // $employment_history ->companyName = $request->input('companyName');
+                // $employment_history ->endDate = $request->input('endDate');
+                // $employment_history ->position = $request->input('position');
+                // $employment_history ->startDate = $request->input('startDate');
+                // $resultEmployment_history = $employment_history->save();
 
-                $skill= skill::where('user_id','=',$id)->first();
-                $skill ->skill = $request->input('skill');
-                $resultSkill = $skill->save();
+                // $skill= skill::where('user_id','=',$id)->first();
+                // $skill ->skill = $request->input('skill');
+                // $resultSkill = $skill->save();
 
             }
         
-            if($resultUser && $resultStudent && $resultEmployment_history && $resultSkill)
+            if($resultUser && $resultStudent )
             {
             return ["result"=>"user profile has been updated"];
             }
@@ -144,7 +147,7 @@ class profileController extends Controller
     // $startDate = DB::table('employmentHistory')->where('user_id', $id)->value('startDate');
     // $position = DB::table('employmentHistory')->where('user_id', $id)->value('position');
     //should I add instructor_id foreign key in users table
-    $recommendationDetail = DB::table('recommendation')->where('student_id', $id)->value('recomendationDetail');
+    $recommendationDetail = DB::table('recomendation')->where('student_id', $id)->value('recomendationDetail');
     // $instructorName= DB::table('users')
     //    ->join('instructor','users.id','=','instructor.user_id')
     //    ->where('users.id',$id) 
