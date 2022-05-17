@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Layout } from "antd";
 import { Form, Input, Button, Typography } from "antd";
 import { Select } from "antd";
-import { DatePicker, Space, List } from "antd";
+import { DatePicker, Space, List, Modal } from "antd";
 import { Avatar, Image } from "antd";
 import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Divider } from "antd";
@@ -10,16 +10,26 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AddSkill from "../components/AddSkill";
 import AddEmploymentHistory from "../components/AddEmploymentHistory";
+import EditEmploymentHistory from "../components/EditEmploymentHistory";
 
 // import '/App.css';
 
 const { Option } = Select;
 
-const onFinish = (values) => {
-  console.log("Received values of form:", values);
-};
-
 function ProfilePageP() {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  // const handleOk = () => {
+  //   setIsModalVisible(false);
+  // };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
   const [visible, setVisible] = useState(true);
 
   const [institutionList, setInstitutionList] = useState([]);
@@ -39,6 +49,8 @@ function ProfilePageP() {
     college_id: "",
     department_id: "",
     companyName: "",
+    GPA:"",
+    major:"",
     startDateClass: "",
     endDateClass: "",
     skill: [],
@@ -73,7 +85,7 @@ function ProfilePageP() {
         setEditProfile(res.data);
         setSkillList(res.data.skill);
         // setemploymentList(res.data.employmentHistory);
-        console.log(skillList);
+        console.log(res.data.student[0].phoneNumber);
       } else {
         console.log("couldnt retrieve data");
       }
@@ -124,9 +136,9 @@ function ProfilePageP() {
     const data = {
       phoneNumber: editProfile.phoneNumber,
       sex: editProfile.sex,
-      // position: editProfile.position,
+      major: editProfile.major,
       name: editProfile.name,
-      // startDate: editProfile.startDate,
+      GPA: editProfile.GPA,
       // endDate: editProfile.endDate,
       startDateClass: editProfile.startDateClass,
       endDateClass: editProfile.endDateClass,
@@ -222,81 +234,100 @@ function ProfilePageP() {
           </Col>
 
           <Col>
-            
-            <Form.Item
-            
-            >
+            <Form.Item label="Major" style={{ width: "76.5%" }}>
+              <Input
+                style={{ marginLeft: "0.2em" }}
+                name="major"
+                onChange={handleInput}
+                value={editProfile.major}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col>
+            <Form.Item label="GPA" style={{ width: "76.5%" }}>
+              <Input
+                style={{ marginLeft: "0.2em" }}
+                name="GPA"
+                onChange={handleInput}
+                value={editProfile.GPA}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col>
+            <Form.Item>
               <label>Gender:</label>
-            <select
-              style={{ width: 120, padding: 10, marginLeft: "3.7em" }}
-              name="sex" 
-              onChange={handleInput}
-              value={editProfile.sex}
-            >
-              <option value="male">Male</option>
-              <option  value="female">Female</option>
-            </select>
+              <select
+                style={{ width: 120, padding: 10, marginLeft: "3.7em" }}
+                name="sex"
+                onChange={handleInput}
+                value={editProfile.sex}
+              >
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
             </Form.Item>
           </Col>
 
           <Col>
             <Divider>Academic</Divider>
             <Form.Item>
-            <select
-              placeholder="Select an Institution"
-              style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-              name="institution_id"
-              onChange={handleInput}
-              value={editProfile.institution_id}
-            >
-              {institutionList.map((item) => {
-                return (
-                  <option value={item.id} key={item.id}>
-                    {item.institutionName}
-                  </option>
-                );
-              })}
-            </select>
+              <select
+                placeholder="Select an Institution"
+                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
+                name="institution_id"
+                onChange={handleInput}
+                value={editProfile.institution_id}
+              >
+                {institutionList.map((item) => {
+                  return (
+                    <option value={item.id} key={item.id}>
+                      {item.institutionName}
+                    </option>
+                  );
+                })}
+              </select>
             </Form.Item>
           </Col>
 
           <Col>
-          <Form.Item>
-            <select
-              placeholder="Select a College"
-              style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-              name="college_id"
-              onChange={handleInput}
-              value={editProfile.college_id}
-            >
-              {collegeList.map((item) => {
-                return (
-                  <option value={item.id} key={item.id}>
-                    {item.collegeName}
-                  </option>
-                );
-              })}
-            </select>
+            <Form.Item>
+              <select
+                placeholder="Select a College"
+                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
+                name="college_id"
+                onChange={handleInput}
+                value={editProfile.college_id}
+              >
+                {collegeList.map((item) => {
+                  return (
+                    <option value={item.id} key={item.id}>
+                      {item.collegeName}
+                    </option>
+                  );
+                })}
+              </select>
             </Form.Item>
           </Col>
 
           <Col>
-          <Form.Item>
-            <select
-              placeholder="Select a Department"
-              style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-              name="department_id"
-              onChange={handleInput}
-              value={editProfile.department_id}
-            >
-              {departmentList.map((item) => {
-                return (
-                  <option value={item.id} key={item.id}>
-                    {item.departmentName}
-                  </option>
-                );
-              })}
-            </select>
+            <Form.Item>
+              <select
+                placeholder="Select a Department"
+                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
+                name="department_id"
+                onChange={handleInput}
+                value={editProfile.department_id}
+              >
+                {departmentList.map((item) => {
+                  return (
+                    <option value={item.id} key={item.id}>
+                      {item.departmentName}
+                    </option>
+                  );
+                })}
+              </select>
             </Form.Item>
           </Col>
 
@@ -345,98 +376,107 @@ function ProfilePageP() {
             </Button>
           </Form.Item>
         </Form>
-          <Divider>Skills</Divider>
-          <Col>
-            {skillList.map((item) => (
-              <button
-                key={item.id}
-                value={item.skill}
-                style={{
-                  color: "white",
-                  borderRadius: 100,
-                  border: 0,
-                  margin: 2,
-                  backgroundColor: "#0080ff",
-                }}
-              >
-                {item.skill}
+        <Divider>Skills</Divider>
+        <Col>
+          {skillList.map((item) => (
+            <button
+              key={item.id}
+              value={item.skill}
+              style={{
+                color: "white",
+                borderRadius: 100,
+                border: 0,
+                margin: 2,
+                backgroundColor: "#0080ff",
+              }}
+            >
+              {item.skill}
 
-                <Button
-                  type="text"
-                  onClick={() => deleteSkill(item.id)}
-                  icon={<CloseOutlined size="2px" />}
-                />
-              </button>
-            ))}
-          </Col>
+              <Button
+                type="text"
+                onClick={() => deleteSkill(item.id)}
+                icon={<CloseOutlined size="2px" />}
+              />
+            </button>
+          ))}
+        </Col>
 
-          {/* </Col> */}
-          <Divider>Employment History</Divider>
-          <Col>
-            {visible ? (
-              <List
-                itemLayout="horizontal"
-                dataSource={editProfile.employmentHistory}
-                renderItem={(item) => (
-                  <List.Item
+        {/* </Col> */}
+        <Divider>Employment History</Divider>
+        <Col>
+          {visible ? (
+            <List
+              itemLayout="horizontal"
+              dataSource={editProfile.employmentHistory}
+              renderItem={(item) => (
+                <List.Item
+                  style={{
+                    marginBottom: "1em",
+                  }}
+                >
+                  <List.Item.Meta
+                    title={
+                      <a
+                        href="#"
+                        style={{
+                          marginLeft: "0em",
+                        }}
+                      >
+                        {item.companyName}
+                      </a>
+                    }
+                    description={item.position}
                     style={{
-                      marginBottom: "1em",
+                      textAlign: "left",
+                    }}
+                  />
+                  <br />
+                  <br />
+                  <div
+                    style={{
+                      marginTop: "5em",
+                      marginRight: "9rem",
                     }}
                   >
-                    <List.Item.Meta
-                      title={
-                        <a
-                          href="#"
-                          style={{
-                            marginLeft: "0em",
-                          }}
-                        >
-                          {item.companyName}
-                        </a>
-                      }
-                      description={item.position}
-                      style={{
-                        textAlign: "left",
-                      }}
-                    />
-                    <br />
-                    <br />
-                    <div
-                      style={{
-                        marginTop: "5em",
-                        marginRight: "9rem",
-                      }}
-                    >
-                      Start Date : {item.startDate}
-                    </div>
-                    <div
-                      style={{
-                        marginTop: "5em",
-                      }}
-                    >
-                      End Date : {item.endDate}
-                    </div>
-                    <List.Item
-                      actions={[
-                        <Button
-                          type="text"
-                          key="list-loadmore-edit"
-                          icon={<EditOutlined />}
-                        />,
-                        <Button
-                          type="text"
-                          onClick={() => deleteEmploymentHistory(item.id)}
-                          key="list-loadmore-more"
-                          icon={<CloseOutlined />}
-                        />,
-                      ]}
-                    ></List.Item>
-                  </List.Item>
-                )}
-              />
-            ) : null}
-          </Col>
-          
+                    Start Date : {item.startDate}
+                  </div>
+                  <div
+                    style={{
+                      marginTop: "5em",
+                    }}
+                  >
+                    End Date : {item.endDate}
+                  </div>
+                  <List.Item
+                    actions={[
+                      <Button
+                        type="text"
+                        key="list-loadmore-edit"
+                        icon={<EditOutlined />}
+                        onClick={showModal}
+                      />,
+
+                      <Button
+                        type="text"
+                        onClick={() => deleteEmploymentHistory(item.id)}
+                        key="list-loadmore-more"
+                        icon={<CloseOutlined />}
+                      />,
+                    ]}
+                  ></List.Item>
+                  <Modal
+                    title="Edit Employment History"
+                    visible={isModalVisible}
+                    // onOk={handleOk}
+                    onCancel={handleCancel}
+                  >
+                    <EditEmploymentHistory parentToChild={item.id} />
+                  </Modal>
+                </List.Item>
+              )}
+            />
+          ) : null}
+        </Col>
       </Col>
 
       <Col
