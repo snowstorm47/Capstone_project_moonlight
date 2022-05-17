@@ -10,12 +10,9 @@ import { Divider } from "antd";
 // import Sider from "antd/lib/layout/Sider";
 import moment from 'moment';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-<<<<<<< HEAD
+import './App.css';
 import { useState } from 'react';
 import { Typography } from 'antd';
-=======
-// import '/App.css';
->>>>>>> 6c0f48c6ef0e66c01750359b06b3923593ce50a1
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -64,7 +61,6 @@ function onSearch(val) {
     console.log('search:', val);
 }
 
-<<<<<<< HEAD
 function ProfilePageP(){
 
     const [items, setItems] = useState(['Laravel', 'ReactJS']);
@@ -81,9 +77,6 @@ function ProfilePageP(){
         setName(event.target.value);
     };
 
-=======
-function ProfilePage(){
->>>>>>> 6c0f48c6ef0e66c01750359b06b3923593ce50a1
     <Avatar icon={<UserOutlined />} />
     return (
         <Row className="row1" style={{margin:'3em', marginLeft: '0em'}}>
@@ -147,18 +140,10 @@ function ProfilePage(){
             <Col className="row3" span={9} style={{margin: '0.5em', paddingRight: '1em', textAlign:'left'}}>
                 <Divider>Profile Page</Divider>
                 <Col>
-<<<<<<< HEAD
                     <Form.Item label="Full Name" style={{width: '70%'}}>
                         <Input style={{marginLeft: '2.5em'}}/>
                     </Form.Item>
   
-=======
-                    <Form.Item label="Full Name">
-                        <Input />
-                    </Form.Item>
-                    
-                    
->>>>>>> 6c0f48c6ef0e66c01750359b06b3923593ce50a1
                 </Col>
 
                 <Col> 
@@ -242,20 +227,9 @@ function ProfilePage(){
                 </Col>
 
                 <Col> 
-<<<<<<< HEAD
                     <Space direction="vertical" style={{padding: 10, width: '75%'}}>
                     <DatePicker onChange={onChange} placeholder="Start Date"/>
                     <DatePicker onChange={onChange} placeholder="End Date" style={{float:'right', marginTop: '-2.9em'}}/>
-=======
-                    <Space direction="vertical" size={12} style={{padding: 10}}>
-                        <RangePicker
-                            ranges={{
-                            Today: [moment(), moment()],
-                            'This Month': [moment().startOf('month'), moment().endOf('month')],
-                            }}
-                            onChange={onChange}
-                        />
->>>>>>> 6c0f48c6ef0e66c01750359b06b3923593ce50a1
                     </Space>
                     
                 </Col>
@@ -293,7 +267,7 @@ function ProfilePage(){
                     </Select>
                    
                 </Col>
-                <Divider>Employment History</Divider>                    
+                <Divider>Employement History</Divider>                    
                 <Col >
                     <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off" title="Employment History">
                         <Form.List name="users">
@@ -320,7 +294,6 @@ function ProfilePage(){
                                         name={[DatePicker, 'date']}
                                         >
                                             <Space direction="vertical" size={12} style={{padding: 10}}>
-<<<<<<< HEAD
                                             {/* <br /> */}
                                             <DatePicker onChange={onChange} placeholder="Start Date" 
                                             style={{
@@ -328,14 +301,6 @@ function ProfilePage(){
                                                 width: "7rem", 
                                                 // marginLeft:"11rem"
                                             }}
-=======
-                                                <RangePicker
-                                                ranges={{
-                                                Today: [moment(), moment()],
-                                                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                                }}
-                                                onChange={onChange}
->>>>>>> 6c0f48c6ef0e66c01750359b06b3923593ce50a1
                                                 />
                                             
                                             <DatePicker onChange={onChange} placeholder="End Date" 
@@ -352,7 +317,7 @@ function ProfilePage(){
                                 
                                 <Form.Item>
                                     <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                                        Add Field
+                                        Add field
                                     </Button>
                                 </Form.Item>
                                 </>
@@ -371,4 +336,4 @@ function ProfilePage(){
     );
 }
 
-export default ProfilePage;
+export default ProfilePageP;
