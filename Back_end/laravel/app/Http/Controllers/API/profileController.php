@@ -9,6 +9,8 @@ use App\Models\student;
 use App\Models\skill;
 use Illuminate\Support\Facades\DB;
 use App\Models\employmentHistory;
+use App\Models\socialMediaLink;
+use App\Models\certificate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 
@@ -24,11 +26,8 @@ class profileController extends Controller
             'major'=>'required',
             'name'=>'required|max:191',
             'GPA'=>'required',
-            // 'startDate'=>'required',
-            // 'endDate'=>'required|after:startDate',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
-            // 'skill'=>'required'
 
         ]);
         
@@ -116,6 +115,40 @@ class profileController extends Controller
             }
         }
 }
+
+public function editSocialMediaLink(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'link'=>'required',
+        ]);
+        
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
+            $socialMediaLink = socialMediaLink::findOrFail($id);
+            if($socialMediaLink)
+            {
+                $socialMediaLink= socialMediaLink::where('user_id','=',$id)->first();
+                $socialMediaLink ->link = $request->input('link');
+                // $socialMediaLink ->user_id = $request->input('user_id');
+                $resultsocialMediaLink = $socialMediaLink->save();
+
+                if($resultsocialMediaLink)
+                    {
+                    return ["result"=>"socialMediaLink has been updated"];
+                    }
+                else
+                    {
+                    return ["result"=>"socialMediaLink update failed"];
+                    }
+            }
+        }
+}
     public function addSkill(Request $request){
         $skill = new skill;
         $skill->skill = $request->input('skill');
@@ -147,6 +180,31 @@ class profileController extends Controller
         }
     }
 
+    public function addCertificate(Request $request){
+        $certificate = new certificate;
+        $certificate->certificate = $request->input('certificate');
+        $certificate->user_id = $request->input('user_id');
+        $certificate->save();
+        if($certificate)
+        {
+            return response()->json([
+                "status"=>200,
+                "result"=>"certificate added"]);
+        }
+    }
+
+    public function addSocialMediaLink(Request $request){
+        $socialMediaLink = new socialMediaLink;
+        $socialMediaLink ->link  = $request->input('link');
+        $socialMediaLink ->user_id = $request->input('user_id');
+        $socialMediaLink ->save();
+        if($socialMediaLink )
+        {
+            return response()->json([
+                "status"=>200,
+                "result"=>"socialMediaLink added"]);
+        }
+    }
    
     public function profile($id){
         
@@ -194,10 +252,6 @@ class profileController extends Controller
                     'major'=>$major,
                     'GPA'=>$GPA,
                     'recommendationDetail'=>$recommendationDetail,
-                    'position'=>$position,
-                    'companyName'=>$companyName,
-                    'startDate'=>$startDate,
-                    'endDate'=>$endDate,
                     'skill'=>$skill,
                     'employmentHistory'=>$employmentHistory
                 ]);
@@ -238,6 +292,21 @@ class profileController extends Controller
             }
         }
 
+        public function deleteSocialMediaLink($id){
+            $deleteSocialMediaLink = socialMediaLink::findOrFail($id);
+            $deleteSocialMediaLink->delete();
+            if($deleteSocialMediaLink)
+            {
+                return [
+                    'result'=>'SocialMediaLink deleted successfully',
+                    'status'=> 200
+                ];
+            }
+            else{
+                return ['result'=>'SocialMediaLink deletion failed'];
+            }
+        }
+
         public function deleteSkill($id){
             $deleteSkill = skill::findOrFail($id);
             $deleteSkill->delete();
@@ -251,6 +320,22 @@ class profileController extends Controller
                 return response()->json([
                     "status"=>200,
                     "result"=>"skill deletion failed"]);
+            }
+        }
+
+        public function deleteCertificate($id){
+            $deleteCertificate = certificate::findOrFail($id);
+            $deleteCertificate->delete();
+            if($deleteCertificate)
+            {
+                return response()->json([
+                    "status"=>200,
+                    "result"=>"Certificate deleted"]);
+            }
+            else{
+                return response()->json([
+                    "status"=>200,
+                    "result"=>"Certificate deletion failed"]);
             }
         }
 }
