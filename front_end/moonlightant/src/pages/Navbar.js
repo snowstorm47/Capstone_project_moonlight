@@ -31,7 +31,7 @@ const Navbar = () => {
             <a href="login">Login</a>
           </Menu.Item>
           <Menu.Item key="7">
-            <a href="profilePage">Profile</a>
+            <a href="profilepage">Profile</a>
           </Menu.Item>
         </Menu>
       </Header>
