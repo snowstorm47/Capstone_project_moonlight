@@ -32,7 +32,9 @@ Route::post('forgotPassword',[AuthController::class,"forgotPassword"])->middlewa
 Route::post('resetPassword',[AuthController::class,"resetPassword"]);
 Route::put('updateNotification',[notificationController::class, 'updateNotification']);
 Route::get('profile/{id}',[profileController::class,'profile']);
+Route::get('getEmploymentHistory/{id}',[profileController::class,'getEmploymentHistory']);
 Route::put('updateProfile/{id}',[profileController::class,'profileEdit']);
+Route::put('editEmploymentHistory/{id}',[profileController::class,'editEmployment']);
 Route::delete('deleteEmployment/{id}',[profileController::class,'deleteEmployment']);
 Route::delete('deleteInstitution/{id}',[institutionRegistrationController::class,'deleteInstitution']);
 Route::delete('deleteSkill/{id}',[profileController::class,'deleteSkill']);

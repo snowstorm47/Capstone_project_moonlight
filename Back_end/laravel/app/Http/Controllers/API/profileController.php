@@ -21,9 +21,9 @@ class profileController extends Controller
             
             'phoneNumber'=>'required|max:13|min:10',
             'sex'=>'required',
-            // 'companyName'=>'required',
+            'major'=>'required',
             'name'=>'required|max:191',
-            // 'position'=>'required',
+            'GPA'=>'required',
             // 'startDate'=>'required',
             // 'endDate'=>'required|after:startDate',
             'startDateClass'=>'required',
@@ -53,17 +53,11 @@ class profileController extends Controller
                 $student ->sex = $request->input('sex');
                 $student ->institution_id = $request->input('institution_id');
                 $student ->college_id = $request->input('college_id');
+                $student ->major = $request->input('major');
+                $student ->GPA = $request->input('GPA');
                 $student ->department_id = $request->input('department_id');
                 $student ->StartDateClass = $request->input('startDateClass');
                 $resultStudent = $student->save();
-
-                // $employment_history= employmentHistory::where('user_id','=',$id)->first();
-                // $employment_history ->companyName = $request->input('companyName');
-                // $employment_history ->endDate = $request->input('endDate');
-                // $employment_history ->position = $request->input('position');
-                // $employment_history ->startDate = $request->input('startDate');
-                // $resultEmployment_history = $employment_history->save();
-
                 // $skill= skill::where('user_id','=',$id)->first();
                 // $skill ->skill = $request->input('skill');
                 // $resultSkill = $skill->save();
@@ -79,18 +73,49 @@ class profileController extends Controller
             return ["result"=>"user update failed"];
             }
 
-       
-
-
         }
+}
 
-        
+    public function editEmployment(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'companyName'=>'required',
+            'position'=>'required',
+            'startDate'=>'required',
+            'endDate'=>'required|after:startDate'
 
+        ]);
         
-        
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
+            $employment = employmentHistory::findOrFail($id);
+            if($employment)
+            {
+                $employment_history= employmentHistory::where('user_id','=',$id)->first();
+                $employment_history ->companyName = $request->input('companyName');
+                $employment_history ->endDate = $request->input('endDate');
+                $employment_history ->position = $request->input('position');
+                $employment_history ->startDate = $request->input('startDate');
+                $employment_history ->user_id = $request->input('user_id');
+                $resultEmployment_history = $employment_history->save();
 
-    }
-    
+                if($resultEmployment_history )
+                    {
+                    return ["result"=>"employment has been updated"];
+                    }
+                else
+                    {
+                    return ["result"=>"employment update failed"];
+                    }
+            }
+        }
+}
     public function addSkill(Request $request){
         $skill = new skill;
         $skill->skill = $request->input('skill');
@@ -126,26 +151,21 @@ class profileController extends Controller
     public function profile($id){
         
         $user = User::findOrFail($id);
-        // $students = student::findOrFail('user_id',$id);
+        // $student = student::where('user_id', $id)->get();
+        $employmentHistory = employmentHistory::where('user_id', $id)->get();
+   
     //     $student= DB::table('users')
-    //    ->join('students','users.id','=','students.user_id')
+    //    ->join('student','users.id','=','student.user_id')
     //    ->where('users.id',$id) 
-    //    ->select('students.*')//this is if you want
+    //    ->select('student.*')//this is if you want
     //    ->get();
     $phoneNumber = DB::table('student')->where('user_id', $id)->value('phoneNumber');
-    $endDateClass = DB::table('student')->where('user_id', $id)->value('endDateClass');
-    $startDateClass = DB::table('student')->where('user_id', $id)->value('startDateClass');
+    $startDateClass= DB::table('student')->where('user_id', $id)->value('startDateClass');
+    $endDateClass= DB::table('student')->where('user_id', $id)->value('endDateClass');
     $sex = DB::table('student')->where('user_id', $id)->value('sex');
-    $student= DB::table('users')
-    ->join('student','users.id','=','student.user_id')
-    ->where('users.id',$id) 
-    ->select('student.*')//this is if you want
-    ->get();
-    
-    // $companyName = DB::table('employmentHistory')->where('user_id', $id)->value('companyName');
-    // $endDate = DB::table('employmentHistory')->where('user_id', $id)->value('endDate');
-    // $startDate = DB::table('employmentHistory')->where('user_id', $id)->value('startDate');
-    // $position = DB::table('employmentHistory')->where('user_id', $id)->value('position');
+    $major = DB::table('student')->where('user_id', $id)->value('major');
+    $GPA = DB::table('student')->where('user_id', $id)->value('GPA');
+        
     //should I add instructor_id foreign key in users table
     $recommendationDetail = DB::table('recomendation')->where('student_id', $id)->value('recomendationDetail');
     // $instructorName= DB::table('users')
@@ -155,25 +175,13 @@ class profileController extends Controller
     //    ->get();
     // $skill = DB::table('skills')->where('user_id', $id)->value('skill');
 
-    //    $employment_history= DB::table('users')
-    //    ->join('employment_historys','users.id','=','employment_historys.user_id')
-    //    ->where('users.id',$id) 
-    //    ->select('employment_historys.*')//this is if you want
-    //    ->get();
+   
        $skill= DB::table('users')
        ->join('skill','users.id','=','skill.user_id')
        ->where('users.id',$id) 
        ->select('skill.*')//this is if you want
        ->get();
 
-       $employmentHistory= DB::table('users')
-       ->join('employmentHistory','users.id','=','employmentHistory.user_id')
-       ->where('users.id',$id) 
-       ->select('employmentHistory.*')//this is if you want
-       ->get();
-    //    return($students);
-    //    return($employment_historys);
-    //    return($skills);
         if($user )
             {
                 return response()->json([
@@ -183,24 +191,37 @@ class profileController extends Controller
                     'startDateClass'=>$startDateClass,
                     'endDateClass'=>$endDateClass,
                     'sex'=>$sex,
-                    'employmentHistory'=>$employmentHistory,
-                    // 'student'=>$student,
-                    // 'endDate'=>$endDate,
-                    // 'position'=>$position,
-                    'skill'=>$skill,
+                    'major'=>$major,
+                    'GPA'=>$GPA,
                     'recommendationDetail'=>$recommendationDetail,
-                    // 'instructorName'=>$instructorName
-
+                    'position'=>$position,
+                    'companyName'=>$companyName,
+                    'startDate'=>$startDate,
+                    'endDate'=>$endDate,
+                    'skill'=>$skill,
+                    'employmentHistory'=>$employmentHistory
                 ]);
             }
             else
             {
             return ["result"=>"getting user failed"];
             }
+      
+    }
 
-            
-            
-        
+    public function getEmploymentHistory($id)
+    {
+    $employment = employmentHistory::findOrFail($id);
+        $employment->get();
+
+       return response()->json([
+        'companyName'=>$employment->companyName,
+        "endDate"=>$employment->endDate,
+        "startDate"=>$employment->startDate,
+        "position"=>$employment->position,
+        "id"=>$employment->id,
+        "status"=>200
+       ]);
     }
     public function deleteEmployment($id){
             $deleteEmployment_history = employmentHistory::findOrFail($id);
