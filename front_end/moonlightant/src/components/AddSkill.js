@@ -44,7 +44,7 @@ const  AddSkill = () =>{
                 onChange={handleInput}
                 value={skillList.skill}
               />
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" style={{marginTop: '1em', borderRadius: "80px"}}>
                   Add Skill
               </Button>
           </Form.Item>

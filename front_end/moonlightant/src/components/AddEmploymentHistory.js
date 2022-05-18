@@ -89,7 +89,7 @@ const AddEmploymentHistory = () => {
       </Space>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" style={{borderRadius: "80px"}}>
           Add Employment History
         </Button>
       </Form.Item>

@@ -206,8 +206,9 @@ function ProfilePageP() {
           <Divider>Profile Page</Divider>
 
           <Col>
-            <Form.Item label="Full Name">
+            <Form.Item label="Full Name" style={{width: "77%", borderRadius: "50px"}}>
               <Input
+                
                 name="name"
                 onChange={handleInput}
                 value={editProfile.name}
@@ -226,7 +227,7 @@ function ProfilePageP() {
                 </Col> */}
 
           <Col>
-            <Form.Item label="Phone Number" style={{ width: "76.5%" }}>
+            <Form.Item label="Phone Number" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
                 name="phoneNumber"
@@ -237,7 +238,7 @@ function ProfilePageP() {
           </Col>
 
           <Col>
-            <Form.Item label="Major" style={{ width: "76.5%" }}>
+            <Form.Item label="Major" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
                 name="major"
@@ -248,7 +249,7 @@ function ProfilePageP() {
           </Col>
 
           <Col>
-            <Form.Item label="GPA" style={{ width: "76.5%" }}>
+            <Form.Item label="GPA" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
                 name="GPA"
@@ -262,7 +263,7 @@ function ProfilePageP() {
             <Form.Item>
               <label>Gender:</label>
               <select
-                style={{ width: 120, padding: 10, marginLeft: "3.7em" }}
+                style={{ width: 120, padding: 10, marginLeft: "3.7em", borderRadius: "50px" }}
                 name="sex"
                 onChange={handleInput}
                 value={editProfile.sex}
@@ -318,7 +319,7 @@ function ProfilePageP() {
             <Form.Item>
               <select
                 placeholder="Select a Department"
-                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
+                style={{ padding: 10, width: "75%", borderRadius: "80px"}}
                 name="department_id"
                 onChange={handleInput}
                 value={editProfile.department_id}
@@ -350,8 +351,9 @@ function ProfilePageP() {
               >
               <DatePicker/>
               </Form.Item> */}
-              <label>Start Date: </label>
+              <label>Start Date: 
               <input
+                style={{ borderRadius: "80px", marginLeft: '1em'}}
                 type="date"
                 name="startDateClass"
                 format={"m/d/Y"}
@@ -359,10 +361,12 @@ function ProfilePageP() {
                 value={editProfile.startDateClass}
                 className="form-control"
               />
+              </label>
               {/* <span>{editProfile.error_list.startDateClass}</span> */}
 
-              <label>End Date: </label>
+              <label>End Date: 
               <input
+                style={{ borderRadius: "80px", marginLeft: '1em', border: 'outset'}}
                 type="date"
                 name="endDateClass"
                 format={"m/d/Y"}
@@ -370,11 +374,12 @@ function ProfilePageP() {
                 value={editProfile.endDateClass}
                 className="form-control"
               />
+              </label>
               {/* <span>{editProfile.error_list.endDateClass}</span> */}
             </Space>
           </Col>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '0.7em', marginTop: '1em'}}>
               Submit
             </Button>
           </Form.Item>
@@ -394,7 +399,7 @@ function ProfilePageP() {
               }}
             >
               {item.skill}
-
+              
               <Button
                 type="text"
                 onClick={() => deleteSkill(item.id)}
