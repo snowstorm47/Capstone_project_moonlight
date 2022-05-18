@@ -33,7 +33,7 @@ const NewsDrawer = () => {
 			axios.post("api/createNews", fData).then((response) => {
 				console.log(response);
 				if (response.data.message == "success") {
-					message.info("News created succesfully");
+					message.success("News created succesfully");
 					onClose();
 				} else {
 					message.error("News was not created. Please try again");

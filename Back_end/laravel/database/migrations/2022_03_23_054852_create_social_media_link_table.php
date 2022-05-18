@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('social_media_link', function (Blueprint $table) {
+        Schema::create('socialMediaLink', function (Blueprint $table) {
             $table->id();
             $table->string('link');
             $table->foreignId('user_id')->constrained('users');

@@ -9,6 +9,8 @@ import Notification from "./pages/Notification";
 import SignUp from "./pages/signup";
 import SignIn from "./pages/signin";
 import ProfilePageP from "./pages/profilePage";
+import Enter from "./pages/create";
+import LogIn from "./pages/login";
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
 import {
 	BellOutlined,
@@ -25,9 +27,10 @@ import Post from "./pages/post";
 import Home from "./pages/Home";
 import food from "./assets/man.jpg";
 import { useNavigate } from "react-router-dom";
-import IconContext from "@ant-design/icons/lib/components/Context";
+// import IconContext from "@ant-design/icons/lib/components/Context";
 import NewsDetail from "./pages/newsDetailPage";
-import ProfilePage from "./pages/profilePage";
+import NewsfeedStudent from "./pages/newsfeedstudent";
+
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -73,10 +76,10 @@ function App() {
 		AuthButtons = (
 			<>
 				<Menu.Item key="6" style={{ marginLeft: "auto" }}>
-					<Link to="/signin">Login</Link>
+					<Link to="/login">Login</Link>
 				</Menu.Item>
 				<Menu.Item key="7">
-					<Link to="/signup" style={{ left: "auto" }}>
+					<Link to="/create" style={{ left: "auto" }}>
 						Sign Up
 					</Link>
 				</Menu.Item>
@@ -153,13 +156,17 @@ function App() {
 					<Route path="/contactus" element={<ContactUs />} />
 					<Route path="/post" element={<Post />} />
 					<Route path="/notification" element={<Notification />} />
-					<Route path="/signin" element={<SignIn />} />
-					<Route path="/signup" element={<SignUp />} />
+					<Route path="/login" element={<LogIn />} />
+					<Route path="/create" element={<Enter />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
 					<Route path="profilepage" element={<ProfilePage/>}/>
 				</Routes>
 			</Content>
-			<Footer style={{ textAlign: "center", marginBottom: "auto" }}>
+			<Footer
+				style={{
+					textAlign: "center",
+				}}
+			>
 				Ant Design ©2018 Created by Ant UED
 			</Footer>
 		</div>
