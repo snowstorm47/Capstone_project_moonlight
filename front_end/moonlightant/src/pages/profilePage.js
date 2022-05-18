@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import AddSkill from "../components/AddSkill";
 import AddEmploymentHistory from "../components/AddEmploymentHistory";
 import EditEmploymentHistory from "../components/EditEmploymentHistory";
+import SocialMediaLink from "../components/SocialMediaLink";
 
 // import '/App.css';
 
@@ -31,6 +32,7 @@ function ProfilePageP() {
     setIsModalVisible(false);
   };
   const [visible, setVisible] = useState(true);
+  const [idemploy, setIdemploy] = useState(true);
 
   const [institutionList, setInstitutionList] = useState([]);
   const [employmentList, setemploymentList] = useState([]);
@@ -49,8 +51,8 @@ function ProfilePageP() {
     college_id: "",
     department_id: "",
     companyName: "",
-    GPA:"",
-    major:"",
+    GPA: "",
+    major: "",
     startDateClass: "",
     endDateClass: "",
     skill: [],
@@ -84,8 +86,7 @@ function ProfilePageP() {
       if (res.data.status === 200) {
         setEditProfile(res.data);
         setSkillList(res.data.skill);
-        // setemploymentList(res.data.employmentHistory);
-        console.log(res.data.student[0].phoneNumber);
+        console.log(skillList.skill);
       } else {
         console.log("couldnt retrieve data");
       }
@@ -131,21 +132,17 @@ function ProfilePageP() {
   const updateProfile = (e) => {
     console.log("update");
     // e.preventDefault();
-    console.log(editProfile.college_id);
-    console.log(editProfile.sex);
     const data = {
       phoneNumber: editProfile.phoneNumber,
       sex: editProfile.sex,
       major: editProfile.major,
       name: editProfile.name,
       GPA: editProfile.GPA,
-      // endDate: editProfile.endDate,
       startDateClass: editProfile.startDateClass,
       endDateClass: editProfile.endDateClass,
       institution_id: editProfile.institution_id,
       department_id: editProfile.department_id,
       college_id: editProfile.college_id,
-      // companyName: editProfile.companyName,
     };
     const id = localStorage.getItem("auth_id");
     axios.get("/sanctum/csrf-cookie").then((res) => {
@@ -172,7 +169,13 @@ function ProfilePageP() {
   return (
     <Row className="row1" style={{ margin: "3em", marginLeft: "0em" }}>
       <span>{success}</span>
-
+      <Modal
+        title="Edit Employment History"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+      >
+        <EditEmploymentHistory parentToChild={idemploy} />
+      </Modal>
       <Col
         className="row"
         span={5}
@@ -383,11 +386,11 @@ function ProfilePageP() {
               key={item.id}
               value={item.skill}
               style={{
-                color: "white",
+                color: "black",
                 borderRadius: 100,
                 border: 0,
                 margin: 2,
-                backgroundColor: "#0080ff",
+                backgroundColor: "#ffffff",
               }}
             >
               {item.skill}
@@ -453,7 +456,10 @@ function ProfilePageP() {
                         type="text"
                         key="list-loadmore-edit"
                         icon={<EditOutlined />}
-                        onClick={showModal}
+                        onClick={() => {
+                          showModal();
+                          setIdemploy(item.id);
+                        }}
                       />,
 
                       <Button
@@ -464,14 +470,6 @@ function ProfilePageP() {
                       />,
                     ]}
                   ></List.Item>
-                  <Modal
-                    title="Edit Employment History"
-                    visible={isModalVisible}
-                    // onOk={handleOk}
-                    onCancel={handleCancel}
-                  >
-                    <EditEmploymentHistory parentToChild={item.id} />
-                  </Modal>
                 </List.Item>
               )}
             />
@@ -491,6 +489,10 @@ function ProfilePageP() {
         <Col>
           <Divider>Add Employment History</Divider>
           <AddEmploymentHistory />
+        </Col>
+        <Col>
+          <Divider>Social Media Links</Divider>
+          <SocialMediaLink />
         </Col>
       </Col>
     </Row>
