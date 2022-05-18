@@ -32,6 +32,8 @@ Route::post('forgotPassword',[AuthController::class,"forgotPassword"])->middlewa
 Route::post('resetPassword',[AuthController::class,"resetPassword"]);
 Route::put('updateNotification',[notificationController::class, 'updateNotification']);
 Route::get('profile/{id}',[profileController::class,'profile']);
+Route::get('getSocialMediaLink/{id}',[profileController::class,'getSocialMediaLink']);
+Route::get('getSocialMediaLinkSingle/{id}',[profileController::class,'getSocialMediaLinkSingle']);
 Route::get('getEmploymentHistory/{id}',[profileController::class,'getEmploymentHistory']);
 Route::put('updateProfile/{id}',[profileController::class,'profileEdit']);
 Route::put('editEmploymentHistory/{id}',[profileController::class,'editEmployment']);

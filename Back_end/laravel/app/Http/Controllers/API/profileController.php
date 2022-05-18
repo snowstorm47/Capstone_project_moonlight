@@ -133,7 +133,7 @@ public function editSocialMediaLink(Request $request, $id)
             $socialMediaLink = socialMediaLink::findOrFail($id);
             if($socialMediaLink)
             {
-                $socialMediaLink= socialMediaLink::where('user_id','=',$id)->first();
+                // $socialMediaLink= socialMediaLink::where('user_id','=',$id)->first();
                 $socialMediaLink ->link = $request->input('link');
                 // $socialMediaLink ->user_id = $request->input('user_id');
                 $resultsocialMediaLink = $socialMediaLink->save();
@@ -277,6 +277,39 @@ public function editSocialMediaLink(Request $request, $id)
         "status"=>200
        ]);
     }
+
+    public function getSocialMediaLink($id)
+    {
+    // $link = DB::table('socialMediaLink')->where('user_id', $id)->value('link');
+    // $user_id = DB::table('socialMediaLink')->where('user_id', $id)->value('user_id');
+    $socialMediaLink= DB::table('users')
+    ->join('socialMediaLink','users.id','=','socialMediaLink.user_id')
+    ->where('users.id',$id) 
+    ->select('socialMediaLink.*')//this is if you want
+    ->get();
+       return response()->json([
+        'socialMediaLink'=>$socialMediaLink,
+        "status"=>200
+       ]);
+    }
+
+    public function getSocialMediaLinkSingle($id)
+    {
+    $socialMediaLink = DB::table('socialMediaLink')->where('id', $id)->value('link');
+
+        // $SocialMediaLink = socialMediaLink::findOrFail($id);
+        // $SocialMediaLink->get();
+    // $socialMediaLink= DB::table('users')
+    // ->join('socialMediaLink','users.id','=','socialMediaLink.user_id')
+    // ->where('users.id',$id) 
+    // ->select('socialMediaLink.*')//this is if you want
+    // ->get();
+       return response()->json([
+        'socialMediaLink'=>$socialMediaLink,
+        "status"=>200
+       ]);
+    }
+
     public function deleteEmployment($id){
             $deleteEmployment_history = employmentHistory::findOrFail($id);
             $deleteEmployment_history->delete();
