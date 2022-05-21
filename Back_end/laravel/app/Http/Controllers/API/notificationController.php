@@ -82,6 +82,8 @@ class notificationController extends Controller
         ]);
     }
 
+    
+
     public function viewNotificationUser($id)
     {
         $notification = notification::where('sender_id', $id)->get();
@@ -106,12 +108,13 @@ class notificationController extends Controller
         ]);
     }
 
-    public function showInstitutionNotification(Request $request)
+    public function showInstitutionNotification(Request $request,$id)
     {
         
-        $Notification=notification::join('institution','institution.id','=','news.institution_id')->get(['institution.institutionName','news.title','news.body','news.created_at','news.image']);
+        $Notification=notification::join('institution','institution.user_id','=','notification.sender_id')
+        ->where('notification.reciever_id','=',$id)->get();
         return Response()->json([
-            "newsdata"=>$News,
+            "notification"=>$Notification,
             "status"=>200,
         ]);
     }
