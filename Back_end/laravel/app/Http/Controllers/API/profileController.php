@@ -28,6 +28,7 @@ class profileController extends Controller
             'GPA'=>'required',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
+            'image' => 'required',
 
         ]);
         
@@ -42,6 +43,9 @@ class profileController extends Controller
             $user = User::findOrFail($id);
 
             if($user){
+            //     $file= $request->file('image');
+            // $filename= date('YmdHi').$file->getClientOriginalName();
+            // $file-> move(public_path('uploads/ProfilePicture'), $filename);
                 $user->name = $request->name;
                 $resultUser = $user->save();
                 
