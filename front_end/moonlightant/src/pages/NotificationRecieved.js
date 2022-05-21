@@ -7,7 +7,7 @@ import { SendTimeExtension, SevenK } from "@mui/icons-material";
 // Introduce submenu components
 const SubMenu = Menu.SubMenu;
 
-const NotificationInstitution = () => {
+const NotificationRecieved = () => {
   const [visible, setVisible] = useState(true);
   const [state, setState] = useState();
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const NotificationInstitution = () => {
   const id = localStorage.getItem("auth_id");
 
   useEffect(() => {
-    axios.get(`api/showInstitutionNotification/${id}`).then((response) => {
+    axios.get(`api/viewNotificationRecieved/${id}`).then((response) => {
       setState(response.data.notification);
       console.log(response.data.notification);
       setLoading(false);
@@ -31,7 +31,7 @@ const NotificationInstitution = () => {
           if (res.data.status === 200) {
 			message.success("Notification in seen box");
             console.log(res.data.result);
-            // window.location = "/Notification";
+            window.location = "/Notification";
           } else {
             message.error("Notification not added in seen");            
           }
@@ -132,4 +132,4 @@ const NotificationInstitution = () => {
     </div>
   );
 };
-export default NotificationInstitution;
+export default NotificationRecieved;

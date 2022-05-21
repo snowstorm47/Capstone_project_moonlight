@@ -1,7 +1,7 @@
 import { Component, useState } from "react";
 import { Layout, Menu, Icon, Col, Row, Badge } from "antd";
 import {
-  DashboardOutlined,
+  SendOutlined,
   BankOutlined,
   CheckCircleOutlined,
   UserOutlined,
@@ -12,6 +12,7 @@ import NotificationAdd from "./NotificationAdd";
 import NotificationInstitution from "./NotificationInstitution";
 import NotificationUser from "./NotificationUser";
 import NotificationSeen from "./NotificationSeen";
+import NotificationRecieved from "./NotificationRecieved";
 const { Header, Footer, Sider, Content } = Layout;
 
 // Introduce submenu components
@@ -26,8 +27,10 @@ const Notification = () => {
         return <NotificationAdd />;
       case "institution":
         return <NotificationInstitution />;
-      case "user":
-        return <NotificationUser/>
+      case "sent":
+        return <NotificationUser/>;
+        case "user":
+        return <NotificationRecieved/>
       // case "suitcase":
       //   return <h3>item3</h3>;
       case "seen":
@@ -117,7 +120,7 @@ const Notification = () => {
               offset={[20, 20]}
             ></Badge>
           </Menu.Item>
-          {/* <Menu.Item key="suitcase">
+          <Menu.Item key="company">
             <span>Suitcase</span>
             <Badge
               count={0}
@@ -125,7 +128,7 @@ const Notification = () => {
               status="warning"
               offset={[20, 20]}
             ></Badge>
-          </Menu.Item> */}
+          </Menu.Item>
           <Menu.Item key="seen"
             style={{
               paddingBottom:"20px"
@@ -135,6 +138,20 @@ const Notification = () => {
             <span>Seen</span>
             <Badge
               count={0}
+              overflowCount={10}
+              status="warning"
+              offset={[20, 20]}
+            ></Badge>
+          </Menu.Item>
+          <Menu.Item key="sent"
+            style={{
+              paddingBottom:"20px"
+            }}
+          >
+            <SendOutlined />
+            <span>Sent</span>
+            <Badge
+              count={99}
               overflowCount={10}
               status="warning"
               offset={[20, 20]}
