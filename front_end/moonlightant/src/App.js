@@ -6,6 +6,9 @@ import Newsfeed from "./pages/newsFeed";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
+import SignUp from "./pages/signup";
+import SignIn from "./pages/signin";
+import ProfilePageP from "./pages/profilePage";
 import Enter from "./pages/create";
 import LogIn from "./pages/login";
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
@@ -27,6 +30,7 @@ import { useNavigate } from "react-router-dom";
 // import IconContext from "@ant-design/icons/lib/components/Context";
 import NewsDetail from "./pages/newsDetailPage";
 import NewsfeedStudent from "./pages/newsfeedstudent";
+
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -62,7 +66,7 @@ function App() {
 			</Menu.Item>
 			<Menu.Item key="2">
 				<EditFilled style={{ paddingLeft: "2.5px", paddingRight: "5px" }} />
-				Edit Profile
+				<Link to="profilepage">Edit Profile</Link>
 			</Menu.Item>
 		</Menu>
 	);
@@ -155,6 +159,7 @@ function App() {
 					<Route path="/login" element={<LogIn />} />
 					<Route path="/create" element={<Enter />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
+					<Route path="profilepage" element={<ProfilePage/>}/>
 				</Routes>
 			</Content>
 			<Footer
