@@ -79,7 +79,7 @@ function App() {
 					<Link to="/login">Login</Link>
 				</Menu.Item>
 				<Menu.Item key="7">
-					<Link to="/create" style={{ left: "auto" }}>
+					<Link to="/signup" style={{ left: "auto" }}>
 						Sign Up
 					</Link>
 				</Menu.Item>
@@ -156,10 +156,10 @@ function App() {
 					<Route path="/contactus" element={<ContactUs />} />
 					<Route path="/post" element={<Post />} />
 					<Route path="/notification" element={<Notification />} />
-					<Route path="/login" element={<LogIn />} />
-					<Route path="/create" element={<Enter />} />
+					<Route path="/signin" element={<SignIn />} />
+					<Route path="/signup" element={<SignUp />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
-					<Route path="profilepage" element={<ProfilePage/>}/>
+					<Route path="profilepage" element={<ProfilePageP/>}/>
 				</Routes>
 			</Content>
 			<Footer

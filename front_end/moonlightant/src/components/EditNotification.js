@@ -6,76 +6,82 @@ import {
   LoadingOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const NotificationAdd = () => {
+const EditNotification = ({parentToChild}) => {
+
   const [notification, setNotification] = useState({
     notificationTitle: "",
+    id:"",
     notificationDetail: "",
-    sender_id: localStorage.getItem("auth_id"),
-    reciever_id: 2,
-    seen_status: "False",
-    notificationImage: "",
+    // notificationImage: "",
   });
 
+  useEffect(() => {
+    axios.get(`api/showNotification/${parentToChild}`).then((response) => {
+        if(response.data.status === 200){
+        setNotification(response.data);
+        console.log(response.data);
+        }
+        else{
+        console.log("couldnt retrieve data");
+
+        }
+    });
+}, [parentToChild]);
+
+  const handleSubmit = async (id) => {
+    const data = {
+      "notificationTitle" : notification.notificationTitle,
+      "notificationDetail" : notification.notificationDetail
+    }
+    // const fData = new FormData();
+    // fData.append("notificationImage", notification.notificationImage);
+    // fData.append("notificationTitle", notification.notificationTitle);
+    // fData.append("notificationDetail", notification.notificationDetail);
+    // console.log(fData);
+    axios.get("/sanctum/csrf-cookie").then((response) => {
+      axios.put(`api/updateNotification/${id}`, data)
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === 200) {
+            message.success("Notification updated succesfully");
+          } else {
+            message.error("Notification was not updated. Please try again");
+          }
+        });
+    });
+
+  };
   const handleInput = (e) => {
     setNotification({ ...notification, [e.target.name]: e.target.value });
   };
+//   const normFile = (e) => {
+//     console.log("Upload event:", e);
 
-  const handleSubmit = async () => {
-    console.log(notification);
-    const fData = new FormData();
-    fData.append("notificationImage", notification.notificationImage);
-    fData.append("notificationTitle", notification.notificationTitle);
-    fData.append("notificationDetail", notification.notificationDetail);
-    fData.append("sender_id", notification.sender_id);
-    fData.append("reciever_id", notification.reciever_id);
-    fData.append("seen_status", notification.seen_status);
-    axios.get("/sanctum/csrf-cookie").then((response) => {
-      axios.post("api/postNotification", fData).then((response) => {
-        console.log(response);
-        if (response.data.status === 200) {
-          message.success("Notification created succesfully");
-        } else {
-          message.error("Notification was not created. Please try again");
-        }
-      });
-    });
+//     if (Array.isArray(e)) {
+//       return e;
+//     }
 
-    setNotification({
-      ...notification,
-      notificationTitle: "",
-      notificationDetail: "",
-    });
-  };
-
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-
-    if (Array.isArray(e)) {
-      return e;
-    }
-
-    return e && e.fileList;
-  };
+//     return e && e.fileList;
+//   };
 
   return (
     <Form
-      name="basic"
+      name="dynamic_form_nest_item"
       labelCol={{
         span: 8,
       }}
       wrapperCol={{
         span: 16,
       }}
-      onFinish={() => handleSubmit()}
-      // autoComplete="off"
+      onFinish={()=>handleSubmit(notification.id)}
+      autoComplete="off"
       method="POST"
     >
       <Form.Item>
         <Input
-          placeholder="Notification Title"
           name="notificationTitle"
           value={notification.notificationTitle}
           onChange={handleInput}
@@ -84,8 +90,8 @@ const NotificationAdd = () => {
       </Form.Item>
 
       <Form.Item>
+        {/* <label>Body</label> */}
         <Input.TextArea
-          placeholder="Notification Title"
           size="large"
           name="notificationDetail"
           value={notification.notificationDetail}
@@ -94,7 +100,7 @@ const NotificationAdd = () => {
           required
         />
       </Form.Item>
-      <Form.Item>
+      {/* <Form.Item>
         <Form.Item
           name="dragger"
           valuePropName="fileList"
@@ -120,7 +126,7 @@ const NotificationAdd = () => {
             </p>
           </Upload.Dragger>
         </Form.Item>
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         wrapperCol={{
           offset: 8,
@@ -128,11 +134,11 @@ const NotificationAdd = () => {
         }}
       >
         <Button type="primary" htmlType="submit">
-          Create Notification <SendOutlined />
+          Update Notification 
         </Button>
       </Form.Item>
     </Form>
   );
 };
 
-export default NotificationAdd;
+export default EditNotification;
