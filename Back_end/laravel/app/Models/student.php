@@ -14,7 +14,8 @@ class student extends Model
         'phoneNumber',
         'sex',
         'startDateClass',
-        'endDateClass'
+        'endDateClass',
+        'image',
     ];
 
     public function employmentHistorys()
