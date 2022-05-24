@@ -180,11 +180,12 @@ function CreateProfile() {
             <Form.Item>
               <label>Gender:</label>
               <select
-                style={{ width: 120, padding: 10, marginLeft: "3.7em", borderRadius: "50px" }}
+                style={{ width: "50%", padding: 10, marginLeft: "3.7em", borderRadius: "50px" }}
                 name="sex"
                 onChange={handleInput}
                 value={createProfile.sex}
               >
+                <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
@@ -229,6 +230,7 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.institution_id}
               >
+                <option value="">Select Institution</option>
                 {institutionList.map((item) => {
                   return (
                     <option value={item.id} key={item.id}>
@@ -249,6 +251,8 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.college_id}
               >
+                <option value="">Select College</option>
+
                 {collegeList.map((item) => {
                   return (
                     <option value={item.id} key={item.id}>
@@ -269,6 +273,8 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.department_id}
               >
+                <option value="">Select Department</option>
+
                 {departmentList.map((item) => {
                   return (
                     <option value={item.id} key={item.id}>

@@ -13,6 +13,8 @@ import NotificationInstitution from "./NotificationInstitution";
 import NotificationUser from "./NotificationUser";
 import NotificationSeen from "./NotificationSeen";
 import NotificationRecieved from "./NotificationRecieved";
+import NotificationInstructor from "./NotificationInstructor";
+import NotificationHiring from "./NotificationHiring";
 const { Header, Footer, Sider, Content } = Layout;
 
 // Introduce submenu components
@@ -31,10 +33,12 @@ const Notification = () => {
         return <NotificationUser/>;
         case "user":
         return <NotificationRecieved/>
-      // case "suitcase":
-      //   return <h3>item3</h3>;
+      case "company":
+        return <NotificationHiring/>;
       case "seen":
         return <NotificationSeen/>
+        case "instructor":
+        return <NotificationInstructor/>
       default:
         break;
     }
@@ -107,13 +111,27 @@ const Notification = () => {
               offset={[20, 20]}
             ></Badge>
           </Menu.Item>
+          <Menu.Item key="instructor"
+            style={{
+              paddingBottom:"20px"
+            }}
+          >
+            <UserOutlined />
+            <span>Instructor</span>
+            <Badge
+              count={99}
+              overflowCount={10}
+              status="warning"
+              offset={[20, 20]}
+            ></Badge>
+          </Menu.Item>
           <Menu.Item key="user"
             style={{
               paddingBottom:"20px"
             }}
           >
             <UserOutlined />
-            <span>User</span>
+            <span>Student</span>
             <Badge
               count={99}
               overflowCount={10}
@@ -122,7 +140,8 @@ const Notification = () => {
             ></Badge>
           </Menu.Item>
           <Menu.Item key="company">
-            <span>Suitcase</span>
+          <BankOutlined />
+            <span>Hiring Company</span>
             <Badge
               count={0}
               overflowCount={10}

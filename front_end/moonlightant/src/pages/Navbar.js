@@ -28,7 +28,7 @@ const Navbar = () => {
             <a href="contactus">ContactUs</a>
           </Menu.Item>
           <Menu.Item key="6">
-            <a href="login">Login</a>
+            <a href="signin">Login</a>
           </Menu.Item>
           <Menu.Item key="7">
             <a href="profilepage">Profile</a>

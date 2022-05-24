@@ -16,18 +16,14 @@ import { SendTimeExtension, SevenK } from "@mui/icons-material";
 // Introduce submenu components
 const SubMenu = Menu.SubMenu;
 
-const NotificationInstitution = () => {
+const NotificationInstructor = () => {
   const [visible, setVisible] = useState(true);
   const [state, setState] = useState();
   const [loading, setLoading] = useState(true);
-  const [profilePicture, setProfilePicture] = useState({
-    image: "",
-    institutionName: "",
-  });
   const id = localStorage.getItem("auth_id");
 
   useEffect(() => {
-    axios.get(`api/showInstitutionNotification/${id}`).then((response) => {
+    axios.get(`api/showInstructorNotification/${id}`).then((response) => {
       setState(response.data.notification);
       console.log(response.data.notification);
       setLoading(false);
@@ -100,7 +96,7 @@ const NotificationInstitution = () => {
                             marginLeft: "0em",
                           }}
                         >
-                          <a >{item.institutionName}{" "}</a><span>{item.created_at}</span><br/><br/>
+                          <a >{item.name}{" "}</a><span>{item.created_at}</span><br/><br/>
                           {item.notificationTitle}
                         </p>
                       }
@@ -138,4 +134,4 @@ const NotificationInstitution = () => {
     </div>
   );
 };
-export default NotificationInstitution;
+export default NotificationInstructor;
