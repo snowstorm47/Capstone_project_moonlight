@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
-export default function SignUp() {
+const SignUp = ({ navigation })=> {
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
 	const [failMessage, setFailMessage] = useState(null);
@@ -225,3 +225,4 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+export default SignUp;

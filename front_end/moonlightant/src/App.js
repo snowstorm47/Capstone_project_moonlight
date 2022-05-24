@@ -29,6 +29,7 @@ import food from "./assets/man.jpg";
 import { useNavigate } from "react-router-dom";
 // import IconContext from "@ant-design/icons/lib/components/Context";
 import NewsDetail from "./pages/newsDetailPage";
+import CreateProfile from "./pages/ProfileCreate";
 import NewsfeedStudent from "./pages/newsfeedstudent";
 
 
@@ -76,7 +77,7 @@ function App() {
 		AuthButtons = (
 			<>
 				<Menu.Item key="6" style={{ marginLeft: "auto" }}>
-					<Link to="/login">Login</Link>
+					<Link to="/signin">Login</Link>
 				</Menu.Item>
 				<Menu.Item key="7">
 					<Link to="/signup" style={{ left: "auto" }}>
@@ -160,6 +161,7 @@ function App() {
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
 					<Route path="profilepage" element={<ProfilePageP/>}/>
+					<Route path="createprofile" element={<CreateProfile/>}/>
 				</Routes>
 			</Content>
 			<Footer
