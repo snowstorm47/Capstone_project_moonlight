@@ -16,7 +16,7 @@ import EditEmploymentHistory from "../components/EditEmploymentHistory";
 
 const { Option } = Select;
 
-function ProfilePageP() {
+function ProfilePageInstructor() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -200,10 +200,10 @@ function ProfilePageP() {
         style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
       >
         <Form onFinish={updateProfile}>
-          <Divider>Profile Page</Divider>
+          <Divider>Instructor Profile Page</Divider>
 
           <Col>
-            <Form.Item label="Full Name" style={{width: "77%", borderRadius: "50px"}}>
+            <Form.Item label="Instructor Full Name" style={{width: "77%", borderRadius: "50px"}}>
               <Input
                 
                 name="name"
@@ -213,7 +213,7 @@ function ProfilePageP() {
             </Form.Item>
           </Col>
 
-          {/* <Col> 
+          <Col> 
                     <Form.Item label="Email" style={{width: '64%'}} rules={[
                         { 
                         type: 'email'
@@ -221,7 +221,7 @@ function ProfilePageP() {
                         ]}>
                         <Input style={{marginLeft: '4.6em'}}/>
                     </Form.Item>
-                </Col> */}
+                </Col>
 
           <Col>
             <Form.Item label="Phone Number" style={{ width: "76.5%", borderRadius: "50px" }}>
@@ -246,10 +246,10 @@ function ProfilePageP() {
           </Col>
 
           <Col>
-            <Form.Item label="GPA" style={{ width: "76.5%", borderRadius: "50px" }}>
+            <Form.Item label="Current Position" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="GPA"
+                name="position"
                 onChange={handleInput}
                 value={editProfile.GPA}
               />
@@ -332,9 +332,9 @@ function ProfilePageP() {
             </Form.Item>
           </Col>
 
-          <Col>
+          {/* <Col>
             <Space direction="vertical" size={12} style={{ padding: 10 }}>
-              {/* <Form.Item
+               <Form.Item
                 name="startDateClass"
                 onChange={handleInput}
                 value={editProfile.startDateClass}
@@ -347,7 +347,7 @@ function ProfilePageP() {
               value={editProfile.endDateClass}
               >
               <DatePicker/>
-              </Form.Item> */}
+              </Form.Item> 
               <label>Start Date: 
               <input
                 style={{ marginLeft: '1em'}}
@@ -359,7 +359,7 @@ function ProfilePageP() {
                 className="form-control"
               />
               </label>
-              {/* <span>{editProfile.error_list.startDateClass}</span> */}
+               <span>{editProfile.error_list.startDateClass}</span> 
 
               <label>End Date: 
               <input
@@ -372,9 +372,9 @@ function ProfilePageP() {
                 className="form-control"
               />
               </label>
-              {/* <span>{editProfile.error_list.endDateClass}</span> */}
+               <span>{editProfile.error_list.endDateClass}</span> 
             </Space>
-          </Col>
+          </Col> */}
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '0.7em', marginTop: '1em'}}>
               Submit
@@ -502,4 +502,4 @@ function ProfilePageP() {
   );
 }
 
-export default ProfilePageP;
+export default ProfilePageInstructor;

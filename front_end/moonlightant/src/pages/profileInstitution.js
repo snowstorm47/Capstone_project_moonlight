@@ -16,7 +16,7 @@ import EditEmploymentHistory from "../components/EditEmploymentHistory";
 
 const { Option } = Select;
 
-function ProfilePageP() {
+function ProfilePageInstitution() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -200,10 +200,10 @@ function ProfilePageP() {
         style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
       >
         <Form onFinish={updateProfile}>
-          <Divider>Profile Page</Divider>
+          <Divider>Instituion Profile Page</Divider>
 
           <Col>
-            <Form.Item label="Full Name" style={{width: "77%", borderRadius: "50px"}}>
+            <Form.Item label="Institution Name" style={{width: "77%", borderRadius: "50px"}}>
               <Input
                 
                 name="name"
@@ -213,7 +213,7 @@ function ProfilePageP() {
             </Form.Item>
           </Col>
 
-          {/* <Col> 
+          <Col> 
                     <Form.Item label="Email" style={{width: '64%'}} rules={[
                         { 
                         type: 'email'
@@ -221,7 +221,7 @@ function ProfilePageP() {
                         ]}>
                         <Input style={{marginLeft: '4.6em'}}/>
                     </Form.Item>
-                </Col> */}
+                </Col>
 
           <Col>
             <Form.Item label="Phone Number" style={{ width: "76.5%", borderRadius: "50px" }}>
@@ -235,28 +235,28 @@ function ProfilePageP() {
           </Col>
 
           <Col>
-            <Form.Item label="Major" style={{ width: "76.5%", borderRadius: "50px" }}>
+            <Form.Item label="Address" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="major"
+                name="address"
                 onChange={handleInput}
-                value={editProfile.major}
+                value={editProfile.major}//change this
               />
             </Form.Item>
           </Col>
 
           <Col>
-            <Form.Item label="GPA" style={{ width: "76.5%", borderRadius: "50px" }}>
+            <Form.Item label="Institution Type" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="GPA"
+                name="type"
                 onChange={handleInput}
-                value={editProfile.GPA}
+                value={editProfile.GPA}//change this
               />
             </Form.Item>
           </Col>
 
-          <Col>
+          {/* <Col>
             <Form.Item>
               <label>Gender:</label>
               <select
@@ -269,8 +269,9 @@ function ProfilePageP() {
                 <option value="female">Female</option>
               </select>
             </Form.Item>
-          </Col>
+          </Col> */}
 
+{/*           
           <Col>
             <Divider>Academic</Divider>
             <Form.Item>
@@ -347,7 +348,7 @@ function ProfilePageP() {
               value={editProfile.endDateClass}
               >
               <DatePicker/>
-              </Form.Item> */}
+              </Form.Item> 
               <label>Start Date: 
               <input
                 style={{ marginLeft: '1em'}}
@@ -359,7 +360,7 @@ function ProfilePageP() {
                 className="form-control"
               />
               </label>
-              {/* <span>{editProfile.error_list.startDateClass}</span> */}
+               <span>{editProfile.error_list.startDateClass}</span> 
 
               <label>End Date: 
               <input
@@ -372,15 +373,17 @@ function ProfilePageP() {
                 className="form-control"
               />
               </label>
-              {/* <span>{editProfile.error_list.endDateClass}</span> */}
+              <span>{editProfile.error_list.endDateClass}</span> 
             </Space>
-          </Col>
+          </Col> */}
+
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '0.7em', marginTop: '1em'}}>
               Submit
             </Button>
           </Form.Item>
         </Form>
+        {/* 
         <Divider>Skills</Divider>
         <Col>
           {skillList.map((item) => (
@@ -406,7 +409,7 @@ function ProfilePageP() {
           ))}
         </Col>
 
-        {/* </Col> */}
+         </Col> 
         <Divider>Employment History</Divider>
         <Col>
           {visible ? (
@@ -481,25 +484,25 @@ function ProfilePageP() {
               )}
             />
           ) : null}
-        </Col>
-      </Col>
+        </Col>*/}
+      </Col> 
 
       <Col
         className="row2"
         span={9}
         style={{ margin: "0.5em", paddingLeft: "1.5em", paddingTop: "3em" }}
       >
-        <Col>
-          <Divider>Add Skill</Divider>
+        {/* <Col>
+          <Divider>Add Skill Requirments</Divider>
           <AddSkill />
-        </Col>
-        <Col>
+        </Col> */}
+        {/* <Col>
           <Divider>Add Employment History</Divider>
           <AddEmploymentHistory />
-        </Col>
+        </Col> */}
       </Col>
     </Row>
   );
 }
 
-export default ProfilePageP;
+export default ProfilePageInstitution;
