@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('institution', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('institutionName')->unique();            
+            $table->foreignId('user_id')->constrained('users');          
+            $table->string('institutionName')->unique();
             $table->string('phoneNumber');
+            $table->string('poBox');
+            $table->string('image');
             $table->string('location');
             $table->timestamps();
         });

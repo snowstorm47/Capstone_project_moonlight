@@ -16,9 +16,13 @@ return new class extends Migration
         Schema::create('hiringCompany', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('CompanyName');
-            $table->string('Location');
-
+            $table->string('representative');
+            $table->string('representativeEmail')->unique();;
+            $table->string('phoneNumber');
+            $table->string('poBox');
+            $table->string('location');
+            $table->string('description');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

@@ -71,7 +71,9 @@ class profileController extends Controller
         
             if($resultUser && $resultStudent )
             {
-            return ["result"=>"user profile has been updated"];
+            return response()->json([
+                "status"=>200,
+                "result"=>"user profile has been updated"]);
             }
             else
             {

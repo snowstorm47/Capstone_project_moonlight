@@ -8,6 +8,7 @@ use App\Models\notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\hiringCompany;
 
 
 class notificationController extends Controller
@@ -98,49 +99,64 @@ class notificationController extends Controller
 
     public function viewNotificationRecieved($id)
     {
-        $notification = notification::where([
-            ['reciever_id', '=', $id],
-            ['seen_status', '=', 'False']])->get();
-        // $notificationDetail = DB::table('notification')->where('user_id', $id)->value('notificationDetail');
-
+        $student = DB::table('student')
+            ->join('users', 'student.user_id', '=', 'users.id')
+            ->join('notification', 'student.user_id', '=', 'notification.sender_id')
+            ->where('notification.reciever_id','=',$id)
+            ->get(['notification.notificationTitle','notification.notificationDetail','notification.sender_id','student.image','users.name','notification.created_at']);
+           
         return Response()->json([
+            "notification"=>$student,
             "status"=>200,
-            "notification"=>$notification,
         ]);
     }
 
     public function showInstitutionNotification(Request $request,$id)
     {
-        
-        $Notification=notification::join('institution','institution.user_id','=','notification.sender_id')
-        ->where('notification.reciever_id','=',$id)->get();
-        return Response()->json([
-            "notification"=>$Notification,
-            "status"=>200,
-        ]);
-    }
-
-    public function showImageAndName($id)
-    {
-        //For now name agree with jo about the image creating profileImage table
-        // $institutionImage=notification::join('institution','institution.user_id','=','notification.sender_id')
-        // ->where('notification.reciever_id','=',$id)
-        // ->where('user_id','=',$id)->get(['user.name']);
-        
-
         $institution = DB::table('institution')
             ->join('users', 'institution.user_id', '=', 'users.id')
             ->join('notification', 'institution.user_id', '=', 'notification.sender_id')
             ->where('notification.reciever_id','=',$id)
             // ->select('users.name', 'institution.location', 'notification.notificationTitle')
-            ->get();
-            return Response()->json([
-                "notification"=>$institution,
-                "status"=>200,
-            ]);
-        $studentImage= notification::join('student','student.user_id','=','notification.sender_id')
-        ->where('notification.reciever_id','=',$id)->get();
+            ->get(['notification.notificationTitle','notification.notificationDetail','notification.sender_id','institution.image','institution.institutionName','notification.created_at']);
+           
+        return Response()->json([
+            "notification"=>$institution,
+            "status"=>200,
+        ]);
     }
+
+    public function showHiringCompanyNotification(Request $request,$id)
+    {
+        $Hiring = DB::table('hiringCompany')
+            ->join('users', 'hiringCompany.user_id', '=', 'users.id')
+            ->join('notification', 'hiringCompany.user_id', '=', 'notification.sender_id')
+            ->where('notification.reciever_id','=',$id)
+            // ->select('users.name', 'institution.location', 'notification.notificationTitle')
+            ->get(['notification.notificationTitle','notification.notificationDetail','notification.sender_id','hiringCompany.image','users.name','notification.created_at']);
+
+            
+        return Response()->json([
+            "notification"=>$Hiring,
+            "status"=>200,
+        ]);
+    }
+
+    public function showInstructorNotification(Request $request,$id)
+    {
+        $instructor = DB::table('instructor')
+            ->join('users', 'instructor.user_id', '=', 'users.id')
+            ->join('notification', 'instructor.user_id', '=', 'notification.sender_id')
+            ->where('notification.reciever_id','=',$id)
+            // ->select('users.name', 'institution.location', 'notification.notificationTitle')
+            ->get(['notification.notificationTitle','notification.notificationDetail','notification.sender_id','instructor.image','users.name','notification.created_at']);
+           
+        return Response()->json([
+            "notification"=>$instructor,
+            "status"=>200,
+        ]);
+    }
+
 
     public function showNotification(Request $request,$id)
     {
