@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hiring_company', function (Blueprint $table) {
+        Schema::create('hiringCompany', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('Company Name');
+            $table->string('CompanyName');
             $table->string('Location');
 
             $table->timestamps();

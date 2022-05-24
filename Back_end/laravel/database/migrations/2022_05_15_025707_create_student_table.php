@@ -17,11 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('institution_id')->constrained('institution');
+            $table->foreignId('college_id')->constrained('college');
+            $table->foreignId('department_id')->constrained('department');
             $table->string('phoneNumber');
             $table->string("sex");
             $table->string("major");
-            $table->date("startDate");
-            $table->date("endDate");
+            $table->date("startDateClass");
+            $table->date("endDateClass");
             $table->string("GPA");
 
             $table->timestamps();

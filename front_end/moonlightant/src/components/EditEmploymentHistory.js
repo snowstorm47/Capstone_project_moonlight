@@ -17,6 +17,7 @@ const EditEmploymentHistory = ({parentToChild}) => {
     // axios.get('/sanctum/csrf-cookie').then(res => {
     axios.get(`/api/getEmploymentHistory/${parentToChild}`).then((res) => {
       if (res.data.status === 200) {
+        console.log(parentToChild);
         setEmploymentList(res.data);
         console.log(employmentList);
       } else {
@@ -40,6 +41,8 @@ const EditEmploymentHistory = ({parentToChild}) => {
       axios.put(`/api/editEmploymentHistory/${id}`, data).then((res) => {
         if (res.data.status === 200) {
           console.log("History edited");
+          // setIsModalVisible(false);
+
         } else {
           console.log("History not edited");
         }
