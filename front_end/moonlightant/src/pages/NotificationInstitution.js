@@ -1,5 +1,5 @@
 import React, { useEffect, Component, useState } from "react";
-import { Layout, Menu, Space, Skeleton, List, message ,Button } from "antd";
+import { Layout, Menu, Space, Skeleton, List, message ,Button,Avatar } from "antd";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { SendTimeExtension, SevenK } from "@mui/icons-material";
@@ -71,17 +71,9 @@ const NotificationInstitution = () => {
                       marginBottom: "1em",
                     }}
                   >
+                    
                     <List.Item.Meta
-                      extra={
-                        <img
-                          width="27"
-                          alt="logo"
-                          src={
-                            "http://localhost:8000/uploads/NotificationPicture/" +
-                            item.notificationImage
-                          }
-                        />
-                      }
+                      avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
                       title={
                         <a
                           href="#"

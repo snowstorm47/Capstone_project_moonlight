@@ -15,7 +15,7 @@ const ContactUs = () => {
 	return (
 		<div
 			style={{
-				backgroundColor: "#010449",
+				backgroundColor: "#f0f2f5",
 				marginLeft: 40,
 				marginTop: 20,
 				marginRight: 40,
@@ -39,7 +39,7 @@ const ContactUs = () => {
 							paddingRight: 30,
 							marginLeft: 50,
 							textAlign: "left",
-							color: "#ffffff",
+							color: "#000000",
 							fontSize: 35,
 						}}
 					>
@@ -50,7 +50,7 @@ const ContactUs = () => {
 						style={{
 							paddingLeft: 30,
 							paddingRight: 30,
-							color: "#eeeeee",
+							color: "#000000",
 						}}
 					>
 						Got a question? We'd love to hear from you. Send us a message and
@@ -68,7 +68,7 @@ const ContactUs = () => {
 					/>
 					<Text
 						style={{
-							color: "#ffffff",
+							color: "#000000",
 							marginLeft: 0,
 						}}
 					>
@@ -87,7 +87,7 @@ const ContactUs = () => {
 					/>
 					<Text
 						style={{
-							color: "#ffffff",
+							color: "#000000",
 							marginLeft: 30,
 						}}
 					>
@@ -98,7 +98,7 @@ const ContactUs = () => {
 					<FacebookFilled
 						style={{
 							fontSize: "1.5em",
-							color: "#ffffff",
+							color: "#0080ff",
 							marginTop: 200,
 							marginLeft: -150,
 							marginRight: 10,
@@ -107,7 +107,7 @@ const ContactUs = () => {
 					<TwitterSquareFilled
 						style={{
 							fontSize: "1.5em",
-							color: "#ffffff",
+							color: "#0080ff",
 							marginTop: 200,
 							marginLeft: -110,
 							marginRight: 10,
@@ -116,7 +116,7 @@ const ContactUs = () => {
 					<InstagramFilled
 						style={{
 							fontSize: "1.5em",
-							color: "#ffffff",
+							color: "#0080ff",
 							marginTop: 200,
 							marginLeft: -100,
 							marginRight: 70,

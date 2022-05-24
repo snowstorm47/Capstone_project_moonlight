@@ -58,6 +58,7 @@ const Notification = () => {
         width={256}
         style={{ 
           minHeight: "90vh",
+          marginTop:'2.6rem'
          }}
         // collapsible
         // collapsed={this.state.collapsed}

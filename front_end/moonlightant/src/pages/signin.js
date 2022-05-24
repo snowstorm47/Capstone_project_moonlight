@@ -18,7 +18,9 @@ import axios from 'axios';
 
 const theme = createTheme();
 
-export default function SignIn() {
+const SignIn = ()=> {
+	
+	
     const navigate = useNavigate();
 	const [message, setMessage] = useState(null);
 	const [failMessage, setFailMessage] = useState(null);
@@ -52,7 +54,15 @@ export default function SignIn() {
                 localStorage.setItem('auth_id',res.data.id);
 				setMessage(res.message);
                 console.log(res.data.message);
+				// if(first === 0)
+				// {
+				// 	navigate("/createProfile");
+				// 	first++;
+				// }
+				// else
+				// {
                 navigate("/newsfeed");
+				// }
             }
             else if(res.data.status === 401)
             {
@@ -143,3 +153,4 @@ export default function SignIn() {
 		</ThemeProvider>
 	);
 }
+export default SignIn;
