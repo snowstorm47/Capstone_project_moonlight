@@ -28,7 +28,7 @@ class profileController extends Controller
             'GPA'=>'required',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
-            'image' => 'required',
+            // 'image' => 'required',
 
         ]);
         
@@ -43,9 +43,9 @@ class profileController extends Controller
             $user = User::findOrFail($id);
 
             if($user){
-            //     $file= $request->file('image');
-            // $filename= date('YmdHi').$file->getClientOriginalName();
-            // $file-> move(public_path('uploads/ProfilePicture'), $filename);
+                $file= $request->file('image');
+                $filename= date('YmdHi').$file->getClientOriginalName();
+                $file-> move(public_path('uploads/ProfilePicture'), $filename);
                 $user->name = $request->name;
                 $resultUser = $user->save();
                 
@@ -60,6 +60,7 @@ class profileController extends Controller
                 $student ->GPA = $request->input('GPA');
                 $student ->department_id = $request->input('department_id');
                 $student ->StartDateClass = $request->input('startDateClass');
+                $student->image=$filename;
                 $resultStudent = $student->save();
                 // $skill= skill::where('user_id','=',$id)->first();
                 // $skill ->skill = $request->input('skill');
@@ -78,7 +79,59 @@ class profileController extends Controller
 
         }
 }
+    public function addStudentProfile(Request $request,$id)
+    {
+        $validator = Validator::make($request->all(),[
+            
+            'phoneNumber'=>'required|max:13|min:10',
+            'sex'=>'required',
+            'major'=>'required',
+            'GPA'=>'required',
+            'startDateClass'=>'required',
+            'endDateClass'=>'required|after:startDate',
+            'institution_id' => 'required',
+            'college_id' => 'required',
+            'department_id' => 'required',
 
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
+            $user = User::findOrFail($id);
+            if($user){
+            $student = new student;
+            $file= $request->file('image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('uploads/ProfilePicture'), $filename);
+            $student->phoneNumber = $request->phoneNumber;
+            $student->major = $request->major;
+            $student->startDateClass = $request->startDateClass;
+            $student->endDateClass = $request->endDateClass;
+            $student->GPA = $request->GPA;
+            $student->sex = $request->sex;
+            $student ->institution_id = $request->institution_id;
+            $student ->department_id = $request->department_id;
+            $student ->college_id = $request->college_id;
+            // $student ->institution_id = $request->input('institution_id');
+            //     $student ->college_id = $request->input('college_id');                
+            //     $student ->department_id = $request->input('department_id');
+
+            $student->image=$filename;
+            $student->user_id=$id;
+            $student->save();
+            return response()->json([
+                "status" => 200,
+                'message'=>'profile created']);
+            }
+
+        }
+    }
     public function editEmployment(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
