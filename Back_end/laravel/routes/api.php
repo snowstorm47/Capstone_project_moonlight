@@ -37,11 +37,14 @@ Route::put('updateNotification/{id}',[notificationController::class, 'updateNoti
 Route::get('showNotification/{id}',[notificationController::class, 'showNotification']);
 Route::get('showInstitutionNotification/{id}',[notificationController::class, 'showInstitutionNotification']);
 Route::get('profile/{id}',[profileController::class,'profile']);
+Route::get('getProfilePicture/{id}',[profileController::class,'getProfilePicture']);
+Route::get('getImageAndName/{id}',[notificationController::class,'showImageAndName']);
 Route::post('addProfile/{id}',[profileController::class,'addStudentProfile']);
 Route::get('getSocialMediaLink/{id}',[profileController::class,'getSocialMediaLink']);
 Route::get('getSocialMediaLinkSingle/{id}',[profileController::class,'getSocialMediaLinkSingle']);
 Route::get('getEmploymentHistory/{id}',[profileController::class,'getEmploymentHistory']);
 Route::put('updateProfile/{id}',[profileController::class,'profileEdit']);
+Route::post('updateProfilePicture/{id}',[profileController::class,'editProfilePicture']);
 Route::put('editEmploymentHistory/{id}',[profileController::class,'editEmployment']);
 Route::put('editSocialMediaLink/{id}',[profileController::class,'editsocialMediaLink']);
 Route::delete('deleteEmployment/{id}',[profileController::class,'deleteEmployment']);

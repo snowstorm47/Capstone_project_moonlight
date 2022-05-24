@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\notification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 
 class notificationController extends Controller
@@ -117,6 +118,28 @@ class notificationController extends Controller
             "notification"=>$Notification,
             "status"=>200,
         ]);
+    }
+
+    public function showImageAndName($id)
+    {
+        //For now name agree with jo about the image creating profileImage table
+        // $institutionImage=notification::join('institution','institution.user_id','=','notification.sender_id')
+        // ->where('notification.reciever_id','=',$id)
+        // ->where('user_id','=',$id)->get(['user.name']);
+        
+
+        $institution = DB::table('institution')
+            ->join('users', 'institution.user_id', '=', 'users.id')
+            ->join('notification', 'institution.user_id', '=', 'notification.sender_id')
+            ->where('notification.reciever_id','=',$id)
+            // ->select('users.name', 'institution.location', 'notification.notificationTitle')
+            ->get();
+            return Response()->json([
+                "notification"=>$institution,
+                "status"=>200,
+            ]);
+        $studentImage= notification::join('student','student.user_id','=','notification.sender_id')
+        ->where('notification.reciever_id','=',$id)->get();
     }
 
     public function showNotification(Request $request,$id)
