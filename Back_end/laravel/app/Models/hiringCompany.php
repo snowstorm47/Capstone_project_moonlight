@@ -15,7 +15,6 @@ class hiringCompany extends Model
         'representativeEmail',
         'phoneNumber',
         'poBox',
-        'verificationStatus',
         'location',
         'description',
         'image'

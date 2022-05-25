@@ -37,8 +37,8 @@ class institutionRegistration extends Controller
             'phoneNumber'=>'required|max:13|min:10',
             'poBox'=>'required',
             'location'=>'required',
-            'institutionName'=>'required'
-
+            'institutionName'=>'required',
+            'image'=>'required'
         ]);
 
         if($validator->fails())
@@ -165,16 +165,16 @@ class institutionRegistration extends Controller
         ]);
         $institution->save();
 
-        $department = department::create([
+        // $department = department::create([
             
-            'departmentName'=> $request->departmentName,    
-        ]);
-        $department->save();
+        //     'departmentName'=> $request->departmentName,    
+        // ]);
+        // $department->save();
 
-        $college = college::create([
-            'collegeName'=> $request->collegeName,    
-        ]);
-        $college->save();
+        // $college = college::create([
+        //     'collegeName'=> $request->collegeName,    
+        // ]);
+        // $college->save();
     }
 
     public function addDepartment(Request $request)
@@ -193,42 +193,8 @@ class institutionRegistration extends Controller
     }
 
     public function deleteInstitution($id){
-        // $collegeId = college::where('institution_id','=',$id)->all();
-        // $collegeId = DB::table('colleges')->where('institution_id', $id)->get('id');
-        // return $collegeId;
-        // foreach($collegeId as $cid)
-        // {
-            $institution = institution::find($id);
-
-            foreach($institution->college as $cid)
-            {
-                return ['college id'=>$cid];
-            }
-        // $department = department::where('college_id', $collegeId)->delete();
-        // if($department)
-        // {
-        //     return ['result'=>'department deleted'];
-        // }
-        // else{
-        //     return ['result'=>'department couldnot be deleted'];
-
-        // }
-    // }
-        // $cid = college::where('institution_id','=',$id)->firstOrFail();
-        // $Iid = $cid->institution_id;
-        // return ["college"=>$cid,
-        // "institution"=>$Iid
-        // ] ;
-        // foreach($category->college as $cid) // with $category->products you call all products associated to your foreign_key
-        //     {
-        //         return $cid->institution_id;
-        //     }
-        // $cid = college::with('institutions')->get();
-        // return $cid->institution_id;
-        // $department = department::where('college_id', $collegeId)->delete();
-        // $college = college::where('institution_id', $id)->delete();
-        // $institution = institution::findOrFail($id);
-        // $institution->delete();
+        $institution = institution::findOrFail($id);
+        $institution->delete();
 
     }
     public function deleteDepartment($id)
@@ -239,23 +205,14 @@ class institutionRegistration extends Controller
 
     public function deleteCollege($id)
     {
-        $department = department::where('college_id', $id)->delete();
         $college = college::findOrFail($id);
-        $department->delete();
+        $college->delete();
     }
 
     public function updateInstitution(Request $request, $id){
         $institution = institution::findOrFail($id);
         $institution->institutionName = $request->institutionName;
         $institution->save();
-
-        $department = department::where('institution_id', $id);
-        $department->departmentName = $request->departmentName;
-        $department->save();
-
-        $college = college::where('institution_id', $id);
-        $college->collegeName = $request->collegeName;
-        $college->save();
     }
 
     public function updateDepartment(Request $request, $id)

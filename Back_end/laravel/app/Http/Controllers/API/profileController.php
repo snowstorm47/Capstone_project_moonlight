@@ -138,6 +138,7 @@ class profileController extends Controller
             'institution_id' => 'required',
             'college_id' => 'required',
             'department_id' => 'required',
+            'image'=>'required'
 
         ]);
 

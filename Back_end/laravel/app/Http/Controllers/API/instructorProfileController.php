@@ -64,6 +64,48 @@ class instructorProfileController extends Controller
         }
 }
 
+public function profile($id){
+        
+    $user = User::findOrFail($id);
+    $employmentHistory = employmentHistory::where('user_id', $id)->get();
+
+    $phoneNumber = DB::table('instructor')->where('user_id', $id)->value('phoneNumber');
+    $sex = DB::table('instructor')->where('user_id', $id)->value('sex');
+    $major = DB::table('instructor')->where('user_id', $id)->value('major');
+    $GPA = DB::table('instructor')->where('user_id', $id)->value('GPA');
+    $image = DB::table('instructor')->where('user_id', $id)->value('image');
+    $recommendationDetail = DB::table('recomendation')->where('instructor_id', $id)->value('recomendationDetail');
+
+
+
+   $skill= DB::table('users')
+   ->join('skill','users.id','=','skill.user_id')
+   ->where('users.id',$id) 
+   ->select('skill.*')//this is if you want
+   ->get();
+
+    if($user )
+        {
+            return response()->json([
+                'status' => 200,
+                'name' => $user->name,
+                'phoneNumber'=>$phoneNumber,
+                'sex'=>$sex,
+                'major'=>$major,
+                'GPA'=>$GPA,
+                'image'=>$image,
+                'recommendationDetail'=>$recommendationDetail,
+                'skill'=>$skill,
+                'employmentHistory'=>$employmentHistory
+            ]);
+        }
+        else
+        {
+        return ["result"=>"getting instructor failed"];
+        }
+  
+}
+
 public function getProfilePicture($id){
     $image = DB::table('instructor')->where('user_id', $id)->value('image');
     return response()->json([
@@ -115,7 +157,8 @@ public function addInstructorProfile(Request $request,$id)
         'sex'=>'required',
         'major'=>'required',
         'GPA'=>'required',
-        'institution_id' => 'required'
+        'institution_id' => 'required',
+        'image'=>'required'
 
     ]);
 
