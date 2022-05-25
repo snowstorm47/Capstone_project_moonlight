@@ -209,18 +209,9 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.name}
               />
+          {/* <span style={{color:"red"}}>{editProfile.error_list.name}</span> */}
             </Form.Item>
           </Col>
-
-          {/* <Col> 
-                    <Form.Item label="Email" style={{width: '64%'}} rules={[
-                        { 
-                        type: 'email'
-                        }
-                        ]}>
-                        <Input style={{marginLeft: '4.6em'}}/>
-                    </Form.Item>
-                </Col> */}
 
           <Col>
             <Form.Item label="Phone Number" style={{ width: "76.5%", borderRadius: "50px" }}>
@@ -230,6 +221,7 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.phoneNumber}
               />
+          {/* <span style={{color:"red"}}>{editProfile.error_list.phoneNumber}</span> */}
             </Form.Item>
           </Col>
 
@@ -241,6 +233,7 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.major}
               />
+          {/* <span style={{color:"red"}}>{editProfile.error_list.major}</span> */}
             </Form.Item>
           </Col>
 
@@ -252,6 +245,7 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.GPA}
               />
+          {/* <span style={{color:"red"}}>{editProfile.error_list.GPA}</span> */}
             </Form.Item>
           </Col>
 
@@ -268,6 +262,7 @@ function ProfilePageP() {
                 <option value="Female">Female</option>
               </select>
             </Form.Item>
+          {/* <span style={{color:"red"}}>{editProfile.error_list.sex}</span> */}
           </Col>
 
           <Col>
@@ -357,7 +352,7 @@ function ProfilePageP() {
                 value={editProfile.startDateClass}
                 className="form-control"
               />
-              {/* <span>{editProfile.error_list.startDateClass}</span> */}
+              {/* <span style={{color:"red"}}>{editProfile.error_list.startDateClass}</span> */}
 
               <label>End Date: </label>
               <input
@@ -369,7 +364,7 @@ function ProfilePageP() {
                 value={editProfile.endDateClass}
                 className="form-control"
               />
-              {/* <span>{editProfile.error_list.endDateClass}</span> */}
+              {/* <span style={{color:"red"}}>{editProfile.error_list.endDateClass}</span> */}
             </Space>
           </Col>
           <Form.Item>
