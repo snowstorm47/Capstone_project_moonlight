@@ -19,7 +19,8 @@ import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
-const SignUp = ({ navigation })=> {
+const SignUp = ()=> {
+  const first = 0;
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
 	const [failMessage, setFailMessage] = useState(null);
@@ -59,12 +60,15 @@ const SignUp = ({ navigation })=> {
           localStorage.setItem("auth_email", res.data.email);
           localStorage.setItem("auth_name", res.data.name);
           localStorage.setItem("auth_id", res.data.id);
+          localStorage.setItem("auth_position", res.data.position);
+          localStorage.setItem("auth_profile", 0);
           console.log("after auth_token");
 			  	setMessage(res.message);
 
           console.log(res.data.message);
+          console.log(first);
           // swal("Success", res.data.message, "success");
-          navigate("/signin");
+          navigate("/signin",{state:{first}});
         } else {
           console.log("inside else");
 				  setFailMessage(res.data.message);

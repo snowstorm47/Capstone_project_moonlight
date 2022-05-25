@@ -18,21 +18,15 @@ import EditProfilePicture from "./EditProfilePicture";
 
 const { Option } = Select;
 
-function CreateProfile() {
+function InstructorCreateProfile() {
   const [institutionList, setInstitutionList] = useState([]);
-  const [collegeList, setCollegeList] = useState([]);
-  const [departmentList, setDepartmentList] = useState([]);
   const [success, setSuccess] = useState();
   const [createProfile, setCreateProfile] = useState({
     phoneNumber: "",
     sex: "",
     institution_id: "",
-    college_id: "",
-    department_id: "",
     GPA: "",
     major: "",
-    startDateClass: "",
-    endDateClass: "",
     image: "",
     error_list: [],
   });
@@ -45,14 +39,12 @@ function CreateProfile() {
     axios.get(`/api/all-institution`).then((res) => {
       if (res.data.status === 200) {
         setInstitutionList(res.data.institution);
-        setCollegeList(res.data.college);
-        setDepartmentList(res.data.department);
         console.log(institutionList);
       }
     });
   }, []);
 
-  const id = localStorage.getItem("auth_id");
+  
 
   const navigate = useNavigate();
 
@@ -65,25 +57,23 @@ function CreateProfile() {
   const Profile = (e) => {
     console.log("create");
     // e.preventDefault();
+    const id = localStorage.getItem("auth_id");
     const fData = new FormData();
     fData.append("image", createProfile.image);
     fData.append("phoneNumber", createProfile.phoneNumber);
     fData.append("sex", createProfile.sex);
     fData.append("major", createProfile.major);
     fData.append("GPA", createProfile.GPA);
+    fData.append("verificationStatus", 0);
     fData.append("institution_id", createProfile.institution_id);
-    fData.append("college_id", createProfile.college_id);
-    fData.append("endDateClass", createProfile.endDateClass);
-    fData.append("startDateClass", createProfile.startDateClass);
-    fData.append("department_id", createProfile.department_id);
+    fData.append("user_id", id);
 
-    const id = localStorage.getItem("auth_id");
+    
     axios.get("/sanctum/csrf-cookie").then(() => {
       console.log("inside csrf");
 
-      axios.post(`/api/addProfile/${id}`, fData).then((res) => {
+      axios.post(`/api/addInstructorProfile/${id}`, fData).then((res) => {
         if (res.data.status === 200) {
-          // localStorage.setItem("auth_profile",1);
           //   setSuccess(res.data.message);
           navigate("/");
           console.log('success');
@@ -93,7 +83,7 @@ function CreateProfile() {
             ...createProfile,
             error_list: res.data.validation_errors,
           });
-          console.log(res.data.validation_errors);
+          console.log(createProfile.error_list);
         }
       });
     });
@@ -128,12 +118,7 @@ function CreateProfile() {
           textAlign:"left",
       }}
       onFinish={Profile}>
-        {/* <Col
-          className="row3"
-          span={9}
-          style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
-        > */}
-        
+                
           <Divider>Create Your Profile </Divider>
           <Col>
         <Form.Item
@@ -160,7 +145,9 @@ function CreateProfile() {
               Click or drag to upload Profile Image
             </p>
           </Upload.Dragger>
+          <span style={{color:"red"}}>{createProfile.error_list.image}</span>
         </Form.Item>
+        
         </Col>
           <Col>
             <Form.Item
@@ -173,6 +160,8 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.phoneNumber}
               />
+          <span style={{color:"red"}}>{createProfile.error_list.phoneNumber}</span>
+
             </Form.Item>
           </Col>
         {/* </Col> */}
@@ -190,35 +179,8 @@ function CreateProfile() {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
+          <span style={{color:"red"}}>{createProfile.error_list.sex}</span>
             </Form.Item>
-          </Col>
-
-          <Col>
-            <Space direction="vertical" size={12} style={{ padding: 10 }}>
-              <label>Class start Date: </label>
-              <input
-                style={{ borderRadius: "80px", marginLeft: '1em'}}
-                type="date"
-                name="startDateClass"
-                format={"m/d/Y"}
-                onChange={handleInput}
-                value={createProfile.startDateClass}
-                className="form-control"
-              />
-              {/* <span>{createProfile.error_list.startDateClass}</span> */}
-
-              <label>Class end Date: </label>
-              <input
-                style={{ borderRadius: "80px", marginLeft: '1em', border: 'outset'}}
-                type="date"
-                name="endDateClass"
-                format={"m/d/Y"}
-                onChange={handleInput}
-                value={createProfile.endDateClass}
-                className="form-control"
-              />
-              {/* <span>{createProfile.error_list.endDateClass}</span> */}
-            </Space>
           </Col>
 
           <Col>
@@ -240,50 +202,7 @@ function CreateProfile() {
                   );
                 })}
               </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item>
-              <select
-                placeholder="Select a College"
-                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-                name="college_id"
-                onChange={handleInput}
-                value={createProfile.college_id}
-              >
-                <option value="">Select College</option>
-
-                {collegeList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.collegeName}
-                    </option>
-                  );
-                })}
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item>
-              <select
-                placeholder="Select a Department"
-                style={{ padding: 10, width: "75%", borderRadius: "80px"}}
-                name="department_id"
-                onChange={handleInput}
-                value={createProfile.department_id}
-              >
-                <option value="">Select Department</option>
-
-                {departmentList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.departmentName}
-                    </option>
-                  );
-                })}
-              </select>
+              
             </Form.Item>
           </Col>
 
@@ -295,6 +214,8 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.major}
               />
+          <span style={{color:"red"}}>{createProfile.error_list.major}</span>
+
             </Form.Item>
           </Col>
 
@@ -306,6 +227,8 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.GPA}
               />
+          <span style={{color:"red"}}>{createProfile.error_list.GPA}</span>
+
             </Form.Item>
           </Col>
 
@@ -319,4 +242,4 @@ function CreateProfile() {
   );
 }
 
-export default CreateProfile;
+export default InstructorCreateProfile;

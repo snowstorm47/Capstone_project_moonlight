@@ -18,21 +18,16 @@ import EditProfilePicture from "./EditProfilePicture";
 
 const { Option } = Select;
 
-function CreateProfile() {
+function HiringCompanyCreateProfile() {
   const [institutionList, setInstitutionList] = useState([]);
-  const [collegeList, setCollegeList] = useState([]);
-  const [departmentList, setDepartmentList] = useState([]);
   const [success, setSuccess] = useState();
   const [createProfile, setCreateProfile] = useState({
     phoneNumber: "",
-    sex: "",
-    institution_id: "",
-    college_id: "",
-    department_id: "",
-    GPA: "",
-    major: "",
-    startDateClass: "",
-    endDateClass: "",
+    poBox: "",
+    location: "",
+    description: "",
+    representative: "",
+    representativeEmail: "",
     image: "",
     error_list: [],
   });
@@ -45,14 +40,12 @@ function CreateProfile() {
     axios.get(`/api/all-institution`).then((res) => {
       if (res.data.status === 200) {
         setInstitutionList(res.data.institution);
-        setCollegeList(res.data.college);
-        setDepartmentList(res.data.department);
         console.log(institutionList);
       }
     });
   }, []);
 
-  const id = localStorage.getItem("auth_id");
+  
 
   const navigate = useNavigate();
 
@@ -65,25 +58,24 @@ function CreateProfile() {
   const Profile = (e) => {
     console.log("create");
     // e.preventDefault();
+    const id = localStorage.getItem("auth_id");
     const fData = new FormData();
     fData.append("image", createProfile.image);
     fData.append("phoneNumber", createProfile.phoneNumber);
-    fData.append("sex", createProfile.sex);
-    fData.append("major", createProfile.major);
-    fData.append("GPA", createProfile.GPA);
-    fData.append("institution_id", createProfile.institution_id);
-    fData.append("college_id", createProfile.college_id);
-    fData.append("endDateClass", createProfile.endDateClass);
-    fData.append("startDateClass", createProfile.startDateClass);
-    fData.append("department_id", createProfile.department_id);
+    fData.append("poBox", createProfile.poBox);
+    fData.append("location", createProfile.location);
+    fData.append("description", createProfile.description);
+    // fData.append("verificationStatus", 0);
+    fData.append("representative", createProfile.representative);
+    fData.append("representativeEmail", createProfile.representativeEmail);
+    fData.append("user_id", id);
 
-    const id = localStorage.getItem("auth_id");
+    
     axios.get("/sanctum/csrf-cookie").then(() => {
       console.log("inside csrf");
 
-      axios.post(`/api/addProfile/${id}`, fData).then((res) => {
+      axios.post(`/api/addHiringCompanyProfile/${id}`, fData).then((res) => {
         if (res.data.status === 200) {
-          // localStorage.setItem("auth_profile",1);
           //   setSuccess(res.data.message);
           navigate("/");
           console.log('success');
@@ -160,6 +152,7 @@ function CreateProfile() {
               Click or drag to upload Profile Image
             </p>
           </Upload.Dragger>
+          <span style={{color:"red"}}>{createProfile.error_list.image}</span>
         </Form.Item>
         </Col>
           <Col>
@@ -173,139 +166,77 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.phoneNumber}
               />
+          <span style={{color:"red"}}>{createProfile.error_list.phoneNumber}</span>
             </Form.Item>
           </Col>
         {/* </Col> */}
 
         <Col>
-            <Form.Item>
-              <label>Gender:</label>
-              <select
-                style={{ width: "50%", padding: 10, marginLeft: "3.7em", borderRadius: "50px" }}
-                name="sex"
-                onChange={handleInput}
-                value={createProfile.sex}
-              >
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Space direction="vertical" size={12} style={{ padding: 10 }}>
-              <label>Class start Date: </label>
-              <input
-                style={{ borderRadius: "80px", marginLeft: '1em'}}
-                type="date"
-                name="startDateClass"
-                format={"m/d/Y"}
-                onChange={handleInput}
-                value={createProfile.startDateClass}
-                className="form-control"
-              />
-              {/* <span>{createProfile.error_list.startDateClass}</span> */}
-
-              <label>Class end Date: </label>
-              <input
-                style={{ borderRadius: "80px", marginLeft: '1em', border: 'outset'}}
-                type="date"
-                name="endDateClass"
-                format={"m/d/Y"}
-                onChange={handleInput}
-                value={createProfile.endDateClass}
-                className="form-control"
-              />
-              {/* <span>{createProfile.error_list.endDateClass}</span> */}
-            </Space>
-          </Col>
-
-          <Col>
-            <Divider>Academic</Divider>
-            <Form.Item>
-              <select
-                placeholder="Select an Institution"
-                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-                name="institution_id"
-                onChange={handleInput}
-                value={createProfile.institution_id}
-              >
-                <option value="">Select Institution</option>
-                {institutionList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.institutionName}
-                    </option>
-                  );
-                })}
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item>
-              <select
-                placeholder="Select a College"
-                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-                name="college_id"
-                onChange={handleInput}
-                value={createProfile.college_id}
-              >
-                <option value="">Select College</option>
-
-                {collegeList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.collegeName}
-                    </option>
-                  );
-                })}
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item>
-              <select
-                placeholder="Select a Department"
-                style={{ padding: 10, width: "75%", borderRadius: "80px"}}
-                name="department_id"
-                onChange={handleInput}
-                value={createProfile.department_id}
-              >
-                <option value="">Select Department</option>
-
-                {departmentList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.departmentName}
-                    </option>
-                  );
-                })}
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item label="Major" style={{ width: "76.5%", borderRadius: "50px" }}>
+            <Form.Item
+              label="Representative Full Name"
+              style={{ width: "76.5%", borderRadius: "50px" }}
+            >
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="major"
+                name="representative"
                 onChange={handleInput}
-                value={createProfile.major}
+                value={createProfile.representative}
               />
+          <span style={{color:"red"}}>{createProfile.error_list.representative}</span>
             </Form.Item>
           </Col>
 
           <Col>
-            <Form.Item label="GPA" style={{ width: "76.5%", borderRadius: "50px" }}>
+            <Form.Item
+              label="Representative Email"
+              style={{ width: "76.5%", borderRadius: "50px" }}
+            >
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="GPA"
+                name="representativeEmail"
                 onChange={handleInput}
-                value={createProfile.GPA}
+                value={createProfile.representativeEmail}
               />
+          <span style={{color:"red"}}>{createProfile.error_list.representativeEmail}</span>
+            </Form.Item>
+          </Col>
+
+          <Col>
+            <Form.Item
+              label="Describe what your Company does"
+              style={{ width: "76.5%", borderRadius: "50px" }}
+            >
+              <Input.TextArea
+                style={{ marginLeft: "0.2em" }}
+                name="description"
+                onChange={handleInput}
+                value={createProfile.description}
+              />
+          <span style={{color:"red"}}>{createProfile.error_list.description}</span>
+            </Form.Item>
+          </Col>
+
+          <Col>
+            <Form.Item label="P.O. Box" style={{ width: "76.5%", borderRadius: "50px" }}>
+              <Input
+                style={{ marginLeft: "0.2em" }}
+                name="poBox"
+                onChange={handleInput}
+                value={createProfile.poBox}
+              />
+          <span style={{color:"red"}}>{createProfile.error_list.poBox}</span>
+            </Form.Item>
+          </Col>
+
+          <Col>
+            <Form.Item label="Location" style={{ width: "76.5%", borderRadius: "50px" }}>
+              <Input
+                style={{ marginLeft: "0.2em" }}
+                name="location"
+                onChange={handleInput}
+                value={createProfile.location}
+              />
+          <span style={{color:"red"}}>{createProfile.error_list.location}</span>
             </Form.Item>
           </Col>
 
@@ -319,4 +250,4 @@ function CreateProfile() {
   );
 }
 
-export default CreateProfile;
+export default HiringCompanyCreateProfile;
