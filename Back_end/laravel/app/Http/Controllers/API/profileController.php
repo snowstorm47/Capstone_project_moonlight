@@ -13,6 +13,7 @@ use App\Models\socialMediaLink;
 use App\Models\certificate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\File;
 
 class profileController extends Controller
 {
@@ -28,7 +29,7 @@ class profileController extends Controller
             'GPA'=>'required',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
-            // 'image' => 'required',
+            'image' => 'required',
 
         ]);
         
@@ -43,9 +44,9 @@ class profileController extends Controller
             $user = User::findOrFail($id);
 
             if($user){
-                $file= $request->file('image');
-                $filename= date('YmdHi').$file->getClientOriginalName();
-                $file-> move(public_path('uploads/ProfilePicture'), $filename);
+                // $file= $request->file('image');
+                // $filename= date('YmdHi').$file->getClientOriginalName();
+                // $file-> move(public_path('uploads/ProfilePicture'), $filename);
                 $user->name = $request->name;
                 $resultUser = $user->save();
                 
@@ -60,7 +61,7 @@ class profileController extends Controller
                 $student ->GPA = $request->input('GPA');
                 $student ->department_id = $request->input('department_id');
                 $student ->StartDateClass = $request->input('startDateClass');
-                $student->image=$filename;
+                // $student->image=$filename;
                 $resultStudent = $student->save();
                 // $skill= skill::where('user_id','=',$id)->first();
                 // $skill ->skill = $request->input('skill');
@@ -70,7 +71,9 @@ class profileController extends Controller
         
             if($resultUser && $resultStudent )
             {
-            return ["result"=>"user profile has been updated"];
+            return response()->json([
+                "status"=>200,
+                "result"=>"user profile has been updated"]);
             }
             else
             {
@@ -79,6 +82,49 @@ class profileController extends Controller
 
         }
 }
+    public function getProfilePicture($id){
+        $image = DB::table('student')->where('user_id', $id)->value('image');
+        return response()->json([
+            'status'=> 200,
+            'image'=>$image
+        ]);
+    }
+        public function editProfilePicture(Request $request, $id)
+        {
+            $user = User::findOrFail($id);
+
+                if($user){
+                    // return ['image'=>$request->image];
+                    $student= student::where('user_id','=',$id)->first();
+                    $destination = 'uploads/ProfilePicture'.$student->image;
+                    if(File::exists($destination))
+                    {
+                        File::delete($destination);
+                    }
+                    $file= $request->file('image');
+                    if($file){
+                    $filename= date('YmdHi').$file->getClientOriginalName();
+                    $file-> move(public_path('uploads/ProfilePicture'), $filename);
+                    $student->image=$filename;
+                    $resultStudent = $student->save();
+                    if($resultStudent )
+                    {
+                    return [
+                        "status"=>200,
+                        "result"=>"user profile image has been updated"];
+                    }
+                    else
+                    {
+                    return ["result"=>"user image update failed"];
+                    }
+                    }
+                    else{
+                        return ['result'=>"file not exist"];
+                    }
+                    
+                }
+            }
+        
     public function addStudentProfile(Request $request,$id)
     {
         $validator = Validator::make($request->all(),[
@@ -172,6 +218,8 @@ class profileController extends Controller
             }
         }
 }
+
+    
 
 public function editSocialMediaLink(Request $request, $id)
     {
@@ -269,20 +317,15 @@ public function editSocialMediaLink(Request $request, $id)
         // $student = student::where('user_id', $id)->get();
         $employmentHistory = employmentHistory::where('user_id', $id)->get();
    
-    //     $student= DB::table('users')
-    //    ->join('student','users.id','=','student.user_id')
-    //    ->where('users.id',$id) 
-    //    ->select('student.*')//this is if you want
-    //    ->get();
-    $phoneNumber = DB::table('student')->where('user_id', $id)->value('phoneNumber');
-    $startDateClass= DB::table('student')->where('user_id', $id)->value('startDateClass');
-    $endDateClass= DB::table('student')->where('user_id', $id)->value('endDateClass');
-    $sex = DB::table('student')->where('user_id', $id)->value('sex');
-    $major = DB::table('student')->where('user_id', $id)->value('major');
-    $GPA = DB::table('student')->where('user_id', $id)->value('GPA');
-        
-    //should I add instructor_id foreign key in users table
-    $recommendationDetail = DB::table('recomendation')->where('student_id', $id)->value('recomendationDetail');
+        $phoneNumber = DB::table('student')->where('user_id', $id)->value('phoneNumber');
+        $startDateClass= DB::table('student')->where('user_id', $id)->value('startDateClass');
+        $endDateClass= DB::table('student')->where('user_id', $id)->value('endDateClass');
+        $sex = DB::table('student')->where('user_id', $id)->value('sex');
+        $major = DB::table('student')->where('user_id', $id)->value('major');
+        $GPA = DB::table('student')->where('user_id', $id)->value('GPA');
+        $image = DB::table('student')->where('user_id', $id)->value('image');
+        //should I add instructor_id foreign key in users table
+        $recommendationDetail = DB::table('recomendation')->where('student_id', $id)->value('recomendationDetail');
     // $instructorName= DB::table('users')
     //    ->join('instructor','users.id','=','instructor.user_id')
     //    ->where('users.id',$id) 
@@ -308,6 +351,7 @@ public function editSocialMediaLink(Request $request, $id)
                     'sex'=>$sex,
                     'major'=>$major,
                     'GPA'=>$GPA,
+                    'image'=>$image,
                     'recommendationDetail'=>$recommendationDetail,
                     'skill'=>$skill,
                     'employmentHistory'=>$employmentHistory
