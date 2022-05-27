@@ -10,7 +10,7 @@ import React, { useState, useEffect } from "react";
 import { Avatar, Image } from "antd";
 import axios from "axios";
 
-const EditProfilePicture = ({ parentToChild }) => {
+const EditInstructorProfilePicture = ({ parentToChild }) => {
   const [profilePicture, setProfilePicture] = useState({
     image: "",
   });
@@ -18,7 +18,7 @@ const EditProfilePicture = ({ parentToChild }) => {
 
   useEffect(() => {
     // axios.get('/sanctum/csrf-cookie').then(res => {
-    axios.get(`/api/getProfilePicture/${id}`).then((res) => {
+    axios.get(`/api/getInstructorProfilePicture/${id}`).then((res) => {
       if (res.data.status === 200) {
         setProfilePicture(res.data);
       } else {
@@ -33,10 +33,6 @@ const EditProfilePicture = ({ parentToChild }) => {
     setIsModalVisible(true);
   };
 
-  // const handleOk = () => {
-  //   setIsModalVisible(false);
-  // };
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -44,15 +40,12 @@ const EditProfilePicture = ({ parentToChild }) => {
   const handleSubmit = async () => {
     const fData = new FormData();
     fData.append("image", profilePicture.image);
-    // fData.append("notificationTitle", notification.notificationTitle);
-    // fData.append("notificationDetail", notification.notificationDetail);
-    // console.log(fData);
     axios.get("/sanctum/csrf-cookie").then((response) => {
-      axios.post(`api/updateProfilePicture/${id}`, fData).then((response) => {
+      axios.post(`api/updateInstructorProfilePicture/${id}`, fData).then((response) => {
         if (response.data.status === 200) {
+            
           message.success("Picture updated succesfully");
-    setIsModalVisible(false);
-
+          setIsModalVisible(false);
         } else {
           message.error("Picture was not updated. Please try again");
         }
@@ -75,22 +68,23 @@ const EditProfilePicture = ({ parentToChild }) => {
 
   return (
     <>
-      <div className="image1">
+      <div className="image1" >
         <Image
-          width={190}
+          width={280}
+          height={280}
           src={
             "http://localhost:8000/uploads/ProfilePicture/" +
             profilePicture.image
           }
           name="image"
-          style={{ borderRadius: "100px", alignContent: "left" }}
+          style={{ borderRadius: "100%", alignContent: "left",marginTop:"7rem"}}
         />
       </div>
       <Button
         type="text"
         style={{
-          marginLeft: "4rem",
-          marginTop: "-2rem",
+          marginLeft: "0rem",
+          marginTop: "-4rem",
         }}
         icon={<EditOutlined 
             style={{ cursor: "pointer" }}
@@ -158,4 +152,4 @@ const EditProfilePicture = ({ parentToChild }) => {
   );
 };
 
-export default EditProfilePicture;
+export default EditInstructorProfilePicture;

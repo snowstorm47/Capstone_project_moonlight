@@ -16,11 +16,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import { LocationOnOutlined } from "@mui/icons-material";
 
 const theme = createTheme();
 
 const SignIn = () => {
   const location = useLocation();
+  let first = 1;
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
   const [failMessage, setFailMessage] = useState(null);
@@ -55,7 +57,7 @@ const SignIn = () => {
           setMessage(res.data.message);
           console.log(res.data.message);
 
-          if (location.state.first === 0) {
+          if (location?.state?.first === 0 ) {
             location.state.first++;
             if (localStorage.getItem("auth_position") === "Student") {
               navigate("/createprofile");

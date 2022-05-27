@@ -34,7 +34,11 @@ import NewsfeedStudent from "./pages/newsfeedstudent";
 import InstructorCreateProfile from "./pages/InstructorCreateProfile";
 import HiringCompanyCreateProfile from "./pages/HiringCompanyCreateProfile";
 import InstitutionCreateProfile from "./pages/InstitutionCreateProfile";
-
+import ProfilePageCompany from "./pages/profileCompany";
+import ProfilePageInstitution from "./pages/profileInstitution";
+import ProfilePageInstructor from "./pages/profileInstructor";
+import SendRecomendation from "./components/SendRecommendation";
+import AdminPage from "./AdminPage";
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
 //to get data in json format
@@ -63,15 +67,17 @@ function App() {
   };
 
   let editProfile = "";
-  if (localStorage.getItem("auth_profile") === 1) {
+  console.log(localStorage.getItem("auth_profile"));
+  if (localStorage.getItem("auth_profile") == 1) {
+    
     if (localStorage.getItem("auth_position") === "Student") {
       editProfile = "/profilepage";
     } else if (localStorage.getItem("auth_position") === "Institution") {
-      editProfile = "";
+      editProfile = "/editinstitutionprofile";
     } else if (localStorage.getItem("auth_position") === "Instructor") {
-      editProfile = "";
+      editProfile = "/editinstructorprofile";
     } else if (localStorage.getItem("auth_position") === "Hiring Company") {
-      editProfile = "";
+      editProfile = "/editcompanyprofile";
     }
   } else {
     if (localStorage.getItem("auth_position") === "Student") {
@@ -188,6 +194,12 @@ function App() {
           <Route path="newsfeed/news" element={<NewsDetail />} />
           <Route path="profilepage" element={<ProfilePageP />} />
           <Route path="createprofile" element={<CreateProfile />} />
+          <Route path="editinstructorprofile" element={<ProfilePageInstructor />} />
+          <Route path="editinstitutionprofile" element={<ProfilePageInstitution />} />
+          <Route path="editcompanyprofile" element={<ProfilePageCompany />} />
+          <Route path="login" element={<LogIn />} />
+          <Route path="recomendation" element={<SendRecomendation />} />
+          <Route path="admin" element={<AdminPage />} />
           <Route
             path="createprofileinstructor"
             element={<InstructorCreateProfile />}

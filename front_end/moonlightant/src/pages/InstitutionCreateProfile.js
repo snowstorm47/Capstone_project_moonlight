@@ -56,6 +56,7 @@ function InstitutionCreateProfile() {
 
       axios.post(`/api/addInstitutionProfile/${id}`, fData).then((res) => {
         if (res.data.status === 200) {
+          localStorage.setItem("auth_profile",1);
           //   setSuccess(res.data.message);
           navigate("/");
           console.log('success');

@@ -11,81 +11,31 @@ import { useNavigate } from "react-router-dom";
 import AddSkill from "../components/AddSkill";
 import AddEmploymentHistory from "../components/AddEmploymentHistory";
 import EditEmploymentHistory from "../components/EditEmploymentHistory";
-
+import EditInstitutionProfilePicture from "../components/EditInstitutionProfilePicture";
 // import '/App.css';
 
 const { Option } = Select;
 
 function ProfilePageInstitution() {
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  // const handleOk = () => {
-  //   setIsModalVisible(false);
-  // };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-  const [visible, setVisible] = useState(true);
-
-  const [institutionList, setInstitutionList] = useState([]);
-  const [employmentList, setemploymentList] = useState([]);
-  const [collegeList, setCollegeList] = useState([]);
-  const [departmentList, setDepartmentList] = useState([]);
   const [success, setSuccess] = useState();
-  const [skillList, setSkillList] = useState([]);
   const [editProfile, setEditProfile] = useState({
     phoneNumber: "",
-    name: "",
-    position: "",
-    startDate: "",
-    endDate: "",
-    sex: "",
-    institution_id: "",
-    college_id: "",
-    department_id: "",
-    companyName: "",
-    GPA:"",
-    major:"",
-    startDateClass: "",
-    endDateClass: "",
-    skill: [],
-    employmentHistory: [],
-    newSkill: "",
+    institutionName: "",
+    location:"",
+    poBox:"",
     error_list: [],
   });
 
-  //   const [skill,setSkill]= useState({
-  //       newSkill:""
-  //   });
-
-  useEffect(() => {
-    axios.get(`/api/all-institution`).then((res) => {
-      if (res.data.status === 200) {
-        setInstitutionList(res.data.institution);
-        setCollegeList(res.data.college);
-        setDepartmentList(res.data.department);
-
-        console.log(institutionList);
-      }
-    });
-  }, []);
 
   const id = localStorage.getItem("auth_id");
 
   //
   useEffect(() => {
     // axios.get('/sanctum/csrf-cookie').then(res => {
-    axios.get(`/api/profile/${id}`).then((res) => {
+    axios.get(`/api/institutionprofile/${id}`).then((res) => {
       if (res.data.status === 200) {
         setEditProfile(res.data);
-        setSkillList(res.data.skill);
-        // setemploymentList(res.data.employmentHistory);
-        console.log(res.data.student[0].phoneNumber);
       } else {
         console.log("couldnt retrieve data");
       }
@@ -100,34 +50,6 @@ function ProfilePageInstitution() {
     setEditProfile({ ...editProfile, [e.target.name]: e.target.value });
   };
 
-  const deleteSkill = (id, e) => {
-    axios.get("/sanctum/csrf-cookie").then((res) => {
-      console.log("inside csrf");
-
-      axios.delete(`/api/deleteSkill/${id}`).then((res) => {
-        if (res.data.status === 200) {
-          console.log("skill deleted");
-        } else {
-          console.log("skill not deleted");
-        }
-      });
-    }, []);
-  };
-
-  const deleteEmploymentHistory = (id) => {
-    axios.get("/sanctum/csrf-cookie").then((res) => {
-      console.log("inside csrf");
-
-      axios.delete(`/api/deleteEmployment/${id}`).then((res) => {
-        if (res.data.status === 200) {
-          console.log("employment deleted");
-        } else {
-          console.log("employment not deleted");
-        }
-      });
-    }, []);
-  };
-
   const updateProfile = (e) => {
     console.log("update");
     // e.preventDefault();
@@ -135,23 +57,15 @@ function ProfilePageInstitution() {
     console.log(editProfile.sex);
     const data = {
       phoneNumber: editProfile.phoneNumber,
-      sex: editProfile.sex,
-      major: editProfile.major,
-      name: editProfile.name,
-      GPA: editProfile.GPA,
-      // endDate: editProfile.endDate,
-      startDateClass: editProfile.startDateClass,
-      endDateClass: editProfile.endDateClass,
-      institution_id: editProfile.institution_id,
-      department_id: editProfile.department_id,
-      college_id: editProfile.college_id,
-      // companyName: editProfile.companyName,
+      institutionName: editProfile.institutionName,
+      poBox: editProfile.poBox,
+      location: editProfile.location,
     };
     const id = localStorage.getItem("auth_id");
     axios.get("/sanctum/csrf-cookie").then((res) => {
       console.log("inside csrf");
 
-      axios.put(`/api/updateProfile/${id}`, data).then((res) => {
+      axios.put(`/api/updateInstitutionProfile/${id}`, data).then((res) => {
         if (res.data.status === 200) {
           setSuccess("Your profile has been updated Succcessfully");
           navigate("/");
@@ -170,7 +84,7 @@ function ProfilePageInstitution() {
 
   <Avatar icon={<UserOutlined />} />;
   return (
-    <Row className="row1" style={{ margin: "3em", marginLeft: "0em" }}>
+    <Row className="row1" style={{ backgroundColor: "#f0f2f5", margin: "3em" }}>
       <span>{success}</span>
 
       <Col
@@ -179,50 +93,49 @@ function ProfilePageInstitution() {
         style={{
           margin: "0.5em",
           paddingRight: "1.5em",
-          paddingTop: "8em",
+          paddingTop: "6em",
+          marginLeft: "15em" 
         }}
       >
         <Col>
-          <div className="image1">
-            <Image
-              width={190}
-              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-              // size={100}
-              style={{ borderRadius: "100px", alignContent: "left" }}
-            />
-          </div>
+          <EditInstitutionProfilePicture/>
         </Col>
       </Col>
 
       <Col
         className="row3"
         span={9}
-        style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
+        style={{ marginRight: "-10em",
+        marginLeft: "0.5em",
+        paddingRight: "1em",
+        textAlign: "left"}}
       >
-        <Form onFinish={updateProfile}>
-          <Divider>Instituion Profile Page</Divider>
+        <Form 
+        onFinish={updateProfile}
+        style={{background:"#ffffff",
+        marginTop:"2rem",
+          paddingLeft:"1rem",
+          paddingRight:"1rem",
+          paddingTop:"1rem",
+          paddingBottom:"1rem",
+          textAlign:"left",
+          marginBottom:"2rem",
+        borderRadius:"1rem"
+      }}
+        >
+          <Divider>Edit Profile Page</Divider>
 
           <Col>
-            <Form.Item label="Institution Name" style={{width: "77%", borderRadius: "50px"}}>
+            <Form.Item label="Institution Name" 
+            style={{width: "77%", borderRadius: "50px"}}>
               <Input
                 
-                name="name"
+                name="institutionName"
                 onChange={handleInput}
-                value={editProfile.name}
+                value={editProfile.institutionName}
               />
             </Form.Item>
           </Col>
-
-          <Col> 
-                    <Form.Item label="Email" style={{width: '64%'}} rules={[
-                        { 
-                        type: 'email'
-                        }
-                        ]}>
-                        <Input style={{marginLeft: '4.6em'}}/>
-                    </Form.Item>
-                </Col>
-
           <Col>
             <Form.Item label="Phone Number" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
@@ -235,271 +148,32 @@ function ProfilePageInstitution() {
           </Col>
 
           <Col>
-            <Form.Item label="Address" style={{ width: "76.5%", borderRadius: "50px" }}>
+            <Form.Item label="Location" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="address"
+                name="location"
                 onChange={handleInput}
-                value={editProfile.major}//change this
+                value={editProfile.location}//change this
               />
             </Form.Item>
           </Col>
 
           <Col>
-            <Form.Item label="Institution Type" style={{ width: "76.5%", borderRadius: "50px" }}>
+            <Form.Item label="P.O. Box" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="type"
+                name="poBox"
                 onChange={handleInput}
-                value={editProfile.GPA}//change this
+                value={editProfile.poBox}//change this
               />
             </Form.Item>
           </Col>
-
-          {/* <Col>
-            <Form.Item>
-              <label>Gender:</label>
-              <select
-                style={{ width: 120, padding: 10, marginLeft: "3.7em", borderRadius: "50px" }}
-                name="sex"
-                onChange={handleInput}
-                value={editProfile.sex}
-              >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </Form.Item>
-          </Col> */}
-
-{/*           
-          <Col>
-            <Divider>Academic</Divider>
-            <Form.Item>
-              <select
-                placeholder="Select an Institution"
-                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-                name="institution_id"
-                onChange={handleInput}
-                value={editProfile.institution_id}
-              >
-                {institutionList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.institutionName}
-                    </option>
-                  );
-                })}
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item>
-              <select
-                placeholder="Select a College"
-                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-                name="college_id"
-                onChange={handleInput}
-                value={editProfile.college_id}
-              >
-                {collegeList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.collegeName}
-                    </option>
-                  );
-                })}
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item>
-              <select
-                placeholder="Select a Department"
-                style={{ padding: 10, width: "75%", borderRadius: "80px"}}
-                name="department_id"
-                onChange={handleInput}
-                value={editProfile.department_id}
-              >
-                {departmentList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.departmentName}
-                    </option>
-                  );
-                })}
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Space direction="vertical" size={12} style={{ padding: 10 }}>
-              {/* <Form.Item
-                name="startDateClass"
-                onChange={handleInput}
-                value={editProfile.startDateClass}
-                >
-              <DatePicker/>
-              </Form.Item>
-              <Form.Item
-              name="endDateClass"
-              onChange={handleInput}
-              value={editProfile.endDateClass}
-              >
-              <DatePicker/>
-              </Form.Item> 
-              <label>Start Date: 
-              <input
-                style={{ marginLeft: '1em'}}
-                type="date"
-                name="startDateClass"
-                format={"m/d/Y"}
-                onChange={handleInput}
-                value={editProfile.startDateClass}
-                className="form-control"
-              />
-              </label>
-               <span>{editProfile.error_list.startDateClass}</span> 
-
-              <label>End Date: 
-              <input
-                style={{ marginLeft: '1em'}}
-                type="date"
-                name="endDateClass"
-                format={"m/d/Y"}
-                onChange={handleInput}
-                value={editProfile.endDateClass}
-                className="form-control"
-              />
-              </label>
-              <span>{editProfile.error_list.endDateClass}</span> 
-            </Space>
-          </Col> */}
-
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '0.7em', marginTop: '1em'}}>
               Submit
             </Button>
           </Form.Item>
         </Form>
-        {/* 
-        <Divider>Skills</Divider>
-        <Col>
-          {skillList.map((item) => (
-            <button
-              key={item.id}
-              value={item.skill}
-              style={{
-                color: "white",
-                borderRadius: 100,
-                border: 0,
-                margin: 2,
-                backgroundColor: "#0080ff",
-              }}
-            >
-              {item.skill}
-              
-              <Button
-                type="text"
-                onClick={() => deleteSkill(item.id)}
-                icon={<CloseOutlined size="2px" />}
-              />
-            </button>
-          ))}
-        </Col>
-
-         </Col> 
-        <Divider>Employment History</Divider>
-        <Col>
-          {visible ? (
-            <List
-              itemLayout="horizontal"
-              dataSource={editProfile.employmentHistory}
-              renderItem={(item) => (
-                <List.Item
-                  style={{
-                    marginBottom: "1em",
-                  }}
-                >
-                  <List.Item.Meta
-                    title={
-                      <a
-                        href="#"
-                        style={{
-                          marginLeft: "0em",
-                        }}
-                      >
-                        {item.companyName}
-                      </a>
-                    }
-                    description={item.position}
-                    style={{
-                      textAlign: "left",
-                    }}
-                  />
-                  <br />
-                  <br />
-                  <div
-                    style={{
-                      marginTop: "5em",
-                      marginRight: "9rem",
-                    }}
-                  >
-                    Start Date : {item.startDate}
-                  </div>
-                  <div
-                    style={{
-                      marginTop: "5em",
-                    }}
-                  >
-                    End Date : {item.endDate}
-                  </div>
-                  <List.Item
-                    actions={[
-                      <Button
-                        type="text"
-                        key="list-loadmore-edit"
-                        icon={<EditOutlined />}
-                        onClick={showModal}
-                      />,
-
-                      <Button
-                        type="text"
-                        onClick={() => deleteEmploymentHistory(item.id)}
-                        key="list-loadmore-more"
-                        icon={<CloseOutlined />}
-                      />,
-                    ]}
-                  ></List.Item>
-                  <Modal
-                    title="Edit Employment History"
-                    visible={isModalVisible}
-                    // onOk={handleOk}
-                    onCancel={handleCancel}
-                  >
-                    <EditEmploymentHistory parentToChild={item.id} />
-                  </Modal>
-                </List.Item>
-              )}
-            />
-          ) : null}
-        </Col>*/}
-      </Col> 
-
-      <Col
-        className="row2"
-        span={9}
-        style={{ margin: "0.5em", paddingLeft: "1.5em", paddingTop: "3em" }}
-      >
-        {/* <Col>
-          <Divider>Add Skill Requirments</Divider>
-          <AddSkill />
-        </Col> */}
-        {/* <Col>
-          <Divider>Add Employment History</Divider>
-          <AddEmploymentHistory />
-        </Col> */}
       </Col>
     </Row>
   );
