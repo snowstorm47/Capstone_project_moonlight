@@ -11,14 +11,12 @@ import { useNavigate } from "react-router-dom";
 import AddSkill from "../components/AddSkill";
 import AddEmploymentHistory from "../components/AddEmploymentHistory";
 import EditEmploymentHistory from "../components/EditEmploymentHistory";
-import SocialMediaLink from "../components/SocialMediaLink";
-import EditProfilePicture from "./EditProfilePicture";
 
 // import '/App.css';
 
 const { Option } = Select;
 
-function ProfilePageP() {
+function ProfilePageInstructor() {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -33,7 +31,6 @@ function ProfilePageP() {
     setIsModalVisible(false);
   };
   const [visible, setVisible] = useState(true);
-  const [idemploy, setIdemploy] = useState(true);
 
   const [institutionList, setInstitutionList] = useState([]);
   const [employmentList, setemploymentList] = useState([]);
@@ -52,11 +49,10 @@ function ProfilePageP() {
     college_id: "",
     department_id: "",
     companyName: "",
-    GPA: "",
-    major: "",
+    GPA:"",
+    major:"",
     startDateClass: "",
     endDateClass: "",
-    image:"",
     skill: [],
     employmentHistory: [],
     newSkill: "",
@@ -87,9 +83,9 @@ function ProfilePageP() {
     axios.get(`/api/profile/${id}`).then((res) => {
       if (res.data.status === 200) {
         setEditProfile(res.data);
-        console.log(editProfile);
         setSkillList(res.data.skill);
-        console.log(skillList.skill);
+        // setemploymentList(res.data.employmentHistory);
+        console.log(res.data.student[0].phoneNumber);
       } else {
         console.log("couldnt retrieve data");
       }
@@ -135,17 +131,21 @@ function ProfilePageP() {
   const updateProfile = (e) => {
     console.log("update");
     // e.preventDefault();
+    console.log(editProfile.college_id);
+    console.log(editProfile.sex);
     const data = {
       phoneNumber: editProfile.phoneNumber,
       sex: editProfile.sex,
       major: editProfile.major,
       name: editProfile.name,
       GPA: editProfile.GPA,
+      // endDate: editProfile.endDate,
       startDateClass: editProfile.startDateClass,
       endDateClass: editProfile.endDateClass,
       institution_id: editProfile.institution_id,
       department_id: editProfile.department_id,
       college_id: editProfile.college_id,
+      // companyName: editProfile.companyName,
     };
     const id = localStorage.getItem("auth_id");
     axios.get("/sanctum/csrf-cookie").then((res) => {
@@ -168,17 +168,11 @@ function ProfilePageP() {
     }, []);
   };
 
- 
+  <Avatar icon={<UserOutlined />} />;
   return (
     <Row className="row1" style={{ margin: "3em", marginLeft: "0em" }}>
       <span>{success}</span>
-      <Modal
-        title="Edit Employment History"
-        visible={isModalVisible}
-        onCancel={handleCancel}
-      >
-        <EditEmploymentHistory parentToChild={idemploy} />
-      </Modal>
+
       <Col
         className="row"
         span={5}
@@ -189,7 +183,14 @@ function ProfilePageP() {
         }}
       >
         <Col>
-          <EditProfilePicture/>
+          <div className="image1">
+            <Image
+              width={190}
+              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+              // size={100}
+              style={{ borderRadius: "100px", alignContent: "left" }}
+            />
+          </div>
         </Col>
       </Col>
 
@@ -199,19 +200,28 @@ function ProfilePageP() {
         style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
       >
         <Form onFinish={updateProfile}>
-          <Divider>Profile Page</Divider>
+          <Divider>Instructor Profile Page</Divider>
 
           <Col>
-            <Form.Item label="Full Name" style={{width: "77%", borderRadius: "50px"}}>
+            <Form.Item label="Instructor Full Name" style={{width: "77%", borderRadius: "50px"}}>
               <Input
                 
                 name="name"
                 onChange={handleInput}
                 value={editProfile.name}
               />
-          {/* <span style={{color:"red"}}>{editProfile.error_list.name}</span> */}
             </Form.Item>
           </Col>
+
+          <Col> 
+                    <Form.Item label="Email" style={{width: '64%'}} rules={[
+                        { 
+                        type: 'email'
+                        }
+                        ]}>
+                        <Input style={{marginLeft: '4.6em'}}/>
+                    </Form.Item>
+                </Col>
 
           <Col>
             <Form.Item label="Phone Number" style={{ width: "76.5%", borderRadius: "50px" }}>
@@ -221,7 +231,6 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.phoneNumber}
               />
-          {/* <span style={{color:"red"}}>{editProfile.error_list.phoneNumber}</span> */}
             </Form.Item>
           </Col>
 
@@ -233,19 +242,17 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.major}
               />
-          {/* <span style={{color:"red"}}>{editProfile.error_list.major}</span> */}
             </Form.Item>
           </Col>
 
           <Col>
-            <Form.Item label="GPA" style={{ width: "76.5%", borderRadius: "50px" }}>
+            <Form.Item label="Current Position" style={{ width: "76.5%", borderRadius: "50px" }}>
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="GPA"
+                name="position"
                 onChange={handleInput}
                 value={editProfile.GPA}
               />
-          {/* <span style={{color:"red"}}>{editProfile.error_list.GPA}</span> */}
             </Form.Item>
           </Col>
 
@@ -258,11 +265,10 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.sex}
               >
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
             </Form.Item>
-          {/* <span style={{color:"red"}}>{editProfile.error_list.sex}</span> */}
           </Col>
 
           <Col>
@@ -326,9 +332,9 @@ function ProfilePageP() {
             </Form.Item>
           </Col>
 
-          <Col>
+          {/* <Col>
             <Space direction="vertical" size={12} style={{ padding: 10 }}>
-              {/* <Form.Item
+               <Form.Item
                 name="startDateClass"
                 onChange={handleInput}
                 value={editProfile.startDateClass}
@@ -341,8 +347,8 @@ function ProfilePageP() {
               value={editProfile.endDateClass}
               >
               <DatePicker/>
-              </Form.Item> */}
-              <label>Start Date:</label> 
+              </Form.Item> 
+              <label>Start Date: 
               <input
                 style={{ marginLeft: '1em'}}
                 type="date"
@@ -352,9 +358,10 @@ function ProfilePageP() {
                 value={editProfile.startDateClass}
                 className="form-control"
               />
-              {/* <span style={{color:"red"}}>{editProfile.error_list.startDateClass}</span> */}
+              </label>
+               <span>{editProfile.error_list.startDateClass}</span> 
 
-              <label>End Date: </label>
+              <label>End Date: 
               <input
                 style={{ marginLeft: '1em'}}
                 type="date"
@@ -364,9 +371,10 @@ function ProfilePageP() {
                 value={editProfile.endDateClass}
                 className="form-control"
               />
-              {/* <span style={{color:"red"}}>{editProfile.error_list.endDateClass}</span> */}
+              </label>
+               <span>{editProfile.error_list.endDateClass}</span> 
             </Space>
-          </Col>
+          </Col> */}
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '0.7em', marginTop: '1em'}}>
               Submit
@@ -380,11 +388,11 @@ function ProfilePageP() {
               key={item.id}
               value={item.skill}
               style={{
-                color: "black",
+                color: "white",
                 borderRadius: 100,
                 border: 0,
                 margin: 2,
-                backgroundColor: "#ffffff",
+                backgroundColor: "#0080ff",
               }}
             >
               {item.skill}
@@ -450,10 +458,7 @@ function ProfilePageP() {
                         type="text"
                         key="list-loadmore-edit"
                         icon={<EditOutlined />}
-                        onClick={() => {
-                          showModal();
-                          setIdemploy(item.id);
-                        }}
+                        onClick={showModal}
                       />,
 
                       <Button
@@ -464,6 +469,14 @@ function ProfilePageP() {
                       />,
                     ]}
                   ></List.Item>
+                  <Modal
+                    title="Edit Employment History"
+                    visible={isModalVisible}
+                    // onOk={handleOk}
+                    onCancel={handleCancel}
+                  >
+                    <EditEmploymentHistory parentToChild={item.id} />
+                  </Modal>
                 </List.Item>
               )}
             />
@@ -484,13 +497,9 @@ function ProfilePageP() {
           <Divider>Add Employment History</Divider>
           <AddEmploymentHistory />
         </Col>
-        <Col>
-          <Divider>Social Media Links</Divider>
-          <SocialMediaLink />
-        </Col>
       </Col>
     </Row>
   );
 }
 
-export default ProfilePageP;
+export default ProfilePageInstructor;
