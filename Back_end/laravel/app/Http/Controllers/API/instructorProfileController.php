@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use Illuminate\Support\Facades\File;
+use App\Models\employmentHistory;
+use Illuminate\Support\Facades\DB;
 use App\Models\instructor;
 
 class instructorProfileController extends Controller
@@ -20,7 +23,7 @@ class instructorProfileController extends Controller
             'major'=>'required',
             'name'=>'required|max:191',
             'GPA'=>'required',
-            'image' => 'required',
+            // 'image' => 'required',
 
         ]);
         
@@ -40,7 +43,6 @@ class instructorProfileController extends Controller
                 
                 $instructor= instructor::where('user_id','=',$id)->first();
                 $instructor ->phoneNumber = $request->input('phoneNumber');
-                $instructor ->endDateClass = $request->input('endDateClass');
                 $instructor ->sex = $request->input('sex');
                 $instructor ->institution_id = $request->input('institution_id');
                 $instructor ->major = $request->input('major');

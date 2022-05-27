@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('recomendation', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('instructor_id')->constrained('instructor');
+            $table->foreignId('sender_id')->constrained('instructor');
             $table->foreignId('student_id')->constrained('student');
             $table->text('recomendationDetail');
             $table->timestamps();

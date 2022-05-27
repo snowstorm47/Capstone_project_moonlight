@@ -36,7 +36,7 @@ class PostController extends Controller
     public function show(Request $request)
     {
         
-        $Post=Post::join('users','users.id','=','posts.user_id')->get(['users.name','posts.body','posts.created_at','posts.image']);
+        $Post=Post::join('users','users.id','=','posts.user_id')->get(['users.name','posts.body','posts.created_at','posts.image','posts.id']);
         return Response()->json([
             "postdata"=>$Post,
             "status"=>200,
@@ -86,10 +86,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request,$id)
     {
-        $Post=Post::find($request->id);
+        $Post=Post::findOrFail($id);
         $Post->delete();
+        return Response()->json([
+            "status"=>200,
+        ]);
     }
 }
 
