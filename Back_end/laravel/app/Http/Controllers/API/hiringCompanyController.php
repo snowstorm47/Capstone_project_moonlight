@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\hiringCompany;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
 class hiringCompanyController extends Controller
@@ -78,7 +80,7 @@ class hiringCompanyController extends Controller
                         'representativeEmail'=>$representativeEmail,
                         'poBox'=>$poBox,
                         'location'=>$location,
-                        'description'=>$desccription,
+                        'description'=>$description,
                     ]);
                 }
                 else

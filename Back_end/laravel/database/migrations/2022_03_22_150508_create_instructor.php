@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string("major");
             $table->string("GPA");
             $table->string('image')->nullable();
-            $table->unsignedInteger('verificationStatus');
+            $table->boolean('verificationStatus');
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\institution;
 use App\Models\college;
 use App\Models\department;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
@@ -30,6 +31,33 @@ class institutionRegistration extends Controller
         ]);
     }
 
+    public function profile($id)
+    {
+        $user = User::findOrFail($id);
+
+        $phoneNumber = DB::table('institution')->where('user_id', $id)->value('phoneNumber');
+        $location = DB::table('institution')->where('user_id', $id)->value('location');
+        $institutionName = DB::table('institution')->where('user_id', $id)->value('institutionName');
+        $image = DB::table('institution')->where('user_id', $id)->value('image');
+        $poBox = DB::table('institution')->where('user_id', $id)->value('poBox');
+
+        if($user )
+            {
+                return response()->json([
+                    'status' => 200,
+                    // 'name' => $user->name,
+                    'phoneNumber'=>$phoneNumber,
+                    'poBox'=>$poBox,
+                    'location'=>$location,
+                    'institutionName'=>$institutionName,
+                    'image'=>$image,
+                ]);
+            }
+            else
+            {
+            return ["result"=>"getting institution failed"];
+            }
+    }
     public function addInstitutionProfile(Request $request,$id)
     {
         $validator = Validator::make($request->all(),[
@@ -164,17 +192,6 @@ class institutionRegistration extends Controller
             'institution'=> $request->institutionName,    
         ]);
         $institution->save();
-
-        // $department = department::create([
-            
-        //     'departmentName'=> $request->departmentName,    
-        // ]);
-        // $department->save();
-
-        // $college = college::create([
-        //     'collegeName'=> $request->collegeName,    
-        // ]);
-        // $college->save();
     }
 
     public function addDepartment(Request $request)
