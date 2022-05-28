@@ -22,7 +22,7 @@ const LogIn = () => {
     >
       
       <Form.Item
-        style={{paddingTop:"2rem"}}
+        className='roundedInput'
         label="Email"
         name="email"
         rules={[
@@ -30,9 +30,14 @@ const LogIn = () => {
             required: true,
             message: 'Please input your email!',
           },
+          
         ]}
+        style={{marginRight:"4rem"}}
       >
-        <Input />
+        <Input
+        placeholder='Enter Email'
+        style={{padding:'0.7rem', width:"20rem"}} 
+        />
       </Form.Item>
       
   
@@ -40,8 +45,9 @@ const LogIn = () => {
 
       {/* <Space className='space-align-center'> */}
       <Form.Item
-       style={{paddingTop:"2rem"}}
+       style={{paddingTop:"2rem",marginRight:"4rem"}}
         label="Password"
+       
         name="password"
         rules={[
           {
@@ -50,7 +56,10 @@ const LogIn = () => {
           },
         ]}
       >
-        <Input.Password />
+        <Input.Password 
+        placeholder='Enter Password'
+        style={{padding:'0.7rem'}}
+        />
       </Form.Item>
       {/* </Space> */}
 
@@ -67,13 +76,13 @@ const LogIn = () => {
       </Form.Item>
 
       <Form.Item
-       style={{paddingBottom:"5rem", paddingTop:"2rem"}}
+       style={{paddingBottom:"3rem", paddingTop:"2rem"}}
         wrapperCol={{
           offset: 8,
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" style={{paddingLeft:"8rem",paddingRight:"8rem",marginRight:"16rem",position:"relative", marginBottom:"2rem"}}>
           Login
         </Button>
       </Form.Item>

@@ -6,6 +6,7 @@ import Newsfeed from "./pages/newsFeed";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
+import HiringCompany from "./pages/hiringCompany";
 import Enter from "./pages/create";
 import LogIn from "./pages/login";
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
@@ -151,6 +152,7 @@ function App() {
 					<Route path="/contactus" element={<ContactUs />} />
 					<Route path="/post" element={<Post />} />
 					<Route path="/notification" element={<Notification />} />
+					<Route path="/hiringCompany" element={<HiringCompany />} />
 					<Route path="/login" element={<LogIn />} />
 					<Route path="/create" element={<Enter />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />

@@ -26,34 +26,19 @@ const Enter = () => {
 
 <Select
     labelInValue
-    defaultValue={{ value: 'Student' }}
-    style={{width: '15rem'}}
+    placeholder="Choose how to sign up as"
+    style={{width: '20rem',padding:"1rem",marginLeft:'6rem'}}
       
   >
+    <Option value="student">Student</Option>
     <Option value="instractor">Instractor</Option>
     <Option value="hiringcompany">HiringCompany</Option>
     <Option value="institution">Institution</Option>
   </Select>
 
-
-
-
-  <Form.Item
-        style={{paddingTop:"2rem", paddingRight:"2rem", width:'27rem'}}
-        label="Email"
-        name="email"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your email!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
       
       <Form.Item
-        style={{paddingTop:"2rem", width:'25rem'}}
+        style={{paddingTop:"2rem", width:'27rem', paddingLeft:'1 rem',marginLeft:"2rem"}}
         label="Fullname"
         name="fullname"
         rules={[
@@ -63,19 +48,37 @@ const Enter = () => {
           },
         ]}
       >
-        <Input />
+        <Input
+        placeholder='Enter Fullname' 
+        style={{padding:'0.7rem',width:"20rem"}}
+        />
       </Form.Item>
 
 
 
       
-      
+      <Form.Item
+        style={{paddingTop:"2rem", paddingRight:"2rem", width:'29rem',marginLeft:"2rem"}}
+        label="Email"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your email!',
+          },
+        ]}
+      >
+        <Input
+        placeholder='Enter Email'
+        style={{padding:'0.7rem',width:"20rem"}}
+         />
+      </Form.Item>
   
 
 
       {/* <Space className='space-align-center'> */}
       <Form.Item
-       style={{paddingTop:"2rem", width:'25 rem'}}
+       style={{paddingTop:"2rem", width:'24rem',paddingLeft:"5rem"}}
         label="Password"
         name="password"
         rules={[
@@ -85,7 +88,10 @@ const Enter = () => {
           },
         ]}
       >
-        <Input.Password />
+        <Input.Password
+        placeholder='Enter Password' 
+        style={{padding:'0.7rem',width:"20rem"}}
+        />
       </Form.Item>
       {/* </Space> */}
 
@@ -108,8 +114,8 @@ const Enter = () => {
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
-          Login
+        <Button type="primary" htmlType="submit" style={{paddingLeft:"8rem",paddingRight:"8rem",marginRight:"16rem",position:"relative", marginBottom:"2rem"}}>
+          SignUp
         </Button>
       </Form.Item>
     </Form>
