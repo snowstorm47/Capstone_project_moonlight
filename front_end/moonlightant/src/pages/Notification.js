@@ -1,7 +1,7 @@
 import { Component, useState } from "react";
 import { Layout, Menu, Icon, Col, Row, Badge } from "antd";
 import {
-  DashboardOutlined,
+  SendOutlined,
   BankOutlined,
   CheckCircleOutlined,
   UserOutlined,
@@ -12,6 +12,9 @@ import NotificationAdd from "./NotificationAdd";
 import NotificationInstitution from "./NotificationInstitution";
 import NotificationUser from "./NotificationUser";
 import NotificationSeen from "./NotificationSeen";
+import NotificationRecieved from "./NotificationRecieved";
+import NotificationInstructor from "./NotificationInstructor";
+import NotificationHiring from "./NotificationHiring";
 const { Header, Footer, Sider, Content } = Layout;
 
 // Introduce submenu components
@@ -26,12 +29,16 @@ const Notification = () => {
         return <NotificationAdd />;
       case "institution":
         return <NotificationInstitution />;
-      case "user":
-        return <NotificationUser/>
-      // case "suitcase":
-      //   return <h3>item3</h3>;
+      case "sent":
+        return <NotificationUser/>;
+        case "user":
+        return <NotificationRecieved/>
+      case "company":
+        return <NotificationHiring/>;
       case "seen":
         return <NotificationSeen/>
+        case "instructor":
+        return <NotificationInstructor/>
       default:
         break;
     }
@@ -55,6 +62,7 @@ const Notification = () => {
         width={256}
         style={{ 
           minHeight: "90vh",
+          marginTop:'2.6rem'
          }}
         // collapsible
         // collapsed={this.state.collapsed}
@@ -103,13 +111,13 @@ const Notification = () => {
               offset={[20, 20]}
             ></Badge>
           </Menu.Item>
-          <Menu.Item key="user"
+          <Menu.Item key="instructor"
             style={{
               paddingBottom:"20px"
             }}
           >
             <UserOutlined />
-            <span>User</span>
+            <span>Instructor</span>
             <Badge
               count={99}
               overflowCount={10}
@@ -117,15 +125,30 @@ const Notification = () => {
               offset={[20, 20]}
             ></Badge>
           </Menu.Item>
-          {/* <Menu.Item key="suitcase">
-            <span>Suitcase</span>
+          <Menu.Item key="user"
+            style={{
+              paddingBottom:"20px"
+            }}
+          >
+            <UserOutlined />
+            <span>Student</span>
+            <Badge
+              count={99}
+              overflowCount={10}
+              status="warning"
+              offset={[20, 20]}
+            ></Badge>
+          </Menu.Item>
+          <Menu.Item key="company">
+          <BankOutlined />
+            <span>Hiring Company</span>
             <Badge
               count={0}
               overflowCount={10}
               status="warning"
               offset={[20, 20]}
             ></Badge>
-          </Menu.Item> */}
+          </Menu.Item>
           <Menu.Item key="seen"
             style={{
               paddingBottom:"20px"
@@ -135,6 +158,20 @@ const Notification = () => {
             <span>Seen</span>
             <Badge
               count={0}
+              overflowCount={10}
+              status="warning"
+              offset={[20, 20]}
+            ></Badge>
+          </Menu.Item>
+          <Menu.Item key="sent"
+            style={{
+              paddingBottom:"20px"
+            }}
+          >
+            <SendOutlined />
+            <span>Sent</span>
+            <Badge
+              count={99}
               overflowCount={10}
               status="warning"
               offset={[20, 20]}

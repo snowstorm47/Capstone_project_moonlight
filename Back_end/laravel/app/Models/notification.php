@@ -10,13 +10,12 @@ class notification extends Model
     use HasFactory;
     public $table = "notification";
     public $fillable=[
-        'image',
-        'title',
-        'description',
+        'notificationImage',
+        'notificationTitle',
+        'notificationDetail',
         'sender_id',
         'reciever_id',
-        'seen_status',
-
+        'seen_status'
     ];
 
     public $timestamps = false;

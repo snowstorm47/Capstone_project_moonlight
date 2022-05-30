@@ -11,7 +11,11 @@ class institution extends Model
     public $table = "institution";
     public $timestamps = false;
     protected $fillable = [
-        'name'
+        'phoneNumber',
+        'poBox',
+        'image',
+        'location',
+        'institutionName'
     ];
 
     public function college()

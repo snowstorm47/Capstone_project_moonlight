@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class recommendation extends Model
 {
     use HasFactory;
-    public $table = "recommendation";
+    public $table = "recomendation";
     public $timestamps = false;
     protected $fillable = [
-        'recommendation_detail',
+        'recomendation_detail',
        
     ];
 }

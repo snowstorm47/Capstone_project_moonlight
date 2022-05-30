@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date("startDateClass");
             $table->date("endDateClass");
             $table->string("GPA");
-
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

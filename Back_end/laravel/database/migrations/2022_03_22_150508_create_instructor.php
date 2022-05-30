@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string("sex");
             $table->string("major");
             $table->string("GPA");
-            $table->unsignedInteger('verificationStatus');
+            $table->string('image')->nullable();
+            $table->boolean('verificationStatus');
             $table->timestamps();
         });
     }

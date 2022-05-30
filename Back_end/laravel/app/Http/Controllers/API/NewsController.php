@@ -41,7 +41,7 @@ if($validator->fails()) {
     public function show(Request $request)
     {
         
-        $News=News::join('institution','institution.id','=','news.institution_id')->get(['institution.institutionName','news.title','news.body','news.created_at','news.image']);
+        $News=News::join('institution','institution.id','=','news.institution_id')->get(['institution.institutionName','news.title','news.body','news.created_at','news.id','news.image']);
         return Response()->json([
             "newsdata"=>$News,
             "status"=>200,
@@ -91,9 +91,12 @@ if($validator->fails()) {
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request,$id)
     {
-        $News=News::find($request->id);
+        $News=News::findOrFail($id);
         $News->delete();
+        return Response()->json([
+            "status"=>200,
+        ]);
     }
 }

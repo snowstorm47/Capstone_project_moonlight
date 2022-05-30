@@ -14,6 +14,8 @@ class instructor extends Model
         'phoneNumber',
         'GPA',
         'verificationStatus',
-        
+        'major',
+        'sex',
+        'image'
     ];
 }

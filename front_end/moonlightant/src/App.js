@@ -29,9 +29,18 @@ import food from "./assets/man.jpg";
 import { useNavigate } from "react-router-dom";
 // import IconContext from "@ant-design/icons/lib/components/Context";
 import NewsDetail from "./pages/newsDetailPage";
+import CreateProfile from "./pages/ProfileCreate";
 import NewsfeedStudent from "./pages/newsfeedstudent";
 import AdvancedSearch from "./pages/advancedSearch";
 
+import InstructorCreateProfile from "./pages/InstructorCreateProfile";
+import HiringCompanyCreateProfile from "./pages/HiringCompanyCreateProfile";
+import InstitutionCreateProfile from "./pages/InstitutionCreateProfile";
+import ProfilePageCompany from "./pages/profileCompany";
+import ProfilePageInstitution from "./pages/profileInstitution";
+import ProfilePageInstructor from "./pages/profileInstructor";
+import SendRecomendation from "./components/SendRecommendation";
+import AdminPage from "./AdminPage";
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
 //to get data in json format
@@ -58,6 +67,30 @@ function App() {
 			}
 		});
 	};
+
+	let editProfile = "";
+	console.log(localStorage.getItem("auth_profile"));
+	if (localStorage.getItem("auth_profile") == 1) {
+		if (localStorage.getItem("auth_position") === "Student") {
+			editProfile = "/profilepage";
+		} else if (localStorage.getItem("auth_position") === "Institution") {
+			editProfile = "/editinstitutionprofile";
+		} else if (localStorage.getItem("auth_position") === "Instructor") {
+			editProfile = "/editinstructorprofile";
+		} else if (localStorage.getItem("auth_position") === "Hiring Company") {
+			editProfile = "/editcompanyprofile";
+		}
+	} else {
+		if (localStorage.getItem("auth_position") === "Student") {
+			editProfile = "/createprofile";
+		} else if (localStorage.getItem("auth_position") === "Institution") {
+			editProfile = "/createprofileinstitution";
+		} else if (localStorage.getItem("auth_position") === "Instructor") {
+			editProfile = "/createprofileinstructor";
+		} else if (localStorage.getItem("auth_position") === "Hiring Company") {
+			editProfile = "/createprofilehiring";
+		}
+	}
 	const menu = (
 		<Menu selectable={true} style={{ width: "150px" }}>
 			<Menu.Item key="1" onClick={logoutSubmit}>
@@ -66,7 +99,8 @@ function App() {
 			</Menu.Item>
 			<Menu.Item key="2">
 				<EditFilled style={{ paddingLeft: "2.5px", paddingRight: "5px" }} />
-				<Link to="profilepage">Edit Profile</Link>
+
+				<Link to={editProfile}>Edit Profile</Link>
 			</Menu.Item>
 		</Menu>
 	);
@@ -76,10 +110,10 @@ function App() {
 		AuthButtons = (
 			<>
 				<Menu.Item key="6" style={{ marginLeft: "auto" }}>
-					<Link to="/login">Login</Link>
+					<Link to="/signin">Login</Link>
 				</Menu.Item>
 				<Menu.Item key="7">
-					<Link to="/create" style={{ left: "auto" }}>
+					<Link to="/signup" style={{ left: "auto" }}>
 						Sign Up
 					</Link>
 				</Menu.Item>
@@ -156,13 +190,34 @@ function App() {
 					<Route path="/contactus" element={<ContactUs />} />
 					<Route path="/post" element={<Post />} />
 					<Route path="/notification" element={<Notification />} />
-					<Route path="/login" element={<LogIn />} />
-					<Route path="/create" element={<Enter />} />
+					<Route path="/signin" element={<SignIn />} />
+					<Route path="/signup" element={<SignUp />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
 					<Route path="profilepage" element={<ProfilePageP />} />
+					<Route path="createprofile" element={<CreateProfile />} />
 					<Route
-						path="notification/advancedSearch"
-						element={<AdvancedSearch />}
+						path="editinstructorprofile"
+						element={<ProfilePageInstructor />}
+					/>
+					<Route
+						path="editinstitutionprofile"
+						element={<ProfilePageInstitution />}
+					/>
+					<Route path="editcompanyprofile" element={<ProfilePageCompany />} />
+					<Route path="login" element={<LogIn />} />
+					<Route path="recomendation" element={<SendRecomendation />} />
+					<Route path="admin" element={<AdminPage />} />
+					<Route
+						path="createprofileinstructor"
+						element={<InstructorCreateProfile />}
+					/>
+					<Route
+						path="createprofilehiring"
+						element={<HiringCompanyCreateProfile />}
+					/>
+					<Route
+						path="createprofileinstitution"
+						element={<InstitutionCreateProfile />}
 					/>
 				</Routes>
 			</Content>

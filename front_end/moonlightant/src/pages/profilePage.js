@@ -12,6 +12,7 @@ import AddSkill from "../components/AddSkill";
 import AddEmploymentHistory from "../components/AddEmploymentHistory";
 import EditEmploymentHistory from "../components/EditEmploymentHistory";
 import SocialMediaLink from "../components/SocialMediaLink";
+import EditProfilePicture from "./EditProfilePicture";
 
 // import '/App.css';
 
@@ -55,6 +56,7 @@ function ProfilePageP() {
     major: "",
     startDateClass: "",
     endDateClass: "",
+    image:"",
     skill: [],
     employmentHistory: [],
     newSkill: "",
@@ -85,6 +87,7 @@ function ProfilePageP() {
     axios.get(`/api/profile/${id}`).then((res) => {
       if (res.data.status === 200) {
         setEditProfile(res.data);
+        console.log(editProfile);
         setSkillList(res.data.skill);
         console.log(skillList.skill);
       } else {
@@ -165,7 +168,7 @@ function ProfilePageP() {
     }, []);
   };
 
-  <Avatar icon={<UserOutlined />} />;
+ 
   return (
     <Row className="row1" style={{ margin: "3em", marginLeft: "0em" }}>
       <span>{success}</span>
@@ -186,14 +189,7 @@ function ProfilePageP() {
         }}
       >
         <Col>
-          <div className="image1">
-            <Image
-              width={190}
-              src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-              // size={100}
-              style={{ borderRadius: "100px", alignContent: "left" }}
-            />
-          </div>
+          <EditProfilePicture/>
         </Col>
       </Col>
 
@@ -213,18 +209,9 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.name}
               />
+          {/* <span style={{color:"red"}}>{editProfile.error_list.name}</span> */}
             </Form.Item>
           </Col>
-
-          {/* <Col> 
-                    <Form.Item label="Email" style={{width: '64%'}} rules={[
-                        { 
-                        type: 'email'
-                        }
-                        ]}>
-                        <Input style={{marginLeft: '4.6em'}}/>
-                    </Form.Item>
-                </Col> */}
 
           <Col>
             <Form.Item label="Phone Number" style={{ width: "76.5%", borderRadius: "50px" }}>
@@ -234,6 +221,7 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.phoneNumber}
               />
+          {/* <span style={{color:"red"}}>{editProfile.error_list.phoneNumber}</span> */}
             </Form.Item>
           </Col>
 
@@ -245,6 +233,7 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.major}
               />
+          {/* <span style={{color:"red"}}>{editProfile.error_list.major}</span> */}
             </Form.Item>
           </Col>
 
@@ -256,6 +245,7 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.GPA}
               />
+          {/* <span style={{color:"red"}}>{editProfile.error_list.GPA}</span> */}
             </Form.Item>
           </Col>
 
@@ -268,10 +258,11 @@ function ProfilePageP() {
                 onChange={handleInput}
                 value={editProfile.sex}
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
               </select>
             </Form.Item>
+          {/* <span style={{color:"red"}}>{editProfile.error_list.sex}</span> */}
           </Col>
 
           <Col>
@@ -351,9 +342,9 @@ function ProfilePageP() {
               >
               <DatePicker/>
               </Form.Item> */}
-              <label>Start Date: 
+              <label>Start Date:</label> 
               <input
-                style={{ borderRadius: "80px", marginLeft: '1em'}}
+                style={{ marginLeft: '1em'}}
                 type="date"
                 name="startDateClass"
                 format={"m/d/Y"}
@@ -361,12 +352,11 @@ function ProfilePageP() {
                 value={editProfile.startDateClass}
                 className="form-control"
               />
-              </label>
-              {/* <span>{editProfile.error_list.startDateClass}</span> */}
+              {/* <span style={{color:"red"}}>{editProfile.error_list.startDateClass}</span> */}
 
-              <label>End Date: 
+              <label>End Date: </label>
               <input
-                style={{ borderRadius: "80px", marginLeft: '1em', border: 'outset'}}
+                style={{ marginLeft: '1em'}}
                 type="date"
                 name="endDateClass"
                 format={"m/d/Y"}
@@ -374,8 +364,7 @@ function ProfilePageP() {
                 value={editProfile.endDateClass}
                 className="form-control"
               />
-              </label>
-              {/* <span>{editProfile.error_list.endDateClass}</span> */}
+              {/* <span style={{color:"red"}}>{editProfile.error_list.endDateClass}</span> */}
             </Space>
           </Col>
           <Form.Item>

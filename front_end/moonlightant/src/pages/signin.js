@@ -15,10 +15,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { LocationOnOutlined } from "@mui/icons-material";
 
 const theme = createTheme();
 
-export default function SignIn() {
+const SignIn = () => {
+	const location = useLocation();
+	let first = 1;
 	const navigate = useNavigate();
 	const [message, setMessage] = useState(null);
 	const [failMessage, setFailMessage] = useState(null);
@@ -49,9 +53,28 @@ export default function SignIn() {
 					localStorage.setItem("auth_email", res.data.email);
 					localStorage.setItem("auth_name", res.data.name);
 					localStorage.setItem("auth_id", res.data.id);
-					setMessage(res.message);
+					localStorage.setItem("auth_position", res.data.position);
+					setMessage(res.data.message);
 					console.log(res.data.message);
-					navigate("/newsfeed");
+
+					if (location?.state?.first === 0) {
+						location.state.first++;
+						if (localStorage.getItem("auth_position") === "Student") {
+							navigate("/createprofile");
+						} else if (
+							localStorage.getItem("auth_position") === "Institution"
+						) {
+							navigate("/createprofileinstitution");
+						} else if (localStorage.getItem("auth_position") === "Instructor") {
+							navigate("/createprofileinstructor");
+						} else if (
+							localStorage.getItem("auth_position") === "Hiring Company"
+						) {
+							navigate("/createprofilehiring");
+						}
+					} else {
+						navigate("/newsfeed");
+					}
 				} else if (res.data.status === 401) {
 					console.log(res.data.message);
 					setFailMessage(res.data.message);
@@ -135,4 +158,5 @@ export default function SignIn() {
 			</Container>
 		</ThemeProvider>
 	);
-}
+};
+export default SignIn;

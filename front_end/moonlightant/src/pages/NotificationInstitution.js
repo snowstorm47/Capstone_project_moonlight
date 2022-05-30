@@ -1,91 +1,137 @@
-import { Component, useState } from "react";
+import React, { useEffect, Component, useState } from "react";
 import {
   Layout,
   Menu,
   Space,
-  Alert,
-  Row,
-  Col,
-  Button,
+  Skeleton,
   List,
+  message,
+  Button,
   Avatar,
 } from "antd";
-import {
-  DashboardOutlined,
-  BankOutlined,
-  CheckCircleOutlined,
-  UserOutlined,
-  PlusCircleOutlined,
-  CheckOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
-const { Header, Footer, Sider, Content } = Layout;
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { SendTimeExtension, SevenK } from "@mui/icons-material";
 
 // Introduce submenu components
 const SubMenu = Menu.SubMenu;
 
-const data = [
-  {
-    title: "Institution Title 1",
-  },
-  {
-    title: "Institution Title 2",
-  },
-];
 const NotificationInstitution = () => {
   const [visible, setVisible] = useState(true);
-  const handleClose = () => {
-    setVisible(false);
+  const [state, setState] = useState();
+  const [loading, setLoading] = useState(true);
+  const [profilePicture, setProfilePicture] = useState({
+    image: "",
+    institutionName: "",
+  });
+  const id = localStorage.getItem("auth_id");
+
+  useEffect(() => {
+    axios.get(`api/showInstitutionNotification/${id}`).then((response) => {
+      setState(response.data.notification);
+      console.log(response.data.notification);
+      setLoading(false);
+    });
+  }, []);
+
+  const seen = (id) => {
+    const data = {
+      seen_status: "True",
+    };
+
+    axios.put(`/api/seenNotification/${id}`, data).then((res) => {
+      if (res.data.status === 200) {
+        message.success("Notification in seen box");
+        console.log(res.data.result);
+        // window.location = "/Notification";
+      } else {
+        message.error("Notification not added in seen");
+      }
+    });
   };
+
+  const deleteNotification = (id) => {
+    axios.delete(`/api/deleteNotification/${id}`).then((res) => {
+      if (res.data.status === 200) {
+        message.success("Notification has been deleted");
+        console.log(res.data.result);
+      } else {
+        message.error("Notification not deleted");
+      }
+    });
+  };
+
 
   return (
     <div>
       {visible ? (
         <List
           itemLayout="horizontal"
-          dataSource={data}
+          dataSource={state}
           renderItem={(item) => (
-            <List.Item
-            style={{
-              marginBottom:"1em"
-            }}
-            >
-              <List.Item.Meta
-                avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                title={
-                  <a
-                    href="#"
+            <>
+              {item == null ? (
+                <>
+                  <Skeleton loading={true} active avatar></Skeleton>
+                  <Skeleton loading={true} active avatar></Skeleton>
+                  <Skeleton loading={true} active avatar></Skeleton>
+                </>
+              ) : (
+                <>
+                  <></>
+                  <List.Item
                     style={{
-                      marginLeft: "0em",
+                      marginBottom: "1em",
                     }}
                   >
-                    {item.title}
-                  </a>
-                }
-                description=
-                "Ant Design, a design language for background applications, is refined by Ant UED Team "
-                style={{
-                  textAlign:"left"
-                }}
-              />
-              <br/>
-              <br/>
-              <div
-              style={{
-                marginTop:"5em"
-              }}
-              >Apr 28, 2022</div>
-              <List.Item
-                actions={[
-                  <a key="list-loadmore-edit">
-                    <CheckOutlined />
-                  </a>,
-                  <a key="list-loadmore-more">
-                    <CloseOutlined />
-                  </a>,
-                ]}
-              ></List.Item>
-            </List.Item>
+                    <List.Item.Meta
+                      avatar={
+                        <Avatar
+                          src={
+                            "http://localhost:8000/uploads/ProfilePicture/" +
+                            item.image
+                          }
+                        />
+                      }
+                      title={
+                        
+                        <p
+                          style={{
+                            marginLeft: "0em",
+                          }}
+                        >
+                          <a >{item.institutionName}{" "}</a><span>{item.created_at}</span><br/><br/>
+                          {item.notificationTitle}
+                        </p>
+                      }
+                      description={item.notificationDetail}
+                      style={{
+                        textAlign: "left",
+                      }}
+                    />
+                    <br />
+                    <br />
+                    
+                    <List.Item
+                      actions={[
+                        <Button
+                          type="text"
+                          onClick={() => seen(item.id)}
+                          key="list-loadmore-edit"
+                          icon={<CheckOutlined />}
+                        />,
+                        <Button
+                          type="text"
+                          onClick={() => deleteNotification(item.id)}
+                          key="list-loadmore-more"
+                          icon={<CloseOutlined />}
+                        />,
+                      ]}
+                    ></List.Item>
+                  </List.Item>
+                </>
+              )}
+            </>
           )}
         />
       ) : null}
