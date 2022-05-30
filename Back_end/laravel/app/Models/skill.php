@@ -11,6 +11,10 @@ class skill extends Model
     public $table = "skill";
     public $timestamps = false;
     protected $fillable = [
+        'user_id',
         'skill'
     ];
+    public function User(){
+    return $this->hasOne(User::class);
+}
 }

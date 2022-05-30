@@ -30,7 +30,7 @@ import { useNavigate } from "react-router-dom";
 // import IconContext from "@ant-design/icons/lib/components/Context";
 import NewsDetail from "./pages/newsDetailPage";
 import NewsfeedStudent from "./pages/newsfeedstudent";
-
+import AdvancedSearch from "./pages/advancedSearch";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -159,7 +159,11 @@ function App() {
 					<Route path="/login" element={<LogIn />} />
 					<Route path="/create" element={<Enter />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
-					<Route path="profilepage" element={<ProfilePage/>}/>
+					<Route path="profilepage" element={<ProfilePageP />} />
+					<Route
+						path="notification/advancedSearch"
+						element={<AdvancedSearch />}
+					/>
 				</Routes>
 			</Content>
 			<Footer

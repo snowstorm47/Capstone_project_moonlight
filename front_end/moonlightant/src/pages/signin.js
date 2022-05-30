@@ -13,62 +13,55 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
-import axios from 'axios';
+import { useState } from "react";
+import axios from "axios";
 
 const theme = createTheme();
 
 export default function SignIn() {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 	const [message, setMessage] = useState(null);
 	const [failMessage, setFailMessage] = useState(null);
 
-	const [loginInput,setLogin] = useState({
-        email: '',
-        password: '',
-        error_list: []
-    });
+	const [loginInput, setLogin] = useState({
+		email: "",
+		password: "",
+		error_list: [],
+	});
 
-    const handleInput = (e) => {
-        e.persist();
-        setLogin({...loginInput,[e.target.name]: e.target.value});
-    }
+	const handleInput = (e) => {
+		e.persist();
+		setLogin({ ...loginInput, [e.target.name]: e.target.value });
+	};
 
-    const loginSubmit = (e) => {
-        e.preventDefault();
+	const loginSubmit = (e) => {
+		e.preventDefault();
 
-        const data = {
-            email: loginInput.email,
-            password: loginInput.password
-        }
+		const data = {
+			email: loginInput.email,
+			password: loginInput.password,
+		};
 
-        axios.get('/sanctum/csrf-cookie').then(response => {
-        axios.post('api/login', data).then(res =>{
-            if(res.data.status === 200)
-            {
-                localStorage.setItem('auth_token',res.data.token);
-                localStorage.setItem('auth_email',res.data.email);
-                localStorage.setItem('auth_name',res.data.name);
-                localStorage.setItem('auth_id',res.data.id);
-				setMessage(res.message);
-                console.log(res.data.message);
-                navigate("/newsfeed");
-            }
-            else if(res.data.status === 401)
-            {
-                console.log(res.data.message);
-				setFailMessage(res.data.message);
-				console.log(message);
-
-            }
-            else
-            {
-        setLogin({...loginInput, error_list: res.data.validation_errors});
-
-            }
-        });
-    });
-    }
+		axios.get("/sanctum/csrf-cookie").then((response) => {
+			axios.post("api/login", data).then((res) => {
+				if (res.data.status === 200) {
+					localStorage.setItem("auth_token", res.data.token);
+					localStorage.setItem("auth_email", res.data.email);
+					localStorage.setItem("auth_name", res.data.name);
+					localStorage.setItem("auth_id", res.data.id);
+					setMessage(res.message);
+					console.log(res.data.message);
+					navigate("/newsfeed");
+				} else if (res.data.status === 401) {
+					console.log(res.data.message);
+					setFailMessage(res.data.message);
+					console.log(message);
+				} else {
+					setLogin({ ...loginInput, error_list: res.data.validation_errors });
+				}
+			});
+		});
+	};
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -95,8 +88,8 @@ export default function SignIn() {
 						noValidate
 						sx={{ mt: 1 }}
 					>
-						<div style={{color:"green"}}>{message}</div>
-						<div style={{color:"red"}}>{failMessage}</div>
+						<div style={{ color: "green" }}>{message}</div>
+						<div style={{ color: "red" }}>{failMessage}</div>
 						<TextField
 							margin="normal"
 							required
@@ -104,7 +97,7 @@ export default function SignIn() {
 							id="email"
 							label="Email Address"
 							name="email"
-							onChange={handleInput} 
+							onChange={handleInput}
 							value={loginInput.email}
 							autoFocus
 						/>

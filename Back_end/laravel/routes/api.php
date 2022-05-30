@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\NewsController;
+use App\Http\Controllers\API\searchController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\notificationController;
@@ -48,6 +49,12 @@ Route::post('addCertificate',[profileController::class,'addCertificate']);
 Route::post('addSkill',[profileController::class,'addSkill']);
 Route::post('addSocialMediaLink',[profileController::class,'addsocialMediaLink']);
 Route::get('all-institution',[institutionRegistration::class, 'allinstitution']);
+Route::get('advancedSearch',[searchController::class, 'AdvancedSearch']);
+Route::get('institutions',[searchController::class, 'getInstitutions']);
+Route::get('Department',[searchController::class, 'getDepartment']);
+Route::get('College',[searchController::class, 'getCollege']);
+
+
 // Route::get('all-department',[institutionRegistration::class, 'allDepartment']);
 // Route::get('all-college',[institutionRegistration::class, 'allcollege']);
 

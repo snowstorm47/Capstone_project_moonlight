@@ -30,7 +30,7 @@ const Newscard = ({ state, loading }) => {
 			dataSource={state}
 			renderItem={(item) => (
 				<>
-					{item == null ? (
+					{item == undefined ? (
 						<>
 							<Skeleton loading={true} active avatar></Skeleton>
 							<Skeleton loading={true} active avatar></Skeleton>
@@ -41,7 +41,7 @@ const Newscard = ({ state, loading }) => {
 							<List.Item
 								onClick={() => navigate("news", { state: { item } })}
 								style={{
-									boxShadow: "9px 10px 5px 0px rgba(0,0,0,0.09)",
+									boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
 									textAlign: "left",
 									backgroundColor: "white",
 									margin: "10px 0",
@@ -68,13 +68,28 @@ const Newscard = ({ state, loading }) => {
 									/>,
 								]}
 								extra={
-									<img
-										width="272"
-										alt="logo"
-										src={
-											"http://localhost:8000/uploads/NewsPictures/" + item.image
-										}
-									/>
+									<div
+										style={{
+											height: "100%",
+											width: "auto",
+											maxWidth: 272,
+											alignItems: "center",
+											justifyContent: "center",
+											display: "flex",
+										}}
+									>
+										<img
+											style={{
+												maxHeight: "100%",
+												maxWidth: "100%",
+											}}
+											alt="logo"
+											src={
+												"http://localhost:8000/uploads/NewsPictures/" +
+												item.image
+											}
+										/>
+									</div>
 								}
 							>
 								<List.Item.Meta
@@ -87,7 +102,7 @@ const Newscard = ({ state, loading }) => {
 								/>
 								<div
 									style={{
-										height: "100px",
+										height: 106,
 										overflow: "hidden",
 										textOverflow: "ellipsis",
 									}}
