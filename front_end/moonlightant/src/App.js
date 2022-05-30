@@ -190,6 +190,10 @@ function App() {
 					<Route path="/contactus" element={<ContactUs />} />
 					<Route path="/post" element={<Post />} />
 					<Route path="/notification" element={<Notification />} />
+					<Route
+						path="/notification/advancedSearch"
+						element={<AdvancedSearch />}
+					/>
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="newsfeed/news" element={<NewsDetail />} />
@@ -204,7 +208,7 @@ function App() {
 						element={<ProfilePageInstitution />}
 					/>
 					<Route path="editcompanyprofile" element={<ProfilePageCompany />} />
-					<Route path="login" element={<LogIn />} />
+					<Route path="login" element={<SignIn />} />
 					<Route path="recomendation" element={<SendRecomendation />} />
 					<Route path="admin" element={<AdminPage />} />
 					<Route

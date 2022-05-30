@@ -21,7 +21,8 @@ class usersSeeder extends Seeder
             'name'=>'Abdellah Hussien',
             'email'=>'Abedellahussien@gmail.com',
             'password'=>'1234',
-            'position'=>'student'
+            'position'=>'student',
+
         ]);
         
     }
