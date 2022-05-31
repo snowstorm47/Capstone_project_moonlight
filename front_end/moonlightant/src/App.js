@@ -6,11 +6,12 @@ import Newsfeed from "./pages/newsFeed";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
-import SignUp from "./pages/signup";
+// import SignUp from "./pages/signup";
+import SignUp from "./pages/Create"
 import SignIn from "./pages/signin";
 import ProfilePageP from "./pages/profilePage";
-import Enter from "./pages/create";
-import LogIn from "./pages/login";
+import Enter from "./pages/Create";
+import LogIn from "./pages/Login";
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
 import {
 	BellOutlined,
@@ -194,8 +195,8 @@ function App() {
 						path="/notification/advancedSearch"
 						element={<AdvancedSearch />}
 					/>
-					<Route path="/signin" element={<SignIn />} />
-					<Route path="/signup" element={<SignUp />} />
+					{/* <Route path="/signin" element={<SignIn />} /> */}
+					{/* <Route path="/signup" element={<SignUp />} /> */}
 					<Route path="newsfeed/news" element={<NewsDetail />} />
 					<Route path="profilepage" element={<ProfilePageP />} />
 					<Route path="createprofile" element={<CreateProfile />} />
@@ -208,7 +209,8 @@ function App() {
 						element={<ProfilePageInstitution />}
 					/>
 					<Route path="editcompanyprofile" element={<ProfilePageCompany />} />
-					<Route path="login" element={<SignIn />} />
+					<Route path="/signin" element={<LogIn />} />
+					<Route path="/signup" element={<SignUp />} />
 					<Route path="recomendation" element={<SendRecomendation />} />
 					<Route path="admin" element={<AdminPage />} />
 					<Route

@@ -73,8 +73,7 @@ const SendRecomendation = () => {
     };
     const handleInput = (e) => {
         // e.persist();
-    
-        setRecomendation({ ...recomendation, [e.target.name]: e.target.value });
+    setRecomendation({ ...recomendation, [e.target.name]: e.target.value });
       };
 
 	return (
