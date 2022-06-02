@@ -7,11 +7,10 @@ import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
 // import SignUp from "./pages/signup";
-import SignUp from "./pages/Create"
+import SignUp from "./pages/create";
 import SignIn from "./pages/signin";
 import ProfilePageP from "./pages/profilePage";
-import Enter from "./pages/Create";
-import LogIn from "./pages/Login";
+import LogIn from "./pages/login";
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
 import {
 	BellOutlined,
@@ -42,6 +41,7 @@ import ProfilePageInstitution from "./pages/profileInstitution";
 import ProfilePageInstructor from "./pages/profileInstructor";
 import SendRecomendation from "./components/SendRecommendation";
 import AdminPage from "./AdminPage";
+import { useEffect, useState } from "react";
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
 //to get data in json format
@@ -57,6 +57,7 @@ axios.interceptors.request.use(function (config) {
 
 const { Header, Content, Footer, Sider } = Layout;
 function App() {
+	const [image, setImage] = useState();
 	const navigate = useNavigate();
 	const logoutSubmit = (e) => {
 		axios.post("/api/logout").then((res) => {
@@ -68,7 +69,17 @@ function App() {
 			}
 		});
 	};
-
+	let id = localStorage.getItem("auth_id");
+	useEffect(() => {
+		axios.get(`/api/getProfilePicture/${id}`).then((res) => {
+			if (res.data.status === 200) {
+				setImage(res.data.image);
+				console.log("...", image);
+			} else {
+				console.log("couldnt retrieve data");
+			}
+		});
+	}, []);
 	let editProfile = "";
 	console.log(localStorage.getItem("auth_profile"));
 	if (localStorage.getItem("auth_profile") == 1) {
@@ -125,8 +136,9 @@ function App() {
 			<Menu.Item key="7" style={{ marginLeft: "auto", borderColor: "white" }}>
 				<Dropdown overlay={menu} placement="bottomRight">
 					<Avatar
+						src={"http://localhost:8000/uploads/ProfilePicture/" + image}
+						icon={<UserOutlined />}
 						size={50}
-						src={food}
 						style={{ zIndex: 10, border: "2px solid #1890ff" }}
 					/>
 				</Dropdown>

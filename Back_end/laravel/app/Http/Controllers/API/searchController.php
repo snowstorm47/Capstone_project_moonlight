@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Models\User;
 use App\Models\skill;
+use App\Models\student;
 use App\Models\institution;
 use App\Models\college;
 use App\Models\department;
+use App\Models\employmentHistory;
 
 
 
@@ -34,18 +36,30 @@ class searchController extends Controller
 
     }
     public function AdvancedSearch(Request $request){
+      $result=collect([
+      ]);
         if ($request->position=='institution') {
             $result=institution::where('institution.id','=',$request->institution)->get();
         }
         else{
-        $result=User::leftJoin('skill','users.id','=','skill.user_id')
-       ->leftJoin('student','users.id','=','student.user_id')
-       ->leftJoin('employmenthistory','users.id','=','employmenthistory.user_id')
-       ->where('skill.skill','like','%'.$request->skill.'%')
-       ->where('student.institution_id','=','%'.$request->institution.'%')
-       ->where('student.gpa','=','%'.$request->gpa.'%')
-       ->where('users.position','like','%'.$request->position.'%')
-       ->groupBy('skill.user_id')->select('users.*')->get();
+    //     $result=User::leftJoin('skill','users.id','=','skill.user_id')
+    //    ->leftJoin('student','users.id','=','student.user_id')
+    //    ->leftJoin('employmenthistory','users.id','=','employmenthistory.user_id')
+    //    ->where('skill.skill','like','%'.$request->skill.'%')
+    //    ->where('student.institution_id','like','%'.$request->institution.'%')
+    // ->where('student.gpa','like','%'.$request->gpa.'%')
+    //    ->groupBy('users.id')->select('users.*','student.image')->get();
+    $users=User::all();
+    foreach($users as $user){
+        $skill=skill::where('user_id',$user->id)->get('skill');
+        $student=student::where('user_id',$user->id)->get();
+        $history=employmentHistory::where('user_id',$user->id)->get();
+        //$skill=institution::where('id',$user->)->get();
+
+
+        $result->push(['user'=>$user,'skill'=>$skill,'student'=>$student,'history'=>$history]);
+
+    }
         }
 
         return Response()->json(["status"=>200,"data"=>$result]);
