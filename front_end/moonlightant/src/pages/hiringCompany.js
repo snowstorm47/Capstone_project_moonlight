@@ -1,7 +1,8 @@
 
-import { Button, Card, Carousel } from "antd";
+import {  Button, Card, Carousel, Col, Row } from "antd";
 import illustration from "../assets/hiringillustration.png";
 import { Input, Space } from 'antd';
+import Ripple from "../components/ripple";
 
 const { Search } = Input;
 
@@ -10,6 +11,8 @@ const HiringCompany = () => {
         <div className="topContainer" style={{marginBottom:"5erm"}} >
         <div className="wordCaroselContainer" style={{marginBottom:"2erm"}}>
             <div>
+            
+
                 <Carousel
                     style={{ width: "auto", marginleft: "20px", display: "flex" }}
                     autoplay
@@ -46,21 +49,35 @@ const HiringCompany = () => {
                             your personal institution of choice.
                         </span>
                     </Card>
+                    <Ripple/>
+                    
                 </Carousel>
-
-
-                <div style={{marginBottom:"5rem"}}>
-                <Space direction="vertical" style={{ width: "50rem",marginTop:'6rem', marginBottom:'15rem'}}>
-                <Search placeholder="input search text"  />
-                </Space>
-                </div>
                
 
+                <Row style={{marginTop:"6rem", justify:"center", position:"relative",}}>
+             <Col span={12} pull={2}>
+             <Search placeholder="input search text" style={{ marginBottom:'15rem', width:"60rem" }} />
+             </Col>
+             <Col span={12} push={24}>
+             <Button type="primary" style={{marginLeft:"10rem"}}> Advanced Search</Button>
+             </Col>
+                </Row>
+
+                
+                   
+{/*               
+               <div style={{marginBottom:"5rem"}}>
+                <Space direction="vertical" style={{ width: "50rem", marginBottom:'15rem'}}>
+               
+                </Space>
+                </div> */}
+              
                 
             </div>
         </div>
 
         <div className="image" style={{paddingBottom:'5rem'}}>
+            
             <img src={illustration} className="illustration" alt=""  style={{height:'22rem',width:'22rem',marginBottom:'5rem'}}/>
         </div>
     </div>

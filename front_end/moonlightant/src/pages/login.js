@@ -1,4 +1,5 @@
 import { Form, Input, Button, Checkbox, Space } from 'antd';
+import Ripple from '../components/ripple';
 
 const LogIn = () => {
     return ( 
@@ -88,6 +89,7 @@ const LogIn = () => {
       </Form.Item>
     </Form>
     </Space>
+    {/* <Ripple/> */}
     </div>
         </div>
      );
