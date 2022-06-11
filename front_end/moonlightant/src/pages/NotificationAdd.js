@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const NotificationAdd = () => {
 	const [notification, setNotification] = useState({
@@ -32,6 +33,8 @@ const NotificationAdd = () => {
 		fData.append("sender_id", notification.sender_id);
 		fData.append("reciever_id", notification.reciever_id);
 		fData.append("seen_status", notification.seen_status);
+		console.log("notificcation", notification);
+		console.log(fData, "top.....");
 		axios.get("/sanctum/csrf-cookie").then((response) => {
 			axios.post("api/postNotification", fData).then((response) => {
 				console.log(response);
@@ -48,6 +51,13 @@ const NotificationAdd = () => {
 			notificationTitle: "",
 			notificationDetail: "",
 		});
+	};
+	const navigate = useNavigate();
+
+	const goToAdvancedSearch = async () => {
+		notification.notificationDetail
+			? navigate("advancedSearch", { state: { notification } })
+			: message.info("please fill the notification title and discription");
 	};
 
 	const normFile = (e) => {
@@ -121,15 +131,16 @@ const NotificationAdd = () => {
 					</Upload.Dragger>
 				</Form.Item>
 			</Form.Item>
-			<Form.Item
-				wrapperCol={{
-					offset: 8,
-					span: 16,
-				}}
-			>
-				<Button type="primary" htmlType="submit">
+			<Form.Item>
+				<Button type="primary" htmlType="submit" style={{ width: "100%" }}>
 					Create Notification <SendOutlined />
 				</Button>
+				<a
+					style={{ textDecoration: "underlined" }}
+					onClick={goToAdvancedSearch}
+				>
+					Advanced Search
+				</a>
 			</Form.Item>
 		</Form>
 	);

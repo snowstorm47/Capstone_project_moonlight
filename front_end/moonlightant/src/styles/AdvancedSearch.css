@@ -27,7 +27,7 @@
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 	border-radius: 10;
 	height: 250px;
-	overflow-y: auto;
+	overflow-y: hidden;
 	scrollbar-width: none; /* Firefox */
 	-ms-overflow-style: none;
 }
