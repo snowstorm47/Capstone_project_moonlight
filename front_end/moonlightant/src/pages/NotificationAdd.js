@@ -16,7 +16,6 @@ const NotificationAdd = () => {
 		sender_id: localStorage.getItem("auth_id"),
 		reciever_id: 2,
 		seen_status: "False",
-		notificationImage: "",
 	});
 
 	const handleInput = (e) => {
@@ -26,7 +25,6 @@ const NotificationAdd = () => {
 	const handleSubmit = async () => {
 		console.log(notification);
 		const fData = new FormData();
-		fData.append("notificationImage", notification.notificationImage);
 		fData.append("notificationTitle", notification.notificationTitle);
 		fData.append("notificationDetail", notification.notificationDetail);
 		fData.append("sender_id", notification.sender_id);
@@ -85,7 +83,7 @@ const NotificationAdd = () => {
 
 			<Form.Item>
 				<Input.TextArea
-					placeholder="Notification Title"
+					placeholder="Notification Detail"
 					size="large"
 					name="notificationDetail"
 					value={notification.notificationDetail}
@@ -94,33 +92,7 @@ const NotificationAdd = () => {
 					required
 				/>
 			</Form.Item>
-			<Form.Item>
-				<Form.Item
-					name="dragger"
-					valuePropName="fileList"
-					getValueFromEvent={normFile}
-				>
-					<Upload.Dragger
-						name="notificationImage"
-						type="file"
-						multiple={false}
-						onChange={(e) =>
-							setNotification({
-								...notification,
-								notificationImage: e.fileList[0].originFileObj,
-							})
-						}
-						style={{ width: "100%" }}
-					>
-						<p className="ant-upload-drag-icon">
-							<InboxOutlined />
-						</p>
-						<p className="ant-upload-text">
-							Click or drag file to this area to upload
-						</p>
-					</Upload.Dragger>
-				</Form.Item>
-			</Form.Item>
+			
 			<Form.Item
 				wrapperCol={{
 					offset: 8,

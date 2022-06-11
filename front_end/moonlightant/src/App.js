@@ -42,6 +42,7 @@ import ProfilePageInstitution from "./pages/profileInstitution";
 import ProfilePageInstructor from "./pages/profileInstructor";
 import SendRecomendation from "./components/SendRecommendation";
 import AdminPage from "./AdminPage";
+import AdminAboutus from "./components/Admin/AdminAboutus";
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
 //to get data in json format
@@ -213,6 +214,7 @@ function App() {
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="recomendation" element={<SendRecomendation />} />
 					<Route path="admin" element={<AdminPage />} />
+					<Route path="editabout" element={<AdminAboutus />} />
 					<Route
 						path="createprofileinstructor"
 						element={<InstructorCreateProfile />}

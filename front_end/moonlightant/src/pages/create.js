@@ -61,7 +61,25 @@ const SignUp = () => {
             localStorage.setItem("auth_profile", 0);
             console.log("after auth_token");
             setMessage(res.message);
-
+            if(localStorage.getItem("auth_position")==="Institution")
+            {
+              const fData = new FormData();
+                fData.append("notificationTitle", "Institution Has Registered ");
+                fData.append("notificationDetail", "Please Verify "+ localStorage.getItem('auth_name'));
+                fData.append("sender_id", localStorage.getItem('auth_id'));
+                fData.append("reciever_id", 3);
+                fData.append("seen_status", 'False');
+              axios.get("/sanctum/csrf-cookie").then((response) => {
+                axios.post("api/postNotification", fData).then((response) => {
+                  console.log(response);
+                  if (response.data.status === 200) {
+                    message.success("Notification created succesfully");
+                  } else {
+                    message.error("Notification was not created. Please try again");
+                  }
+                });
+              });
+            }
             console.log(res.data.message);
             console.log(first);
             // swal("Success", res.data.message, "success");
@@ -114,6 +132,7 @@ const SignUp = () => {
                 onChange={handleInput}
                 value={registerInput.position}
               >
+                <option value=""></option>
                 <option value="Student">Student</option>
                 <option value="Instructor">Instructor</option>
                 <option value="Hiring Company">Hiring Company</option>
