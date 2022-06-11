@@ -2,7 +2,7 @@
 import {  Button, Card, Carousel, Col, Row } from "antd";
 import illustration from "../assets/hiringillustration.png";
 import { Input, Space } from 'antd';
-import Ripple from "../components/ripple";
+// import Ripple from "../components/ripple";
 
 const { Search } = Input;
 
@@ -49,7 +49,7 @@ const HiringCompany = () => {
                             your personal institution of choice.
                         </span>
                     </Card>
-                    <Ripple/>
+                    {/* <Ripple/> */}
                     
                 </Carousel>
                

@@ -158,7 +158,7 @@ function App() {
 					<Route path="newsfeed/news" element={<NewsDetail />} />
 				</Routes>
 			</Content>
-			<Footer style={{ textAlign: "center", marginBottom: "auto" }}>
+			<Footer style={{ textAlign: "center", marginBottom: "0",position:"fixed",bottom:"0",width:"100%" }}>
 				Ant Design ©2018 Created by Ant UED
 			</Footer>
 		</div>
