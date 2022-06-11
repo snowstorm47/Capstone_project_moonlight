@@ -76,6 +76,7 @@ Route::get('getInstructorInstitutionId/{id}',[recommendationController::class,'i
 Route::get('getSocialMediaLinkSingle/{id}',[profileController::class,'getSocialMediaLinkSingle']);
 Route::get('getEmploymentHistory/{id}',[profileController::class,'getEmploymentHistory']);
 Route::put('updateProfile/{id}',[profileController::class,'profileEdit']);
+Route::put('editBackgroundAboutus/{id}',[AdminController::class,'editBackgroundAboutus']);
 Route::put('updateInstructorProfile/{id}',[instructorProfileController::class,'profileEdit']);
 Route::put('updateInstitutionProfile/{id}',[institutionRegistration::class,'profileEdit']);
 Route::put('updateHiringCompanyProfile/{id}',[hiringCompanyController::class,'profileEdit']);

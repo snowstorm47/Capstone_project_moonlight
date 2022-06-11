@@ -49,7 +49,7 @@ class AdminController extends Controller
         // $notification=notification::findOrFail($id);
         $notification = notification::where('reciever_id', '=', $id)->get();
         $sender_id = notification::where('reciever_id', '=', $id)->value('sender_id');
-    return Response()->json([
+        return Response()->json([
             "status" => 200,
             "notification" => $notification,
             "sender_id" => $sender_id
@@ -187,9 +187,39 @@ class AdminController extends Controller
             'status'=>200
         ]);
         }
+        }
+}
+public function editBackgroundAboutus(Request $request,$id){
+    $aboutus = aboutus::findOrFail($id);
+    $destination = 'uploads/AboutusPicture'.$aboutus->image;
+    if(File::exists($destination))
+    {
+        File::delete($destination);
+    }
+    $file= $request->file('image');
+    if($file){
+    $filename= date('YmdHi').$file->getClientOriginalName();
+    $file-> move(public_path('uploads/AboutusPicture'), $filename);
+    $aboutus->image=$filename;
+    $save =$aboutus->save();
+    if($save)
+    {
+        return response()->json([
+            'status'=>200
+        ]);
+    }
+    else{
+        return response()->json([
+            'result'=>"error"
+        ]);
+    }
+    }
+    else{
+        return response()->json([
+            'error'=>"did not get file"
+        ]);
     }
 }
-
     public function showAboutus()
     {
         $aboutus = aboutus::all();
