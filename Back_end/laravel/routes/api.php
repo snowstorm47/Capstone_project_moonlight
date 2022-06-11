@@ -10,6 +10,7 @@ use App\Http\Controllers\API\profileController;
 use App\Http\Controllers\API\instructorProfileController;
 use App\Http\Controllers\API\institutionRegistration;
 use App\Http\Controllers\API\hiringCompanyController;
+use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\recommendationController;
 
 /*
@@ -32,6 +33,19 @@ Route::post('register',[AuthController::class, 'register']);
 Route::post('login',[AuthController::class, 'login']);
 Route::post('postNotification',[notificationController::class, 'postNotification']);
 Route::delete('deleteNotification/{id}',[notificationController::class, 'deleteNotification']);
+Route::delete('deleteHiringCompany',[AdminController::class, 'destroyHiringCompany']);
+Route::delete('deleteInstitution',[AdminController::class, 'destroyInstitution']);
+Route::delete('deleteVerifyNotification',[AdminController::class, 'deleteVerifyNotification']);
+Route::get('viewInstitutionNotification/{id}',[AdminController::class, 'showNotificationInstitution']);
+Route::get('hiring',[AdminController::class,'showHiring']);
+Route::get('aboutus',[AdminController::class,'showAboutus']);
+Route::put('editaboutus/{id}',[AdminController::class,'editAboutus']);
+Route::put('editcontact/{id}',[AdminController::class,'editContact']);
+Route::put('verifyInstitution',[AdminController::class,'acceptInstitution']);
+Route::get('admincontact',[AdminController::class,'showAdminContact']);
+Route::post('sendcontactus',[AdminController::class,'sendMessage']);
+Route::delete('deletemessage',[AdminController::class,'deleteMessage']);
+Route::get('showmessage',[AdminController::class,'showMessage']);
 Route::get('viewNotification/{id}',[notificationController::class, 'viewNotificationUser']);
 Route::get('viewNotificationRecieved/{id}',[notificationController::class, 'viewNotificationRecieved']);
 Route::get('viewSeenNotification/{id}',[notificationController::class, 'viewSeenNotification']);

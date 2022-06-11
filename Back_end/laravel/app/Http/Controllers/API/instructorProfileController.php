@@ -76,7 +76,7 @@ public function profile($id){
     $major = DB::table('instructor')->where('user_id', $id)->value('major');
     $GPA = DB::table('instructor')->where('user_id', $id)->value('GPA');
     $image = DB::table('instructor')->where('user_id', $id)->value('image');
-    $recommendationDetail = DB::table('recomendation')->where('instructor_id', $id)->value('recomendationDetail');
+    // $recommendationDetail = DB::table('recomendation')->where('instructor_id', $id)->value('recomendationDetail');
 
 
 
@@ -96,7 +96,7 @@ public function profile($id){
                 'major'=>$major,
                 'GPA'=>$GPA,
                 'image'=>$image,
-                'recommendationDetail'=>$recommendationDetail,
+                // 'recommendationDetail'=>$recommendationDetail,
                 'skill'=>$skill,
                 'employmentHistory'=>$employmentHistory
             ]);

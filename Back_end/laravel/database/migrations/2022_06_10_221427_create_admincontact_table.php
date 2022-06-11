@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notification', function (Blueprint $table) {
+        Schema::create('admincontact', function (Blueprint $table) {
             $table->id();
+            $table->string('PhoneNumber');
+            $table->string('Email');
+            $table->string('LinkedIn');
+            $table->string('Facebook');
+            $table->string('Instagram');
             $table->timestamps();
-            $table->string('notificationTitle');
-            $table->string('notificationDetail');
-            $table->foreignId('sender_id')->constrained('users');
-            $table->foreignId('reciever_id')->constrained('users');
-            $table->string('seen_status');
-
         });
     }
 
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notification');
+        Schema::dropIfExists('admincontact');
     }
 };
