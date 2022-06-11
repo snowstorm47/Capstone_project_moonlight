@@ -1,10 +1,16 @@
 
-import {  Button, Card, Carousel, Col, Row } from "antd";
+import {  Button, Card, Carousel, Col, Popover, Row } from "antd";
 import illustration from "../assets/hiringillustration.png";
 import { Input, Space } from 'antd';
 // import Ripple from "../components/ripple";
 
 const { Search } = Input;
+
+const popoverContent = (
+    <div>
+        <p>For a more indepth search resule please click here.</p>
+    </div>
+)
 
 const HiringCompany = () => {
     return ( 
@@ -58,8 +64,12 @@ const HiringCompany = () => {
              <Col span={12} pull={2}>
              <Search placeholder="input search text" style={{ marginBottom:'15rem', width:"60rem" }} />
              </Col>
-             <Col span={12} push={24}>
+
+
+             <Col span={12} push={24} >
+             <Popover content={popoverContent} title="Advanced Search">
              <Button type="primary" style={{marginLeft:"10rem"}}> Advanced Search</Button>
+             </Popover>
              </Col>
                 </Row>
 
