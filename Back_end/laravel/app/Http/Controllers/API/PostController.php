@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\student;
+
 use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
@@ -34,11 +36,16 @@ class PostController extends Controller
             
     }
     public function show(Request $request)
-    {
+    {    $result=collect([
+      ]);
         
-        $Post=Post::join('users','users.id','=','posts.user_id')->get(['users.name','posts.body','posts.created_at','posts.image','posts.id']);
+        $Post=Post::join('users','users.id','=','posts.user_id')->get(['users.name','users.email','posts.user_id','posts.body','posts.created_at','posts.image','posts.id']);
+        foreach ($Post as $Post) {
+            $image=student::where('student.user_id','=',$Post->user_id)->get('student.image');
+            $result->push(['postdata'=>$Post,'profileImage'=>$image]);
+        }
         return Response()->json([
-            "postdata"=>$Post,
+            "postdata"=>$result,
             "status"=>200,
         ]);
     }

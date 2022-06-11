@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../styles/AdvancedSearch.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
 	Avatar,
 	Badge,
+	Button,
 	Card,
 	Checkbox,
 	Col,
@@ -12,6 +13,7 @@ import {
 	Layout,
 	List,
 	Menu,
+	message,
 	Radio,
 	Row,
 	Select,
@@ -23,37 +25,80 @@ import { Content } from "antd/lib/layout/layout";
 import Search from "antd/lib/transfer/search";
 import Meta from "antd/lib/card/Meta";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { EyeFilled, EyeOutlined, UserOutlined } from "@ant-design/icons";
+import {
+	DownOutlined,
+	EyeFilled,
+	EyeOutlined,
+	UpOutlined,
+	UserOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
-const AdvancedSearch = () => {
+const AdvancedSearch = (props) => {
+	const notif = useLocation();
+	const navigate = useNavigate();
+
 	const [count, setCount] = useState(0);
 	const sendNotification = () => {
-		selected.forEach((item) => {
-			console.log(item);
-		});
+		setSendLoading(true);
+		selected.length >= 1
+			? selected.forEach((item) => {
+					console.log(item);
+					const fData = new FormData();
+					fData.append(
+						"notificationImage",
+						notif.state.notification.notificationImage
+					);
+					fData.append(
+						"notificationTitle",
+						notif.state.notification.notificationTitle
+					);
+					fData.append(
+						"notificationDetail",
+						notif.state.notification.notificationDetail
+					);
+					fData.append("sender_id", notif.state.notification.sender_id);
+					fData.append("reciever_id", item);
+					fData.append("seen_status", notif.state.notification.seen_status);
+					axios.post("api/postNotification", fData).then((response) => {
+						if (response.data.status === 200) {
+							message.success("Notification sent succesfully");
+						} else {
+							message.error("Notification was not sent. Please try again");
+						}
+					});
+			  })
+			: message.error("please select a user to send the notification to");
+		setSendLoading(false);
 	};
+	const [loader, setLoader] = useState(false);
 	const filter = () => {
-		setCount(count + 1);
+		setLoader(!loader);
 		axios
 			.get(`/api/advancedSearch`)
 			.then((res) => {
 				if (res.data.status === 200) {
-					setSearchResults(res.data.data);
+					// setSearchResults(res.data.data);
+					console.log(searchResults);
+					return res.data.data;
 				} else {
-					console.log("inside else");
 				}
 			})
-			.then(() => {
+			.then((data) => {
 				setSearchResults(
-					searchResults.filter((item) => {
-						setSearchResults(item.student[0]?.GPA);
+					data.filter((item) => {
+						// setSearchResults(item.student[0]?.GPA);
 						if (
-							item.skill
-								.map((skillObj) => skillObj.skill)
-								.includes(search.skill) ||
-							item.student[0]?.GPA >= search.gpa ||
-							item.student[0]?.institution_id === search.institution
+							(search.skill
+								? item.skill
+										.map((skillObj) => skillObj.skill)
+										.includes(search.skill)
+								: true) &&
+							(search.gpa ? item.student[0]?.GPA >= search.gpa : true) &&
+							(search.institution
+								? item.student[0]?.institution_id === search.institution
+								: true)
 						) {
 							return true;
 						} else {
@@ -61,6 +106,9 @@ const AdvancedSearch = () => {
 						}
 					})
 				);
+			})
+			.finally(() => {
+				setLoader(false);
 			});
 	};
 	const [search, setSearch] = useState({
@@ -73,9 +121,33 @@ const AdvancedSearch = () => {
 		educationStatus: "",
 		position: "",
 	});
+	const clear = () => {
+		setSearch({
+			skill: "",
+			gpa: "",
+			institution: "",
+			department: "",
+			college: "",
+			experience: "",
+			educationStatus: "",
+			position: "",
+		});
+
+		axios
+			.get(
+				`/api/advancedSearch?skill=${search.skill}&position=${search.position}&gpa=${search.gpa}&institution=${search.institution}`
+			)
+			.then((res) => {
+				if (res.data.status === 200) {
+					setSearchResults(res.data.data);
+				} else {
+				}
+			});
+	};
 	const [college, setCollege] = useState([{ departmentName: "-none-" }]);
 	const [department, setDepartment] = useState([{ departmentName: "-none-" }]);
-	const navigate = useNavigate();
+	const [sendloading, setSendLoading] = useState(false);
+	const [view, setView] = useState(false);
 
 	const [loading, setLoading] = useState(false);
 	const [state, setState] = useState();
@@ -101,7 +173,6 @@ const AdvancedSearch = () => {
 				if (res.data.status === 200) {
 					setSearchResults(res.data.data);
 				} else {
-					console.log("inside else");
 				}
 			})
 			.catch(() => {
@@ -116,7 +187,6 @@ const AdvancedSearch = () => {
 	};
 
 	useEffect(() => {
-		console.log(searchResults);
 		axios
 			.get(
 				`/api/advancedSearch?skill=${search.skill}&position=${search.position}&gpa=${search.gpa}&institution=${search.institution}`
@@ -125,33 +195,28 @@ const AdvancedSearch = () => {
 				if (res.data.status === 200) {
 					setSearchResults(res.data.data);
 				} else {
-					console.log("inside else");
 				}
 			});
-	}, [search]);
+	}, []);
 
 	useEffect(() => {
-		console.log("updated.....");
 		axios.get("/sanctum/csrf-cookie").then((res) => {
 			axios.get(`/api/institutions`).then((res) => {
 				if (res.data.status === 200) {
 					setinstitutions(res.data.data);
 				} else {
-					console.log("inside else");
 				}
 			});
 			axios.get(`/api/College`).then((res) => {
 				if (res.data.status === 200) {
 					setCollege(res.data.data);
 				} else {
-					console.log("inside else");
 				}
 			});
 			axios.get(`/api/Department`).then((res) => {
 				if (res.data.status === 200) {
 					setDepartment(res.data.data);
 				} else {
-					console.log("inside else");
 				}
 			});
 		}, []);
@@ -163,7 +228,7 @@ const AdvancedSearch = () => {
 				scrollable
 				style={{
 					minHeight: "90vh",
-					backgroundColor: "#0080ff",
+					backgroundColor: "white",
 					padding: "10px 10px",
 					overflowY: "hidden",
 				}}
@@ -174,18 +239,27 @@ const AdvancedSearch = () => {
 						background: "rgba(255,255,255,.2)",
 						color: "black",
 						margin: "16px",
+						fontWeight: "bold",
+						textAlign: "left",
 					}}
 				>
 					Search
+					<a
+						style={{ marginLeft: 10, fontWeight: "normal", right: 0 }}
+						onClick={clear}
+					>
+						clear
+					</a>
 				</div>
 				<Search
 					placeholder="search a skill"
+					value={search.skill}
 					onChange={(e) => {
 						setSearch({ ...search, skill: e.target.value });
 					}}
 					enterButton="Search"
 				/>
-				<Divider orientation="left" style={{ color: "white" }}>
+				<Divider orientation="left" style={{ color: "black" }}>
 					Experience
 				</Divider>
 				<InputNumber
@@ -197,7 +271,8 @@ const AdvancedSearch = () => {
 					}}
 					style={{ margin: "0 16px" }}
 				/>
-				<Divider orientation="left" style={{ color: "white" }}>
+
+				<Divider orientation="left" style={{ color: "black" }}>
 					Academics
 				</Divider>
 				<strong
@@ -210,7 +285,6 @@ const AdvancedSearch = () => {
 				>
 					GPA
 				</strong>
-
 				<Slider
 					style={{ color: "white" }}
 					min={0}
@@ -273,18 +347,33 @@ const AdvancedSearch = () => {
 					))}
 				</Select>
 				<Radio.Group
+					style={{ paddingTop: 10, paddingBottom: 10 }}
 					onChange={(e) => {
 						setSearch({ ...search, educationStatus: e.target.value });
 					}}
 				>
-					<Radio value="Graduated" style={{ color: "white" }}>
+					<Radio value="Graduated" style={{ color: "Black" }}>
 						Graduated
 					</Radio>
-					<Radio value="Student" style={{ color: "white" }}>
+					<Radio value="Student" style={{ color: "Black" }}>
 						Student
 					</Radio>
 				</Radio.Group>
-				<button onClick={filter}>click</button>
+				<br />
+				<Button
+					type="primary"
+					onClick={filter}
+					loading={loader}
+					disabled={loader}
+					style={{
+						width: "100%",
+						border: "none",
+						backgroundColor: "#",
+						height: "30",
+					}}
+				>
+					search
+				</Button>
 			</Sider>
 			{/* the content starts here */}
 			<Content
@@ -303,6 +392,7 @@ const AdvancedSearch = () => {
 							{" "}
 							<div
 								style={{
+									animation: "fadeIn 500ms ease-out backwards",
 									backgroundColor: "white",
 									padding: "20px",
 									borderBottomRightRadius: "20px",
@@ -364,132 +454,143 @@ const AdvancedSearch = () => {
 									})}
 								</div>
 							</div>
-							<div
-								style={{
-									flexDirection: "row",
-									display: "flex",
-									justifyContent: "space-between",
-									borderTopLeftRadius: "20px",
-								}}
-							>
+							{view ? (
 								<div
 									style={{
-										width: "    45%",
-										textAlign: "left",
-										padding: "10px",
-										fontFamily: "monospace",
+										flexDirection: "row",
+										display: "flex",
+										justifyContent: "space-between",
+										borderTopLeftRadius: "20px",
 									}}
 								>
-									{" "}
-									<Divider
-										orientation="left"
-										style={{ width: "20px", color: "black" }}
+									<div
+										style={{
+											width: "    45%",
+											textAlign: "left",
+											padding: "10px",
+											fontFamily: "monospace",
+										}}
 									>
-										Academics
-									</Divider>
-									<div style={{ padding: "10px 0px" }}>
-										<span
-											style={{
-												fontSize: "15px",
-												color: "black",
-												fontWeight: "bold",
-											}}
+										{" "}
+										<Divider
+											orientation="left"
+											style={{ width: "20px", color: "black" }}
 										>
-											Institution
-										</span>
-										<br />
-										<span style={{ color: "gray" }}>
-											{
-												institutions[state.student[0]?.institution_id - 1]
-													?.institutionName
-											}
-										</span>
+											Academics
+										</Divider>
+										<div style={{ padding: "10px 0px" }}>
+											<span
+												style={{
+													fontSize: "15px",
+													color: "black",
+													fontWeight: "bold",
+												}}
+											>
+												Institution
+											</span>
+											<br />
+											<span style={{ color: "gray" }}>
+												{
+													institutions[state.student[0]?.institution_id - 1]
+														?.institutionName
+												}
+											</span>
+										</div>
+										<div style={{ padding: "10px 0px" }}>
+											<span
+												style={{
+													fontSize: "15px",
+													color: "black",
+													fontWeight: "bold",
+												}}
+											>
+												Department
+											</span>
+											<br />
+											<span style={{ color: "gray" }}>
+												{" "}
+												College of Electrical and Mechanical engineering
+											</span>
+										</div>
+										<div style={{ padding: "10px 0px" }}>
+											<span
+												style={{
+													fontSize: "15px",
+													color: "black",
+													fontWeight: "bold",
+												}}
+											>
+												Major
+											</span>
+											<br />
+											<span style={{ color: "gray" }}>
+												{" "}
+												{state.student[0]?.major}
+											</span>
+										</div>
+										<div style={{ padding: "10px 0px" }}>
+											<span
+												style={{
+													fontSize: "15px",
+													color: "black",
+													fontWeight: "bold",
+												}}
+											>
+												GPA
+											</span>
+											<br />
+											<span style={{ color: "gray" }}>
+												{state.student[0]?.GPA}
+											</span>
+										</div>
 									</div>
-									<div style={{ padding: "10px 0px" }}>
-										<span
-											style={{
-												fontSize: "15px",
-												color: "black",
-												fontWeight: "bold",
-											}}
+									<div
+										style={{
+											width: "45%",
+											textAlign: "left",
+											padding: "10px",
+											fontFamily: "sans-serif",
+										}}
+										bordered={false}
+									>
+										<Divider
+											orientation="left"
+											style={{ width: "20px", color: "black" }}
 										>
-											Department
-										</span>
-										<br />
-										<span style={{ color: "gray" }}>
-											{" "}
-											College of Electrical and Mechanical engineering
-										</span>
-									</div>
-									<div style={{ padding: "10px 0px" }}>
-										<span
-											style={{
-												fontSize: "15px",
-												color: "black",
-												fontWeight: "bold",
-											}}
-										>
-											Major
-										</span>
-										<br />
-										<span style={{ color: "gray" }}>
-											{" "}
-											{state.student[0]?.major}
-										</span>
-									</div>
-									<div style={{ padding: "10px 0px" }}>
-										<span
-											style={{
-												fontSize: "15px",
-												color: "black",
-												fontWeight: "bold",
-											}}
-										>
-											GPA
-										</span>
-										<br />
-										<span style={{ color: "gray" }}>
-											{state.student[0]?.GPA}
-										</span>
+											Experience
+										</Divider>
+										{state.history.map((history) => {
+											return (
+												<>
+													<span
+														style={{
+															fontSize: "15px",
+															fontWeight: "bold",
+															color: "black",
+														}}
+													>
+														{history.companyName}
+													</span>
+													<br />
+													<span style={{ color: "gray" }}>
+														{history.position}
+													</span>
+													<br />
+												</>
+											);
+										})}
 									</div>
 								</div>
-								<div
-									style={{
-										width: "45%",
-										textAlign: "left",
-										padding: "10px",
-										fontFamily: "sans-serif",
-									}}
-									bordered={false}
+							) : null}
+							<Divider>
+								<Button
+									onClick={() => setView(!view)}
+									style={{ borderRadius: 500 }}
 								>
-									<Divider
-										orientation="left"
-										style={{ width: "20px", color: "black" }}
-									>
-										Experience
-									</Divider>
-									{state.history.map((history) => {
-										return (
-											<>
-												<span
-													style={{
-														fontSize: "15px",
-														fontWeight: "bold",
-														color: "black",
-													}}
-												>
-													{history.companyName}
-												</span>
-												<br />
-												<span style={{ color: "gray" }}>
-													{history.position}
-												</span>
-												<br />
-											</>
-										);
-									})}
-								</div>
-							</div>
+									View {view ? "Less" : "More"}
+									{view ? <UpOutlined /> : <DownOutlined />}
+								</Button>
+							</Divider>
 						</>
 					) : (
 						<p>it worrks</p>
@@ -499,103 +600,116 @@ const AdvancedSearch = () => {
 				<div className="searchResultContainer">
 					<div
 						style={{
+							paddingRight: 10,
+							paddingLeft: 10,
 							display: "flex",
-
-							zIndex: 10,
+							alignItems: "center",
+							textAlign: "center",
 							width: "100%",
-							backgroundColor: "blue",
 							position: "sticky",
 							textAlign: "center",
+							boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
 						}}
 					>
 						<h1 style={{}}>Results</h1>
-						<button onClick={sendNotification}>send</button>
+
+						<Button
+							type="primary"
+							loading={sendloading}
+							style={{ display: "flex", marginLeft: "auto" }}
+							onClick={sendNotification}
+						>
+							send
+						</Button>
 					</div>
-
-					<InfiniteScroll
-						dataLength={data.length}
-						next={loadMoreData}
-						style={{ paddingTop: "20px" }}
-						hasMore={data.length < 50}
-						loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
-						endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
-						scrollableTarget="scrollableDiv"
-					>
-						<List
-							dataSource={searchResults}
-							renderItem={(item) => (
-								<List.Item key={item.user.id}>
-									<List.Item.Meta />
-									<div
-										style={{
-											width: "100%",
-											display: "flex",
-											flexDirection: "row",
-										}}
-									>
-										<Checkbox
-											style={{ paddingLeft: "10px", paddingRight: "20px" }}
-											value={item.user.id}
-											onChange={(e) => {
-												if (e.target.checked) {
-													selected.push(item.user.id);
-												} else {
-													selected.splice(selected.indexOf(e.target.value), 1);
-												}
-
-												console.log("hello,,,", selected);
-											}}
-										/>
-										<Meta
-											style={{ textAlign: "left", alignSelf: "flex-start" }}
-											avatar={
-												<Avatar
-													src={
-														"http://localhost:8000/uploads/ProfilePicture/" +
-														item.student[0]?.image
-													}
-													icon={<UserOutlined />}
-												/>
-											}
-											icon={<UserOutlined />}
-											title={item.user.name}
-											description={item.user.email}
-										/>
-										<button
-											onClick={() => setState(item)}
+					<div style={{ overflowY: "auto", height: "100%", scrollbarWidth: 0 }}>
+						<InfiniteScroll
+							dataLength={data.length}
+							next={loadMoreData}
+							style={{ paddingTop: "20px" }}
+							hasMore={loader}
+							loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
+							endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+							scrollableTarget="scrollableDiv"
+						>
+							<List
+								dataSource={searchResults}
+								renderItem={(item) => (
+									<List.Item key={item.user.id}>
+										<List.Item.Meta />
+										<div
 											style={{
-												borderRadius: "100px",
-												border: "0px",
-												backgroundColor: "white",
-												marginLeft: "auto",
+												width: "100%",
+												display: "flex",
+												flexDirection: "row",
 											}}
 										>
-											{item.user.name === state?.user.name ? (
-												<EyeOutlined
-													style={{
-														color: "white",
-														padding: 4,
-														backgroundColor: "#0080ff",
-														borderRadius: "100Px",
-													}}
-													value={item}
-													onClick={() => {
-														setState(item);
-													}}
-												/>
-											) : (
-												<EyeOutlined
-													style={{ padding: 4 }}
-													value={item.user.name}
-													onclick={() => setState(item)}
-												/>
-											)}
-										</button>
-									</div>
-								</List.Item>
-							)}
-						/>
-					</InfiniteScroll>
+											<Checkbox
+												style={{ paddingLeft: "10px", paddingRight: "20px" }}
+												value={item.user.id}
+												onChange={(e) => {
+													if (e.target.checked) {
+														selected.push(item.user.id);
+														console.log(selected);
+													} else {
+														selected.splice(
+															selected.indexOf(e.target.value),
+															1
+														);
+													}
+												}}
+											/>
+											<Meta
+												style={{ textAlign: "left", alignSelf: "flex-start" }}
+												avatar={
+													<Avatar
+														src={
+															"http://localhost:8000/uploads/ProfilePicture/" +
+															item.student[0]?.image
+														}
+														icon={<UserOutlined />}
+													/>
+												}
+												icon={<UserOutlined />}
+												title={item.user.name}
+												description={item.user.email}
+											/>
+											<button
+												onClick={() => setState(item)}
+												style={{
+													borderRadius: "100px",
+													border: "0px",
+													backgroundColor: "white",
+													marginLeft: "auto",
+												}}
+											>
+												{item.user.name === state?.user.name ? (
+													<EyeOutlined
+														style={{
+															color: "white",
+															padding: 4,
+															backgroundColor: "#0080ff",
+															borderRadius: "100Px",
+														}}
+														value={item}
+														onClick={() => {
+															setState(item);
+														}}
+													/>
+												) : (
+													<EyeOutlined
+														style={{ padding: 4 }}
+														value={item.user.name}
+														onclick={() => setState(item)}
+													/>
+												)}
+											</button>
+										</div>
+									</List.Item>
+								)}
+							/>
+						</InfiniteScroll>
+					</div>
 				</div>
 			</Content>
 		</Layout>

@@ -27,7 +27,10 @@ const NewsfeedStudent = () => {
 			setLoading(false);
 		});
 	}, []);
-	const onSearch = (value) => console.log(value);
+	const searchFunc = (value) => {
+		console.log(value, "....................................");
+		setState(state.filter);
+	};
 
 	return (
 		<div className="newsContainer">
@@ -41,7 +44,7 @@ const NewsfeedStudent = () => {
 					enterButton="Search"
 					size="large"
 					style={{ padding: "40px 20px" }}
-					onSearch={onSearch}
+					onSearch={searchFunc}
 				/>
 				<NewsCard state={state} loading={loading} />
 			</div>

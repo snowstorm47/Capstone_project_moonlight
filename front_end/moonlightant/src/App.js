@@ -11,7 +11,15 @@ import SignUp from "./pages/create";
 import SignIn from "./pages/signin";
 import ProfilePageP from "./pages/profilePage";
 import LogIn from "./pages/login";
-import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
+import {
+	Layout,
+	Menu,
+	Breadcrumb,
+	Avatar,
+	Dropdown,
+	notification,
+	Button,
+} from "antd";
 import {
 	BellOutlined,
 	BookOutlined,
@@ -43,6 +51,7 @@ import SendRecomendation from "./components/SendRecommendation";
 import AdminPage from "./AdminPage";
 import AdminAboutus from "./components/Admin/AdminAboutus";
 import { useEffect, useState } from "react";
+
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
 //to get data in json format
@@ -58,13 +67,39 @@ axios.interceptors.request.use(function (config) {
 
 const { Header, Content, Footer, Sider } = Layout;
 function App() {
+	const notify = () => {
+		const key = "this";
+		notification.warn({
+			message: "Update Profile",
+			description: `Dear ${localStorage.getItem(
+				"auth_name"
+			)} please go to your profile and update your information.`,
+			btn: (
+				<Button
+					type="primary"
+					size="small"
+					onClick={() => {
+						navigate(editProfile);
+						notification.close(key);
+					}}
+				>
+					Confirm
+				</Button>
+			),
+		});
+	};
 	const [image, setImage] = useState();
 	const navigate = useNavigate();
 	const logoutSubmit = (e) => {
 		axios.post("/api/logout").then((res) => {
 			if (res.data.status === 200) {
+				setImage("");
 				localStorage.removeItem("auth_token");
 				localStorage.removeItem("auth_email");
+				localStorage.removeItem("auth_profile");
+				localStorage.removeItem("auth_name");
+				localStorage.removeItem("auth_position");
+				localStorage.removeItem("auth_id");
 				navigate("/");
 			} else {
 			}
@@ -75,7 +110,6 @@ function App() {
 		axios.get(`/api/getProfilePicture/${id}`).then((res) => {
 			if (res.data.status === 200) {
 				setImage(res.data.image);
-				console.log("...", image);
 			} else {
 				console.log("couldnt retrieve data");
 			}
@@ -148,6 +182,9 @@ function App() {
 	}
 	return (
 		<div className="App">
+			{/* {image != null && localStorage.getItem("auth_token") != undefined
+				? notify()
+				: null} */}
 			<Header
 				style={{
 					backgroundColor: "white",
@@ -169,13 +206,15 @@ function App() {
 							<ReadOutlined /> News Feed
 						</Link>
 					</Menu.Item>
-					<Menu.Item key="2">
-						<Link to="/post">
-							{" "}
-							<BookOutlined />
-							post
-						</Link>
-					</Menu.Item>
+					{localStorage.getItem("auth_position") !== "Student" ? null : (
+						<Menu.Item key="2">
+							<Link to="/post">
+								{" "}
+								<BookOutlined />
+								post
+							</Link>
+						</Menu.Item>
+					)}
 					<Menu.Item key="3">
 						<Link to="/Notification">
 							<BellOutlined /> Notification
@@ -199,11 +238,24 @@ function App() {
 			<Content style={{ padding: "50px 0 0 0" }}>
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="/newsfeed" element={<Newsfeed />} />
+					<Route
+						path="/newsfeed"
+						element={
+							localStorage.getItem("auth_token") ? <Newsfeed /> : <LogIn />
+						}
+					/>
 					<Route path="/aboutus" element={<AboutUs />} />
 					<Route path="/contactus" element={<ContactUs />} />
-					<Route path="/post" element={<Post />} />
-					<Route path="/notification" element={<Notification />} />
+					<Route
+						path="/post"
+						element={localStorage.getItem("auth_token") ? <Post /> : <LogIn />}
+					/>
+					<Route
+						path="/notification"
+						element={
+							localStorage.getItem("auth_token") ? <Notification /> : <LogIn />
+						}
+					/>
 					<Route
 						path="/notification/advancedSearch"
 						element={<AdvancedSearch />}
@@ -246,7 +298,7 @@ function App() {
 					textAlign: "center",
 				}}
 			>
-				Ant Design ©2018 Created by Ant UED
+				Moonlight ©2022 Created by Moonlight PLC
 			</Footer>
 		</div>
 	);

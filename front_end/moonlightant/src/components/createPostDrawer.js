@@ -26,7 +26,7 @@ const PostDrawer = () => {
 		const fData = new FormData();
 		fData.append("image", news.image);
 		fData.append("body", news.body);
-		fData.append("id", "1");
+		fData.append("id", localStorage.getItem("auth_id"));
 		axios.get("/sanctum/csrf-cookie").then((response) => {
 			axios.post("api/createPost", fData).then((response) => {
 				console.log(response);

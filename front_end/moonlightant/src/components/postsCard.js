@@ -9,13 +9,7 @@ import profileimage from "../assets/f.jpg";
 import axios from "axios";
 
 const { Meta } = Card;
-const PostCard = () => {
-	const [state, setState] = useState();
-	useEffect(() => {
-		axios.get("api/posts").then((response) => {
-			setState(response.data.postdata);
-		});
-	}, []);
+const PostCard = ({ state }) => {
 	return (
 		<>
 			{state?.map((item) => (
@@ -30,7 +24,10 @@ const PostCard = () => {
 					cover={
 						<img
 							alt="example"
-							src={"http://localhost:8000/uploads/NewsPictures/" + item.image}
+							src={
+								"http://localhost:8000/uploads/NewsPictures/" +
+								item.postdata.image
+							}
 							style={{ padding: 10 }}
 						/>
 					}
@@ -40,11 +37,18 @@ const PostCard = () => {
 						<EllipsisOutlined key="ellipsis" />,
 					]}
 				>
-					<Card bordered={false}>{item.body}</Card>
+					<Card bordered={false}>{item.postdata.body}</Card>
 					<Meta
-						avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-						title={item.name}
-						description="Addis Ababa University"
+						avatar={
+							<Avatar
+								src={
+									"http://localhost:8000/uploads/ProfilePicture/" +
+									item.profileImage[0]?.image
+								}
+							/>
+						}
+						title={item.postdata.name}
+						description={item.postdata.email}
 					/>
 				</Card>
 			))}
