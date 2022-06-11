@@ -1,17 +1,62 @@
-import React from "react";
-import { Form, Input, Button, Typography, Row, Col } from "antd";
+import React, { useState ,useEffect} from "react";
+import { Form, Input, Button, Typography, Row, Col ,message} from "antd";
 import {
 	LeftCircleFilled,
 	PhoneFilled,
 	MailFilled,
 	FacebookFilled,
-	TwitterSquareFilled,
+	LinkedinFilled,
 	InstagramFilled,
 } from "@ant-design/icons";
-
+import axios from "axios";
 const ContactUs = () => {
 	const [form] = Form.useForm();
 	const { Title, Text } = Typography;
+	const [adminContact,setAdminContact] = useState({
+		PhoneNumber:"",
+		Email:"",
+		LinkedIn:"",
+		Facebook:"",
+		Instagram:""
+	})
+	const [contactus, setContactus] = useState({
+		name:"",
+		phoneNumber:"",
+		email:"",
+		message:""
+	})
+	useEffect(() => {
+		axios.get(`/api/admincontact`).then((res) => {
+		  if (res.data.status === 200) {
+			setAdminContact(res.data.contact[0]);
+			console.log(adminContact)
+		  } else {
+			console.log("couldnt retrieve data");
+		  }
+		});
+	  }, []);
+
+	  const sendMessage = () => {
+		const data ={
+			phoneNumber: contactus.phoneNumber,
+			email: contactus.email,
+			name: contactus.name,
+			message: contactus.message
+		}
+
+		axios.post("api/sendcontactus", data).then((response) => {
+			console.log(response);
+			if (response.data.status === 200) {
+				message.success("Thank You for contacting us!");
+			} else {
+				console.log("sending failed");
+			}
+		});
+	  }
+
+	  const handleInput = (e) => {
+		setContactus({ ...contactus, [e.target.name]: e.target.value });
+	};
 	return (
 		<div
 			style={{
@@ -73,7 +118,7 @@ const ContactUs = () => {
 						}}
 					>
 						{" "}
-						+251-9-20-98-78
+						{adminContact.PhoneNumber}
 					</Text>
 					<br />
 					<MailFilled
@@ -92,9 +137,10 @@ const ContactUs = () => {
 						}}
 					>
 						{" "}
-						Moonlight@gmail.com
+						{adminContact.Email}
 					</Text>
 					<br />
+					<a href={adminContact.Facebook}>
 					<FacebookFilled
 						style={{
 							fontSize: "1.5em",
@@ -104,7 +150,9 @@ const ContactUs = () => {
 							marginRight: 10,
 						}}
 					/>
-					<TwitterSquareFilled
+					</a>
+					<a href={adminContact.LinkedIn}>
+					<LinkedinFilled 
 						style={{
 							fontSize: "1.5em",
 							color: "#0080ff",
@@ -113,6 +161,8 @@ const ContactUs = () => {
 							marginRight: 10,
 						}}
 					/>
+					</a>
+					<a href={adminContact.Instagram}>
 					<InstagramFilled
 						style={{
 							fontSize: "1.5em",
@@ -122,6 +172,7 @@ const ContactUs = () => {
 							marginRight: 70,
 						}}
 					/>
+					</a>
 				</Col>
 				<Col span={12}>
 					<Form // Ant Design's Form Component
@@ -145,10 +196,11 @@ const ContactUs = () => {
 							borderRadius: 30,
 							backgroundColor: "white",
 						}}
+						onFinish={()=>sendMessage()}
 					>
 						<Form.Item // Form Item (Full Name)
 							label="Full Name"
-							name="fullName"
+							
 							required
 							tooltip="This is a required field"
 							rules={[
@@ -158,11 +210,13 @@ const ContactUs = () => {
 								},
 							]}
 						>
-							<Input placeholder="First Name" />
+							<Input placeholder="First Name"
+							name="name"
+							onChange={handleInput}
+							/>
 						</Form.Item>
 						<Form.Item // Form Item (Phone Number)
 							label="Phone Number"
-							name="phoneNumber"
 							required
 							tooltip="This is a required field"
 							rules={[
@@ -172,11 +226,12 @@ const ContactUs = () => {
 								},
 							]}
 						>
-							<Input placeholder="Phone Number" />
+							<Input placeholder="Phone Number"
+							name="phoneNumber"
+							onChange={handleInput} />
 						</Form.Item>
 						<Form.Item // Form Item (Email)
 							label="Email"
-							name="email"
 							required
 							tooltip="This is a required field"
 							rules={[
@@ -187,11 +242,13 @@ const ContactUs = () => {
 								},
 							]}
 						>
-							<Input placeholder="Email" />
+							<Input placeholder="Email"
+							name="email"
+							onChange={handleInput}
+							/>
 						</Form.Item>
 						<Form.Item // Form Item (Message)
 							label="Type your message here"
-							name="message"
 							required
 							tooltip="This is a required field"
 							rules={[
@@ -203,6 +260,8 @@ const ContactUs = () => {
 						>
 							<Input.TextArea
 								placeholder="Let us know how we can help you?"
+								name="message"
+							onChange={handleInput}
 								autoSize={{ minRows: 4, maxRows: 6 }}
 							/>
 						</Form.Item>
@@ -210,6 +269,7 @@ const ContactUs = () => {
 						>
 							<Button
 								type="primary"
+								htmlType="submit"
 								style={{
 									borderRadius: 10,
 									borderColor: "",

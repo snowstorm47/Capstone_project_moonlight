@@ -11,6 +11,11 @@ class student extends Model
     public $table = "student";
     public $timestamps = false;
     protected $fillable = [
+        'major',
+        'user_id',
+        'department_id',
+        'college_id',
+        'GPA',
         'phoneNumber',
         'sex',
         'startDateClass',

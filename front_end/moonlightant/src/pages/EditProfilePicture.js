@@ -51,6 +51,8 @@ const EditProfilePicture = ({ parentToChild }) => {
       axios.post(`api/updateProfilePicture/${id}`, fData).then((response) => {
         if (response.data.status === 200) {
           message.success("Picture updated succesfully");
+    setIsModalVisible(false);
+
         } else {
           message.error("Picture was not updated. Please try again");
         }
@@ -119,7 +121,7 @@ const EditProfilePicture = ({ parentToChild }) => {
             getValueFromEvent={normFile}
           >
             <Upload.Dragger
-              name="notificationImage"
+              name="image"
               type="file"
               multiple={false}
               onChange={(e) =>

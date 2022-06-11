@@ -83,7 +83,7 @@ function CreateProfile() {
 
       axios.post(`/api/addProfile/${id}`, fData).then((res) => {
         if (res.data.status === 200) {
-          // localStorage.setItem("auth_profile",1);
+          localStorage.setItem("auth_profile",1);
           //   setSuccess(res.data.message);
           navigate("/");
           console.log('success');

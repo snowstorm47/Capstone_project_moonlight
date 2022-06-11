@@ -2,14 +2,14 @@ import React, { useEffect, Component, useState } from "react";
 import {
   Layout,
   Menu,
-  Space,
+  Modal,
   Skeleton,
   List,
   message,
   Button,
   Avatar,
 } from "antd";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { SendTimeExtension, SevenK } from "@mui/icons-material";
 
@@ -20,6 +20,26 @@ const NotificationInstitution = () => {
   const [visible, setVisible] = useState(true);
   const [state, setState] = useState();
   const [loading, setLoading] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+	const [ids,setIds]=useState({id:'',user_id:''})
+	let iduserget;
+  const showModal = (id) => {
+    setIsModalVisible(true);
+	console.log(isModalVisible);
+	setIds({id:id})
+
+
+  };
+
+  const handleOk = (id) => {
+    setIsModalVisible(false);
+	deleteNotification(id)
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+	
+  };
   const [profilePicture, setProfilePicture] = useState({
     image: "",
     institutionName: "",
@@ -42,8 +62,11 @@ const NotificationInstitution = () => {
     axios.put(`/api/seenNotification/${id}`, data).then((res) => {
       if (res.data.status === 200) {
         message.success("Notification in seen box");
-        console.log(res.data.result);
-        // window.location = "/Notification";
+        axios.get(`api/showInstitutionNotification/${id}`).then((response) => {
+          setState(response.data.notification);
+          console.log(response.data.notification);
+          setLoading(false);
+        });
       } else {
         message.error("Notification not added in seen");
       }
@@ -54,7 +77,11 @@ const NotificationInstitution = () => {
     axios.delete(`/api/deleteNotification/${id}`).then((res) => {
       if (res.data.status === 200) {
         message.success("Notification has been deleted");
-        console.log(res.data.result);
+        axios.get(`api/showInstitutionNotification/${id}`).then((response) => {
+          setState(response.data.notification);
+          console.log(response.data.notification);
+          setLoading(false);
+        });
       } else {
         message.error("Notification not deleted");
       }
@@ -64,6 +91,11 @@ const NotificationInstitution = () => {
 
   return (
     <div>
+      <Modal title="Delete Notification" visible={isModalVisible}
+	 onOk={()=>handleOk(ids.id)}
+	  onCancel={handleCancel}>
+	Do You Want to Delete The Notification
+  </Modal>
       {visible ? (
         <List
           itemLayout="horizontal"
@@ -118,13 +150,13 @@ const NotificationInstitution = () => {
                           type="text"
                           onClick={() => seen(item.id)}
                           key="list-loadmore-edit"
-                          icon={<CheckOutlined />}
+                          icon={<CheckCircleOutlined />}
                         />,
                         <Button
                           type="text"
-                          onClick={() => deleteNotification(item.id)}
+                          onClick={()=>showModal(item.id)}
                           key="list-loadmore-more"
-                          icon={<CloseOutlined />}
+                          icon={<DeleteOutlined />}
                         />,
                       ]}
                     ></List.Item>

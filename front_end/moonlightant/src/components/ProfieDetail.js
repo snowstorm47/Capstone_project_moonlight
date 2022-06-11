@@ -1,18 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "antd";
-import { AntDesignOutlined } from "@ant-design/icons";
+import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
 import food from "../assets/man.jpg";
+import verified from "../assets/verifiedblack.svg";
+import { Verified } from "@mui/icons-material";
+import axios from "axios";
+
 const ProfileDetail = () => {
-	const skills = [
-		"#developer",
-		"#react",
-		"#laravel",
-		"#mongodb",
-		"#mysql",
-		"#laravel",
-		"#mongodb",
-		"#mysql",
-	];
+	const [userData, setUserData] = useState({
+		phoneNumber: "",
+		name: "",
+		position: "",
+		startDate: "",
+		endDate: "",
+		sex: "",
+		institution_id: "",
+		college_id: "",
+		department_id: "",
+		companyName: "",
+		GPA: "",
+		major: "",
+		startDateClass: "",
+		endDateClass: "",
+		image: "",
+		skill: [],
+		employmentHistory: [],
+		email: "",
+		error_list: [],
+	});
+
+	const [skills, setSkill] = useState([]);
+	const [history, setHistory] = useState([]);
+
+	const id = localStorage.getItem("auth_id");
+	useEffect(() => {
+		// axios.get('/sanctum/csrf-cookie').then(res => {
+		axios.get(`/api/profile/${id}`).then((res) => {
+			if (res.data.status === 200) {
+				setUserData(res.data);
+				setSkill(res.data.skill);
+				console.log(skills);
+				setHistory(res.data.employmentHistory);
+				console.log("userData...", userData);
+			} else {
+				console.log("couldnt retrieve data");
+			}
+		});
+	}, []);
 	return (
 		<Card
 			title=""
@@ -36,8 +70,12 @@ const ProfileDetail = () => {
 					xl: 70,
 					xxl: 100,
 				}}
-				src={food}
-				style={{ zIndex: 10 }}
+				src={"http://localhost:8000/uploads/ProfilePicture/" + userData.image}
+				icon={<UserOutlined />}
+				style={{
+					zIndex: 10,
+					boxShadow: " rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+				}}
 			/>
 			<Card
 				type="inner"
@@ -48,8 +86,21 @@ const ProfileDetail = () => {
 					marginLeft: -25,
 				}}
 			>
-				<h3>Jane Doe</h3>
-				<span style={{ color: "gray" }}>Developer</span>
+				<div
+					style={{
+						justifyContent: "center",
+						alignItems: "center",
+						textAlign: "center",
+					}}
+				>
+					<strong>{userData.name}</strong>
+					{localStorage.getItem("auth_position") === "Instructor" ? (
+						<Verified
+							style={{ width: "15px", height: "15px", color: "#0080ff" }}
+						/>
+					) : null}
+				</div>
+				<span style={{ color: "gray" }}>{userData.email}</span>
 			</Card>
 			<Card
 				type="inner"
@@ -61,10 +112,15 @@ const ProfileDetail = () => {
 					marginLeft: -25,
 					paddingBottom: 20,
 					textAlign: "left",
+					minHeight: "150px",
 				}}
 			>
-				<h4>Berbera</h4>
-				<span style={{ color: "gray" }}>developer</span>
+				{userData.employmentHistory.map((item) => (
+					<>
+						<h4>{item.companyName}</h4>
+						<span style={{ color: "gray" }}>{item.position}</span>
+					</>
+				))}
 			</Card>
 			<Card
 				type="inner"
@@ -77,9 +133,10 @@ const ProfileDetail = () => {
 					paddingBottom: 20,
 					marginBottom: 0,
 					textAlign: "left",
+					minHeight: "200px",
 				}}
 			>
-				{skills.map((skill) => (
+				{userData.skill.map((skill) => (
 					<button
 						style={{
 							color: "white",
@@ -89,7 +146,7 @@ const ProfileDetail = () => {
 							backgroundColor: "#0080ff",
 						}}
 					>
-						{skill}
+						#{skill.skill}
 					</button>
 				))}
 			</Card>

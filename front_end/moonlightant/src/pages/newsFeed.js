@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/newsFeed.css";
 import food from "../assets/p.jpg";
 import NewsCard from "../components/Newscard";
-import { Input, Space } from "antd";
+import { Card, Input, Space, Switch } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
 import ProfileDetail from "../components/ProfieDetail";
 import NewsDrawer from "../components/createNewsDrawer";
@@ -19,6 +19,7 @@ const Newsfeed = () => {
 		/>
 	);
 	const [state, setState] = useState();
+	const [institution, setInstitution] = useState(false);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		axios.get("api/newsfeed").then((response) => {
@@ -26,6 +27,26 @@ const Newsfeed = () => {
 			setLoading(false);
 		});
 	}, []);
+	const getAllNews = () => {
+		axios.get("api/newsfeed").then((response) => {
+			setState(response.data.newsdata);
+			setLoading(false);
+		});
+		console.log("state,,,", state);
+	};
+	useEffect(() => {
+		{
+			institution
+				? axios.get("api/getmyinstitution").then((response) => {
+						setState(response.data.newsdata);
+						setLoading(false);
+				  })
+				: axios.get("api/newsfeed").then((response) => {
+						setState(response.data.newsdata);
+						setLoading(false);
+				  });
+		}
+	}, [institution]);
 
 	const onSearch = (value) => console.log(value);
 
@@ -46,9 +67,18 @@ const Newsfeed = () => {
 				<NewsCard state={state} loading={loading} />
 			</div>
 			<div className="leftContainer">
+				<Card>
+					<Switch
+						onChange={(checked) => {
+							console.log(institution);
+							setInstitution(checked);
+						}}
+					/>
+				</Card>
 				<Recomendation />
-
-				<NewsDrawer />
+				{localStorage.getItem("auth_position") === "Institution" ? (
+					<NewsDrawer />
+				) : null}
 			</div>
 		</div>
 	);
