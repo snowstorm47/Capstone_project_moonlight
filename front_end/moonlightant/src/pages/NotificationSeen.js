@@ -1,6 +1,6 @@
 import React,{ useEffect, Component, useState } from "react";
-import { Skeleton, List, message, Button} from "antd";
-import {  CloseOutlined,} from "@ant-design/icons";
+import { Skeleton, List, Modal,message, Button} from "antd";
+import {  DeleteOutlined,} from "@ant-design/icons";
 import axios from "axios";
 
 const NotificationSeen = () => {
@@ -8,6 +8,26 @@ const NotificationSeen = () => {
   const [state, setState] = useState();
 	const [loading, setLoading] = useState(true);
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+	const [ids,setIds]=useState({id:'',user_id:''})
+	let iduserget;
+  const showModal = (id) => {
+    setIsModalVisible(true);
+	console.log(isModalVisible);
+	setIds({id:id})
+
+
+  };
+
+  const handleOk = (id) => {
+    setIsModalVisible(false);
+	deleteNotification(id)
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+	
+  };
   const id = localStorage.getItem('auth_id');
 	useEffect(() => {
 		axios.get(`api/viewSeenNotification/${id}`).then((response) => {
@@ -21,7 +41,11 @@ const NotificationSeen = () => {
     axios.delete(`/api/deleteNotification/${id}`).then((res) => {
         if (res.data.status === 200) {
           message.success("Notification has been deleted");
-          console.log(res.data.result);
+          axios.get(`api/viewSeenNotification/${id}`).then((response) => {
+            setState(response.data.notification);
+            console.log(response.data.notification);
+            setLoading(false);
+          });
         } else {
           message.error("Notification not deleted");            
         }
@@ -30,6 +54,11 @@ const NotificationSeen = () => {
 
   return (
    <div>
+     <Modal title="Delete Notification" visible={isModalVisible}
+	 onOk={()=>handleOk(ids.id)}
+	  onCancel={handleCancel}>
+	Do You Want to Delete The Notification
+  </Modal>
         {visible ? (
           <List
           itemLayout="horizontal"
@@ -81,9 +110,9 @@ const NotificationSeen = () => {
                       actions={[
                         <Button 
                         type="text"
-                        onClick={() => deleteNotification(item.id)} 
+                        onClick={()=>showModal(item.id)}
                         key="list-loadmore-more"
-                          icon={<CloseOutlined />}
+                          icon={<DeleteOutlined />}
                         />
                       ]}
                     ></List.Item>

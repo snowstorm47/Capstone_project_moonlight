@@ -47,101 +47,120 @@ const SignUp = () => {
 			name: registerInput.name,
 		};
 
-		const confirmPassword = registerInput.confirmPassword;
-		if (confirmPassword === registerInput.password) {
-			axios.get("/sanctum/csrf-cookie").then((res) => {
-				console.log("inside csrf");
-				axios.post("/api/register", data).then((res) => {
-					console.log(data);
-					if (res.data.status === 200) {
-						localStorage.setItem("auth_token", res.data.token);
-						localStorage.setItem("auth_email", res.data.email);
-						localStorage.setItem("auth_name", res.data.name);
-						localStorage.setItem("auth_id", res.data.id);
-						localStorage.setItem("auth_position", res.data.position);
-						localStorage.setItem("auth_profile", 0);
-						console.log("after auth_token");
-						setMessage(res.message);
+    const confirmPassword = registerInput.confirmPassword;
+    if (confirmPassword === registerInput.password) {
+      axios.get("/sanctum/csrf-cookie").then((res) => {
+        console.log("inside csrf");
+        axios.post("/api/register", data).then((res) => {
+          if (res.data.status === 200) {
+            localStorage.setItem("auth_token", res.data.token);
+            localStorage.setItem("auth_email", res.data.email);
+            localStorage.setItem("auth_name", res.data.name);
+            localStorage.setItem("auth_id", res.data.id);
+            localStorage.setItem("auth_position", res.data.position);
+            localStorage.setItem("auth_profile", 0);
+            console.log("after auth_token");
+            setMessage(res.message);
+            if(localStorage.getItem("auth_position")==="Institution")
+            {
+              const fData = new FormData();
+                fData.append("notificationTitle", "Institution Has Registered ");
+                fData.append("notificationDetail", "Please Verify "+ localStorage.getItem('auth_name'));
+                fData.append("sender_id", localStorage.getItem('auth_id'));
+                fData.append("reciever_id", 3);
+                fData.append("seen_status", 'False');
+              axios.get("/sanctum/csrf-cookie").then((response) => {
+                axios.post("api/postNotification", fData).then((response) => {
+                  console.log(response);
+                  if (response.data.status === 200) {
+                    message.success("Notification created succesfully");
+                  } else {
+                    message.error("Notification was not created. Please try again");
+                  }
+                });
+              });
+            }
+            console.log(res.data.message);
+            console.log(first);
+            // swal("Success", res.data.message, "success");
+            navigate("/signin", { state: { first } });
+          } else {
+            console.log("inside else");
+            setFailMessage(res.data.message);
+            setRegister({
+              ...registerInput,
+              error_list: res.data.validation_errors,
+            });
+          }
+        });
+      });
+    } else {
+      setRegister({
+        ...registerInput,
+        confirm_error: "passwords are not the same",
+      });
+    }
+  };
 
-						console.log(res.data.message);
-						console.log(first);
-						// swal("Success", res.data.message, "success");
-						navigate("/signin", { state: { first } });
-					} else {
-						console.log("inside else");
-						setFailMessage(res.data.message);
-						setRegister({
-							...registerInput,
-							error_list: res.data.validation_errors,
-						});
-					}
-				});
-			});
-		} else {
-			setRegister({
-				...registerInput,
-				confirm_error: "passwords are not the same",
-			});
-		}
-	};
-
-	return (
-		<div className="space-align-container">
-			<div className="space-align-center">
-				<Space className="space-align-center">
-					<Form
-						style={{ paddingTop: "3rem" }}
-						name="basic"
-						labelCol={{
-							span: 8,
-						}}
-						wrapperCol={{
-							span: 20,
-						}}
-						initialValues={{
-							remember: true,
-						}}
-						autoComplete="off"
-						onFinish={registerSubmit}
-					>
-						<div style={{ color: "green" }}>{message}</div>
-						<div style={{ color: "red" }}>{failMessage}</div>
-						<Form.Item label="Sign Up as: ">
-							<select
-								labelInValue
-								// defaultValue={{ value: 'Student' }}
-								style={{ width: "15rem" }}
-								name="position"
-								onChange={handleInput}
-								value={registerInput.position}
-							>
-								<option value="Student">Student</option>
-								<option value="Instructor">Instructor</option>
-								<option value="Hiring Company">Hiring Company</option>
-								<option value="Institution">Institution</option>
-							</select>
-						</Form.Item>
-						<Form.Item
-							style={{
-								paddingTop: "2rem",
-								paddingRight: "2rem",
-								width: "27rem",
-							}}
-							label="Email"
-							rules={[
-								{
-									required: true,
-									message: "Please input your email!",
-								},
-							]}
-						>
-							<Input
-								name="email"
-								onChange={handleInput}
-								value={registerInput.email}
-							/>
-							{/* <span style={{color:"red"}}>{registerInput.error_list.email}</span> */}
-						</Form.Item>
+  return (
+    <div className="space-align-container">
+      <div className="space-align-center">
+        <Space className="space-align-center">
+          <Form
+            style={{ paddingTop: "3rem" }}
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 20,
+            }}
+            initialValues={{
+              remember: true,
+            }}
+            autoComplete="off"
+            onFinish={registerSubmit}
+          >
+            <div style={{ color: "green" }}>{message}</div>
+            <div style={{ color: "red" }}>{failMessage}</div>
+            <Form.Item label="Sign Up as: ">
+              <select
+                labelInValue
+                // defaultValue={{ value: 'Student' }}
+                style={{ width: "15rem" }}
+                name="position"
+                onChange={handleInput}
+                value={registerInput.position}
+              >
+                <option value=""></option>
+                <option value="Student">Student</option>
+                <option value="Instructor">Instructor</option>
+                <option value="Hiring Company">Hiring Company</option>
+                <option value="Institution">Institution</option>
+              </select>
+            </Form.Item>
+            <Form.Item
+              style={{
+                paddingTop: "2rem",
+                paddingRight: "2rem",
+                width: "27rem",
+              }}
+              label="Email"
+              
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your email!",
+                },
+              ]}
+            >
+              <Input 
+              name="email"
+              onChange={handleInput}
+              value={registerInput.email}
+              />
+              {/* <span style={{color:"red"}}>{registerInput.error_list.email}</span> */}
+            </Form.Item>
 
 						<Form.Item
 							style={{ paddingTop: "2rem", width: "25rem" }}

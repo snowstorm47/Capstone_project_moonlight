@@ -49,7 +49,7 @@ import ProfilePageInstitution from "./pages/profileInstitution";
 import ProfilePageInstructor from "./pages/profileInstructor";
 import SendRecomendation from "./components/SendRecommendation";
 import AdminPage from "./AdminPage";
-
+import AdminAboutus from "./components/Admin/AdminAboutus";
 import { useEffect, useState } from "react";
 
 //to generate csrf token
@@ -278,6 +278,7 @@ function App() {
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="recomendation" element={<SendRecomendation />} />
 					<Route path="admin" element={<AdminPage />} />
+					<Route path="editabout" element={<AdminAboutus />} />
 					<Route
 						path="createprofileinstructor"
 						element={<InstructorCreateProfile />}

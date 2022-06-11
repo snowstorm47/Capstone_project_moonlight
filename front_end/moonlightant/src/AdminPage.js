@@ -10,6 +10,11 @@ import {
   import { useState } from 'react';
 import AdminNews from './components/Admin/AdminNews';
 import AdminPost from './components/Admin/AdminPost';
+import AdminHiring from './components/Admin/AdminHiring';
+import AdminAboutus from './components/Admin/AdminAboutus';
+import AdminInstitution from './components/Admin/AdminInstitution';
+import AdminContact from './components/Admin/AdminContact';
+import AdminContactDetail from './components/Admin/AdminContactDetail';
 const { Header, Footer, Sider, Content } = Layout;
    
   const AdminPage = () => {
@@ -20,17 +25,17 @@ const { Header, Footer, Sider, Content } = Layout;
       case "post":
         return <AdminPost/>;
       case "institution":
-        return "<NotificationInstitution />;"
+        return <AdminInstitution/>;
       case "news":
         return <AdminNews/>;
         case "aboutus":
-        return "<NotificationRecieved/>"
+        return <AdminAboutus/>;
       case "company":
-        return "<NotificationHiring/>;"
+        return <AdminHiring/>;
       case "contact":
-        return "<NotificationSeen/>"
-        case "notification":
-        return "<NotificationInstructor/>"
+        return <AdminContact/>
+        case "admincontact":
+        return <AdminContactDetail/>
       default:
         break;
     }
@@ -39,7 +44,7 @@ const { Header, Footer, Sider, Content } = Layout;
     return (
         <Layout>
         <Sider
-          width={256}
+          width={350}
           style={{ 
             minHeight: "90vh",
             marginTop:'2.6rem'
@@ -86,20 +91,6 @@ const { Header, Footer, Sider, Content } = Layout;
                 offset={[20, 20]}
               ></Badge>
             </Menu.Item>
-            <Menu.Item key="notification"
-              style={{
-                // paddingBottom:"20px"
-              }}
-            >
-              <BellOutlined />
-              <span>Notification</span>
-              <Badge
-                count={99}
-                overflowCount={10}
-                status="warning"
-                offset={[20, 20]}
-              ></Badge>
-            </Menu.Item>
             <Menu.Item key="institution"
               style={{
                 // paddingBottom:"20px"
@@ -130,13 +121,27 @@ const { Header, Footer, Sider, Content } = Layout;
                 offset={[20, 20]}
               ></Badge>
             </Menu.Item>
+            <Menu.Item key="admincontact"
+              style={{
+                paddingBottom:"20px"
+              }}
+            >
+              <UserSwitchOutlined />
+              <span>Admin Contact </span>
+              <Badge
+                count={0}
+                overflowCount={10}
+                status="warning"
+                offset={[20, 20]}
+              ></Badge>
+            </Menu.Item>
             <Menu.Item key="contact"
               style={{
                 paddingBottom:"20px"
               }}
             >
               <UserSwitchOutlined />
-              <span>Contact Us</span>
+              <span>Contact Us </span>
               <Badge
                 count={0}
                 overflowCount={10}
@@ -165,8 +170,8 @@ const { Header, Footer, Sider, Content } = Layout;
             <Col span={20}>
               <Content
                 style={{
-                  margin: "40px 180px",
-                  padding: 24,
+                  margin: "40px 200px",
+                  padding: 20,
                   background: "#fff",
                   minHeight: 280,
                 }}

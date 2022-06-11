@@ -1,9 +1,39 @@
-import React from "react";
+import React ,{useState,useEffect} from "react";
 // import Navbar from "../../../layouts/frontend/Navbar";
 import { Button, Image, Row, Col, Divider, Typography } from "antd";
 import { TeamOutlined, AimOutlined, BulbOutlined } from "@ant-design/icons";
+import axios from "axios";
 function AboutUs() {
   const { Text, Link, Title } = Typography;
+  const [editAboutus, setEditAboutus] = useState({
+    ourVision: "",
+    ourVisionDetail: "",
+    ourMission: "",
+    ourMissionDetail: "",
+    ourTeam: "",
+    ourTeamDetail: "",
+    TitleOne: "",
+    TitleOneDetail: "",
+    TitleTwo: "",
+    TitleTwoDetail: "",
+    TitleThree: "",
+    TitleThreeDetail: "",
+    image:"",
+    TitleOneImage:"",
+    TitleTwoImage:"",
+    TitleThreeImage:""
+  });
+  useEffect(() => {
+    axios.get(`/api/aboutus`).then((res) => {
+      if (res.data.status === 200) {
+        setEditAboutus(res.data.aboutus[0]);
+         console.log(res.data.aboutus[0]);
+        console.log(editAboutus);
+      } else {
+        console.log("couldnt retrieve data");
+      }
+    });
+  }, []);
   return (
     <div>
       {/* <Navbar /> */}
@@ -11,15 +41,17 @@ function AboutUs() {
         <Row
           style={{
             backgroundImage:
-              "url(" +
-              "https://media-exp1.licdn.com/dms/image/C4D1BAQG5C_yM6QOYZw/company-background_10000/0/1624099256683?e=2147483647&v=beta&t=UNmK8vR8Tmah78d8Fuw7vcNpveWEnQ4Qwp828qaKUf4" +
-              ")",
+            `url(
+              "http://localhost:8000/uploads/ProfilePicture/" +
+              ${editAboutus.image}
+            )`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             height: "400px",
             width: "80",
           }}
+          name="image"
         >
           {/* <Col span={24}> */}
             <Col span={12}>
@@ -58,15 +90,11 @@ function AboutUs() {
           <br />
           <TeamOutlined style={{ fontSize: "2em", color: "blue" }} />
           <br />
-          Our Team
+          {editAboutus.ourTeam}
           <br />
           <br />
           <Text type="secondary">
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {editAboutus.ourTeamDetail}
           </Text>
           {/* <Divider type="vertical"></Divider> */}
         </Col>
@@ -75,15 +103,11 @@ function AboutUs() {
           <br />
           <AimOutlined style={{ fontSize: "2em", color: "blue" }} />
           <br />
-          Our Mission
+          {editAboutus.ourMission}
           <br />
           <br />
           <Text type="secondary">
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {editAboutus.ourMissionDetail}
           </Text>
         </Col>
         <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
@@ -91,15 +115,11 @@ function AboutUs() {
           <br />
           <BulbOutlined style={{ fontSize: "2em", color: "blue" }} />
           <br />
-          Our Vision
+          {editAboutus.ourVision}
           <br />
           <br />
           <Text type="secondary">
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {editAboutus.ourVisionDetail}
           </Text>
         </Col>
       </Row>
@@ -114,18 +134,18 @@ function AboutUs() {
           <Image
             height="90%"
             width="80%"
-            src="https://media-exp1.licdn.com/dms/image/C4D1BAQG5C_yM6QOYZw/company-background_10000/0/1624099256683?e=2147483647&v=beta&t=UNmK8vR8Tmah78d8Fuw7vcNpveWEnQ4Qwp828qaKUf4"
+            name="TitleOneImage"
+            src={
+              "http://localhost:8000/uploads/AboutusPicture/" +
+              editAboutus.TitleOneImage
+            }
           ></Image>
         </Col>
         <Col span={12}>
           <br />
-          <Title level={2}>Our Services</Title>
+          <Title level={2}>{editAboutus.TitleOne}</Title>
           <Text type="secondary" style={{ textAlign: "left" }}>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {editAboutus.TitleOneDetail}
           </Text>
         </Col>
       </Row>
@@ -137,20 +157,20 @@ function AboutUs() {
       <Row>
         <Col span={12}>
           <br />
-          <Title level={2}>Our Mission</Title>
+          <Title level={2}>{editAboutus.TitleTwo}</Title>
           <Text type="secondary" style={{ textAlign: "left" }}>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {editAboutus.TitleTwoDetail}
           </Text>
         </Col>
         <Col span={12}>
           <Image
             height="90%"
             width="80%"
-            src="https://media-exp1.licdn.com/dms/image/C4D1BAQG5C_yM6QOYZw/company-background_10000/0/1624099256683?e=2147483647&v=beta&t=UNmK8vR8Tmah78d8Fuw7vcNpveWEnQ4Qwp828qaKUf4"
+            name="TitleTwoImage"
+            src={
+              "http://localhost:8000/uploads/AboutusPicture/" +
+              editAboutus.TitleTwoImage
+            }
           ></Image>
         </Col>
       </Row>
@@ -165,18 +185,18 @@ function AboutUs() {
           <Image
             height="90%"
             width="80%"
-            src="https://media-exp1.licdn.com/dms/image/C4D1BAQG5C_yM6QOYZw/company-background_10000/0/1624099256683?e=2147483647&v=beta&t=UNmK8vR8Tmah78d8Fuw7vcNpveWEnQ4Qwp828qaKUf4"
+            name="TitleThreeImage"
+            src={
+              "http://localhost:8000/uploads/AboutusPicture/" +
+              editAboutus.TitleThreeImage
+            }
           ></Image>
         </Col>
         <Col span={12}>
           <br />
-          <Title level={2}>Our Vision</Title>
+          <Title level={2}>{editAboutus.TitleThree}</Title>
           <Text type="secondary" style={{ textAlign: "left" }}>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            {editAboutus.TitleThreeDetail}
           </Text>
         </Col>
       </Row>

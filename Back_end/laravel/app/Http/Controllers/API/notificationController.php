@@ -19,7 +19,6 @@ class notificationController extends Controller
         $validator = Validator::make($request->all(),[
             'notificationTitle'=>'required',
             'notificationDetail'=>'required',
-            'notificationImage'=>'required',
             'sender_id'=>'required',
             'reciever_id'=>'required'
         ]);
@@ -31,13 +30,9 @@ class notificationController extends Controller
             ]);
         }
         else{
-        $file= $request->file('notificationImage');
-        $filename= date('Ymd').$file->getClientOriginalName();
-        $file-> move(public_path('uploads/NotificationPicture'), $filename);
         $notification = new notification;
         $notification->notificationTitle = $request->notificationTitle;
         $notification->notificationDetail = $request->notificationDetail;
-        $notification->notificationImage = $filename;
         $notification->sender_id = $request->sender_id;
         $notification->reciever_id = $request->reciever_id;
         $notification->seen_status = $request->seen_status;
@@ -103,7 +98,7 @@ class notificationController extends Controller
             ->join('users', 'student.user_id', '=', 'users.id')
             ->join('notification', 'student.user_id', '=', 'notification.sender_id')
             ->where('notification.reciever_id','=',$id)
-            ->get(['notification.notificationTitle','notification.notificationDetail','notification.sender_id','student.image','users.name','notification.created_at']);
+            ->get(['notification.notificationTitle','notification.id','notification.notificationDetail','notification.sender_id','student.image','users.name','notification.created_at']);
            
         return Response()->json([
             "notification"=>$student,
@@ -118,7 +113,7 @@ class notificationController extends Controller
             ->join('notification', 'institution.user_id', '=', 'notification.sender_id')
             ->where('notification.reciever_id','=',$id)
             // ->select('users.name', 'institution.location', 'notification.notificationTitle')
-            ->get(['notification.notificationTitle','notification.notificationDetail','notification.sender_id','institution.image','institution.institutionName','notification.created_at']);
+            ->get(['notification.notificationTitle','notification.id','notification.notificationDetail','notification.sender_id','institution.image','institution.institutionName','notification.created_at']);
            
         return Response()->json([
             "notification"=>$institution,
@@ -133,7 +128,7 @@ class notificationController extends Controller
             ->join('notification', 'hiringCompany.user_id', '=', 'notification.sender_id')
             ->where('notification.reciever_id','=',$id)
             // ->select('users.name', 'institution.location', 'notification.notificationTitle')
-            ->get(['notification.notificationTitle','notification.notificationDetail','notification.sender_id','hiringCompany.image','users.name','notification.created_at']);
+            ->get(['notification.notificationTitle','notification.id','notification.notificationDetail','notification.sender_id','hiringCompany.image','users.name','notification.created_at']);
 
             
         return Response()->json([
@@ -149,7 +144,7 @@ class notificationController extends Controller
             ->join('notification', 'instructor.user_id', '=', 'notification.sender_id')
             ->where('notification.reciever_id','=',$id)
             // ->select('users.name', 'institution.location', 'notification.notificationTitle')
-            ->get(['notification.notificationTitle','notification.notificationDetail','notification.sender_id','instructor.image','users.name','notification.created_at']);
+            ->get(['notification.notificationTitle','notification.id','notification.notificationDetail','notification.sender_id','instructor.image','users.name','notification.created_at']);
            
         return Response()->json([
             "notification"=>$instructor,
@@ -181,12 +176,8 @@ class notificationController extends Controller
     public function updateNotification(Request $request,$id)
     {
         $notification = notification::findOrFail($id);
-        // $file= $request->file('notificationImage');
-        // $filename= date('Ymd').$file->getClientOriginalName();
-        // $file-> move(public_path('uploads/NotificationPicture'), $filename);
         $notification->notificationTitle = $request->notificationTitle;
-        $notification->notificationDetail = $request->notificationDetail;       
-        // $notification->notificationImage = $filename;
+        $notification->notificationDetail = $request->notificationDetail;   
         // $notification->sender_id = $request->sender_id;
         // $notification->reciever_id = $request->reciever_id;
         $result=$notification->save();
