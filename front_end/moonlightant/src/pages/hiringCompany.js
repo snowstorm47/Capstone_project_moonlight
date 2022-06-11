@@ -14,10 +14,10 @@ const popoverContent = (
     </div>
   );
 
-// const getRandomInt = (max, min = 0) => Math.floor(Math.random() * (max - min + 1)) + min;
+const getRandomInt = (max, min = 0) => Math.floor(Math.random() * (max - min + 1)) + min;
 
 const searchResult = (query) =>
-  new Array()
+  new Array(getRandomInt(5))
     .join('.')
     .split('.')
     .map((_, idx) => {
@@ -41,7 +41,7 @@ const searchResult = (query) =>
                 {category}
               </a>
             </span>
-            <span>{} results</span>
+            <span>{getRandomInt(200, 100)} results</span>
           </div>
         ),
       };
