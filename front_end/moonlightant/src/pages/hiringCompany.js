@@ -1,5 +1,7 @@
 
-import {  Button, Card, Carousel, Col, Popover, Row } from "antd";
+import {  Button, Card, Carousel, Col, Popover, Row, AutoComplete } from "antd";
+import { UserOutlined } from '@ant-design/icons';
+import { useState } from "react";
 import illustration from "../assets/hiringillustration.png";
 import { Input, Space } from 'antd';
 // import Ripple from "../components/ripple";
@@ -8,11 +10,59 @@ const { Search } = Input;
 
 const popoverContent = (
     <div>
-        <p>For a more indepth search resule please click here.</p>
+      <p>Please Click Here For a More Advanced Search Result.</p>
     </div>
-)
+  );
+
+// const getRandomInt = (max, min = 0) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+const searchResult = (query) =>
+  new Array()
+    .join('.')
+    .split('.')
+    .map((_, idx) => {
+      const category = `${query}${idx}`;
+      return {
+        value: category,
+        label: (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <span>
+              Found {query} on{' '}
+              <a
+                href={`https://s.taobao.com/search?q=${query}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {category}
+              </a>
+            </span>
+            <span>{} results</span>
+          </div>
+        ),
+      };
+    });
 
 const HiringCompany = () => {
+
+
+    const [options, setOptions] = useState([]);
+
+    const handleSearch = (value) => {
+      setOptions(value ? searchResult(value) : []);
+    };
+  
+    const onSelect = (value) => {
+      console.log('onSelect', value);
+    };
+  
+
+
+
     return ( 
         <div className="topContainer" style={{marginBottom:"5erm"}} >
         <div className="wordCaroselContainer" style={{marginBottom:"2erm"}}>
@@ -62,13 +112,21 @@ const HiringCompany = () => {
 
                 <Row style={{marginTop:"6rem", justify:"center", position:"relative",}}>
              <Col span={12} pull={2}>
-             <Search placeholder="input search text" style={{ marginBottom:'15rem', width:"60rem" }} />
+             <AutoComplete
+      dropdownMatchSelectWidth={252}
+      style={{ marginBottom:'15rem', width:"60rem" }}
+      options={options}
+      onSelect={onSelect}
+      onSearch={handleSearch}
+    >
+      <Input.Search size="middium" placeholder="Search using skill" enterButton />
+    </AutoComplete>
              </Col>
 
 
              <Col span={12} push={24} >
              <Popover content={popoverContent} title="Advanced Search">
-             <Button type="primary" style={{marginLeft:"10rem"}}> Advanced Search</Button>
+             <Button type="primary" style={{marginLeft:"10rem",paddingBottom:"0.5rem"}}> Advanced Search</Button>
              </Popover>
              </Col>
                 </Row>
