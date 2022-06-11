@@ -6,6 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\News;
 use App\Models\User;
+use App\Models\institution;
+use App\Models\student;
+
+
+
 use Illuminate\Support\Facades\Validator;
 
 
@@ -49,7 +54,10 @@ if($validator->fails()) {
     }
     public function showMyInstitution(Request $request)
     {
-        $News=News::find($request->id);
+        $institution_id=User::leftJoin('student','student.user_id','users.id')
+        ->where('student.user_id','=',$request->id)->get('student.institution_id');
+        $institution=institution::find($institution_id);
+        $News=News::where('institution_id','=',$institution_id);
         return Response()->json([
             "data"=>[$News]
         ]);

@@ -317,6 +317,8 @@ public function editSocialMediaLink(Request $request, $id)
         $user = User::findOrFail($id);
         // $student = student::where('user_id', $id)->get();
         $employmentHistory = employmentHistory::where('user_id', $id)->get();
+        $email = DB::table('users')->where('id', $id)->value('email');
+
    
         $phoneNumber = DB::table('student')->where('user_id', $id)->value('phoneNumber');
         $startDateClass= DB::table('student')->where('user_id', $id)->value('startDateClass');
@@ -355,7 +357,9 @@ public function editSocialMediaLink(Request $request, $id)
                     'image'=>$image,
                     'recommendationDetail'=>$recommendationDetail,
                     'skill'=>$skill,
-                    'employmentHistory'=>$employmentHistory
+                    'employmentHistory'=>$employmentHistory,
+                    'email'=>$email
+
                 ]);
             }
             else

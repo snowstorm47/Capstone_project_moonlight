@@ -23,10 +23,46 @@ import { Content } from "antd/lib/layout/layout";
 import Search from "antd/lib/transfer/search";
 import Meta from "antd/lib/card/Meta";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { EyeFilled, EyeOutlined } from "@ant-design/icons";
+import { EyeFilled, EyeOutlined, UserOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const AdvancedSearch = () => {
+	const [count, setCount] = useState(0);
+	const sendNotification = () => {
+		selected.forEach((item) => {
+			console.log(item);
+		});
+	};
+	const filter = () => {
+		setCount(count + 1);
+		axios
+			.get(`/api/advancedSearch`)
+			.then((res) => {
+				if (res.data.status === 200) {
+					setSearchResults(res.data.data);
+				} else {
+					console.log("inside else");
+				}
+			})
+			.then(() => {
+				setSearchResults(
+					searchResults.filter((item) => {
+						setSearchResults(item.student[0]?.GPA);
+						if (
+							item.skill
+								.map((skillObj) => skillObj.skill)
+								.includes(search.skill) ||
+							item.student[0]?.GPA >= search.gpa ||
+							item.student[0]?.institution_id === search.institution
+						) {
+							return true;
+						} else {
+							return false;
+						}
+					})
+				);
+			});
+	};
 	const [search, setSearch] = useState({
 		skill: "",
 		gpa: "",
@@ -42,10 +78,7 @@ const AdvancedSearch = () => {
 	const navigate = useNavigate();
 
 	const [loading, setLoading] = useState(false);
-	const [state, setState] = useState({
-		name: "John Doe",
-		image: "https://joeschmoe.io/api/v1/random",
-	});
+	const [state, setState] = useState();
 	const [searchResults, setSearchResults] = useState();
 	const [data, setData] = useState([]);
 	const [institutions, setinstitutions] = useState([
@@ -67,7 +100,6 @@ const AdvancedSearch = () => {
 			.then((res) => {
 				if (res.data.status === 200) {
 					setSearchResults(res.data.data);
-					console.log("found...", searchResults);
 				} else {
 					console.log("inside else");
 				}
@@ -84,6 +116,7 @@ const AdvancedSearch = () => {
 	};
 
 	useEffect(() => {
+		console.log(searchResults);
 		axios
 			.get(
 				`/api/advancedSearch?skill=${search.skill}&position=${search.position}&gpa=${search.gpa}&institution=${search.institution}`
@@ -91,7 +124,6 @@ const AdvancedSearch = () => {
 			.then((res) => {
 				if (res.data.status === 200) {
 					setSearchResults(res.data.data);
-					console.log("found...", searchResults);
 				} else {
 					console.log("inside else");
 				}
@@ -149,9 +181,7 @@ const AdvancedSearch = () => {
 				<Search
 					placeholder="search a skill"
 					onChange={(e) => {
-						e.preventDefault();
 						setSearch({ ...search, skill: e.target.value });
-						console.log(search);
 					}}
 					enterButton="Search"
 				/>
@@ -164,7 +194,6 @@ const AdvancedSearch = () => {
 					value={search.experience}
 					onChange={(e) => {
 						setSearch({ ...search, experience: e });
-						console.log(search);
 					}}
 					style={{ margin: "0 16px" }}
 				/>
@@ -190,7 +219,6 @@ const AdvancedSearch = () => {
 					value={search.gpa}
 					onChange={(e) => {
 						setSearch({ ...search, gpa: e });
-						console.log(search);
 					}}
 					marks={{
 						0: "0",
@@ -206,7 +234,6 @@ const AdvancedSearch = () => {
 					value={search.institution}
 					onChange={(e) => {
 						setSearch({ ...search, institution: e });
-						console.log(search);
 					}}
 				>
 					{institutions.map((item) => (
@@ -219,7 +246,6 @@ const AdvancedSearch = () => {
 					placeholder="college"
 					onChange={(e) => {
 						setSearch({ ...search, department: e });
-						console.log(e);
 					}}
 					style={{ width: "45%", margin: "5px" }}
 				>
@@ -234,7 +260,6 @@ const AdvancedSearch = () => {
 					onChange={(e) => {
 						e.preventDefault();
 						setSearch({ ...search, field: e });
-						console.log(search);
 					}}
 					style={{
 						width: "45%",
@@ -250,7 +275,6 @@ const AdvancedSearch = () => {
 				<Radio.Group
 					onChange={(e) => {
 						setSearch({ ...search, educationStatus: e.target.value });
-						console.log(search);
 					}}
 				>
 					<Radio value="Graduated" style={{ color: "white" }}>
@@ -260,8 +284,9 @@ const AdvancedSearch = () => {
 						Student
 					</Radio>
 				</Radio.Group>
+				<button onClick={filter}>click</button>
 			</Sider>
-
+			{/* the content starts here */}
 			<Content
 				style={{
 					margin: "40px 40px",
@@ -270,187 +295,222 @@ const AdvancedSearch = () => {
 					minHeight: 280,
 				}}
 			>
+				{/* personal card here with info */}
+
 				<div className="personInfoCard">
-					<div
-						style={{
-							backgroundColor: "white",
-							padding: "20px",
-							borderBottomRightRadius: "20px",
-						}}
-					>
-						<div
-							style={{
-								display: "flex",
-								flexDirection: "row",
-								alignItems: "center",
-							}}
-						>
-							<Meta
-								style={{ textAlign: "left", width: "auto" }}
-								avatar={<Avatar src={state.image} alt="A" size={64} />}
-								title={state.name}
-								description="This is the description"
-							/>
-							<button
-								type=""
-								style={{
-									marginLeft: "auto",
-									color: "white",
-									padding: "5px 10px",
-									borderRadius: "5px",
-									border: 0,
-									margin: 2,
-									backgroundColor: "#0080ff",
-								}}
-							>
-								View Profile
-							</button>
-						</div>
-						<div style={{ textAlign: "left", paddingTop: "10px" }}>
-							<button
-								style={{
-									color: "white",
-									borderRadius: 100,
-									border: 0,
-									margin: 2,
-									backgroundColor: "#0080ff",
-								}}
-							>
-								#Laravel
-							</button>
-							<button
-								style={{
-									color: "white",
-									borderRadius: 100,
-									border: 0,
-									margin: 2,
-									backgroundColor: "#0080ff",
-								}}
-							>
-								#react
-							</button>
-							<button
-								style={{
-									color: "white",
-									borderRadius: 100,
-									border: 0,
-									margin: 2,
-									backgroundColor: "#0080ff",
-								}}
-							>
-								#Firestore
-							</button>
-						</div>
-					</div>
-					<div
-						style={{
-							flexDirection: "row",
-							display: "flex",
-							justifyContent: "space-between",
-							borderTopLeftRadius: "20px",
-						}}
-					>
-						<div
-							style={{
-								width: "    45%",
-								textAlign: "left",
-								padding: "10px",
-								fontFamily: "monospace",
-							}}
-						>
+					{state ? (
+						<>
 							{" "}
-							<Divider
-								orientation="left"
-								style={{ width: "20px", color: "black" }}
+							<div
+								style={{
+									backgroundColor: "white",
+									padding: "20px",
+									borderBottomRightRadius: "20px",
+								}}
 							>
-								Academics
-							</Divider>
-							<div style={{ padding: "10px 0px" }}>
-								<span
+								<div
 									style={{
-										fontSize: "15px",
-										color: "black",
-										fontWeight: "bold",
+										display: "flex",
+										flexDirection: "row",
+										alignItems: "center",
 									}}
 								>
-									Institution
-								</span>
-								<br />
-								<span style={{ color: "gray" }}>
+									<Meta
+										style={{ textAlign: "left", width: "auto" }}
+										avatar={
+											<Avatar
+												src={
+													"http://localhost:8000/uploads/ProfilePicture/" +
+													state?.user.image
+												}
+												icon={<UserOutlined />}
+												alt="A"
+												size={64}
+											/>
+										}
+										title={state ? state.user.name : "john doe"}
+										description={state.user?.email}
+									/>
+									<button
+										type=""
+										style={{
+											marginLeft: "auto",
+											color: "white",
+											padding: "5px 10px",
+											borderRadius: "5px",
+											border: 0,
+											margin: 2,
+											backgroundColor: "#0080ff",
+										}}
+									>
+										View Profile
+									</button>
+								</div>
+								<div style={{ textAlign: "left", paddingTop: "10px" }}>
+									{state.skill.map((item) => {
+										return (
+											<button
+												style={{
+													color: "white",
+													borderRadius: 100,
+													border: 0,
+													margin: 2,
+													backgroundColor: "#0080ff",
+												}}
+											>
+												#{item.skill}
+											</button>
+										);
+									})}
+								</div>
+							</div>
+							<div
+								style={{
+									flexDirection: "row",
+									display: "flex",
+									justifyContent: "space-between",
+									borderTopLeftRadius: "20px",
+								}}
+							>
+								<div
+									style={{
+										width: "    45%",
+										textAlign: "left",
+										padding: "10px",
+										fontFamily: "monospace",
+									}}
+								>
 									{" "}
-									Addis Ababa Science and Technology
-								</span>
-							</div>
-							<div style={{ padding: "10px 0px" }}>
-								<span
+									<Divider
+										orientation="left"
+										style={{ width: "20px", color: "black" }}
+									>
+										Academics
+									</Divider>
+									<div style={{ padding: "10px 0px" }}>
+										<span
+											style={{
+												fontSize: "15px",
+												color: "black",
+												fontWeight: "bold",
+											}}
+										>
+											Institution
+										</span>
+										<br />
+										<span style={{ color: "gray" }}>
+											{
+												institutions[state.student[0]?.institution_id - 1]
+													?.institutionName
+											}
+										</span>
+									</div>
+									<div style={{ padding: "10px 0px" }}>
+										<span
+											style={{
+												fontSize: "15px",
+												color: "black",
+												fontWeight: "bold",
+											}}
+										>
+											Department
+										</span>
+										<br />
+										<span style={{ color: "gray" }}>
+											{" "}
+											College of Electrical and Mechanical engineering
+										</span>
+									</div>
+									<div style={{ padding: "10px 0px" }}>
+										<span
+											style={{
+												fontSize: "15px",
+												color: "black",
+												fontWeight: "bold",
+											}}
+										>
+											Major
+										</span>
+										<br />
+										<span style={{ color: "gray" }}>
+											{" "}
+											{state.student[0]?.major}
+										</span>
+									</div>
+									<div style={{ padding: "10px 0px" }}>
+										<span
+											style={{
+												fontSize: "15px",
+												color: "black",
+												fontWeight: "bold",
+											}}
+										>
+											GPA
+										</span>
+										<br />
+										<span style={{ color: "gray" }}>
+											{state.student[0]?.GPA}
+										</span>
+									</div>
+								</div>
+								<div
 									style={{
-										fontSize: "15px",
-										color: "black",
-										fontWeight: "bold",
+										width: "45%",
+										textAlign: "left",
+										padding: "10px",
+										fontFamily: "sans-serif",
 									}}
+									bordered={false}
 								>
-									Department
-								</span>
-								<br />
-								<span style={{ color: "gray" }}>
-									{" "}
-									College of Electrical and Mechanical engineering
-								</span>
+									<Divider
+										orientation="left"
+										style={{ width: "20px", color: "black" }}
+									>
+										Experience
+									</Divider>
+									{state.history.map((history) => {
+										return (
+											<>
+												<span
+													style={{
+														fontSize: "15px",
+														fontWeight: "bold",
+														color: "black",
+													}}
+												>
+													{history.companyName}
+												</span>
+												<br />
+												<span style={{ color: "gray" }}>
+													{history.position}
+												</span>
+												<br />
+											</>
+										);
+									})}
+								</div>
 							</div>
-							<div style={{ padding: "10px 0px" }}>
-								<span
-									style={{
-										fontSize: "15px",
-										color: "black",
-										fontWeight: "bold",
-									}}
-								>
-									Major
-								</span>
-								<br />
-								<span style={{ color: "gray" }}> Software Engineering</span>
-							</div>
-							<div style={{ padding: "10px 0px" }}>
-								<span
-									style={{
-										fontSize: "15px",
-										color: "black",
-										fontWeight: "bold",
-									}}
-								>
-									GPA
-								</span>
-								<br />
-								<span style={{ color: "gray" }}> 3.2</span>
-							</div>
-						</div>
-						<div
-							style={{
-								width: "45%",
-								textAlign: "left",
-								padding: "10px",
-								fontFamily: "sans-serif",
-							}}
-							bordered={false}
-						>
-							<Divider
-								orientation="left"
-								style={{ width: "20px", color: "black" }}
-							>
-								Experience
-							</Divider>
-							<span
-								style={{ fontSize: "15px", fontWeight: "bold", color: "black" }}
-							>
-								Berbera
-							</span>
-							<br />
-							<span style={{ color: "gray" }}>Software developer</span>
-						</div>
-					</div>
+						</>
+					) : (
+						<p>it worrks</p>
+					)}
 				</div>
+
 				<div className="searchResultContainer">
-					<h1 style={{}}>Results</h1>
+					<div
+						style={{
+							display: "flex",
+
+							zIndex: 10,
+							width: "100%",
+							backgroundColor: "blue",
+							position: "sticky",
+							textAlign: "center",
+						}}
+					>
+						<h1 style={{}}>Results</h1>
+						<button onClick={sendNotification}>send</button>
+					</div>
 
 					<InfiniteScroll
 						dataLength={data.length}
@@ -464,7 +524,7 @@ const AdvancedSearch = () => {
 						<List
 							dataSource={searchResults}
 							renderItem={(item) => (
-								<List.Item key={item.id}>
+								<List.Item key={item.user.id}>
 									<List.Item.Meta />
 									<div
 										style={{
@@ -475,31 +535,34 @@ const AdvancedSearch = () => {
 									>
 										<Checkbox
 											style={{ paddingLeft: "10px", paddingRight: "20px" }}
-											value={item.id}
+											value={item.user.id}
 											onChange={(e) => {
-												selected.push(item.id);
 												if (e.target.checked) {
-													selected.push(item.id);
+													selected.push(item.user.id);
 												} else {
 													selected.splice(selected.indexOf(e.target.value), 1);
 												}
 
-												console.log("hello,,,", typeof e.target.value);
+												console.log("hello,,,", selected);
 											}}
 										/>
 										<Meta
 											style={{ textAlign: "left", alignSelf: "flex-start" }}
-											avatar={<Avatar src={state.image} />}
-											title={item.name}
-											description={item.email}
+											avatar={
+												<Avatar
+													src={
+														"http://localhost:8000/uploads/ProfilePicture/" +
+														item.student[0]?.image
+													}
+													icon={<UserOutlined />}
+												/>
+											}
+											icon={<UserOutlined />}
+											title={item.user.name}
+											description={item.user.email}
 										/>
 										<button
-											onClick={() =>
-												setState({
-													name: item.name,
-													image: state.image,
-												})
-											}
+											onClick={() => setState(item)}
 											style={{
 												borderRadius: "100px",
 												border: "0px",
@@ -507,7 +570,7 @@ const AdvancedSearch = () => {
 												marginLeft: "auto",
 											}}
 										>
-											{item.name === state.name ? (
+											{item.user.name === state?.user.name ? (
 												<EyeOutlined
 													style={{
 														color: "white",
@@ -515,16 +578,16 @@ const AdvancedSearch = () => {
 														backgroundColor: "#0080ff",
 														borderRadius: "100Px",
 													}}
-													value={item.name}
-													onclick={() => {
-														setState(item.name);
+													value={item}
+													onClick={() => {
+														setState(item);
 													}}
 												/>
 											) : (
 												<EyeOutlined
 													style={{ padding: 4 }}
-													value={item.name}
-													onclick={() => setState(item.name)}
+													value={item.user.name}
+													onclick={() => setState(item)}
 												/>
 											)}
 										</button>
