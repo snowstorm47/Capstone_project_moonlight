@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Avatar } from "antd";
+import { Card, Avatar, Divider,Image } from "antd";
 import {
 	HeartOutlined,
 	EllipsisOutlined,
@@ -11,14 +11,23 @@ import axios from "axios";
 const { Meta } = Card;
 const PostCard = () => {
 	const [state, setState] = useState();
+	const [postImage,setPostImage] = useState();
 	useEffect(() => {
 		axios.get("api/posts").then((response) => {
-			setState(response.data.postdata);
+			setState(response.data.data);
+			setPostImage(response.data.data.firstPicture);
+			console.log(response.data.data);
 		});
 	}, []);
+	// useEffect(() => {
+	// 	axios.get(`api/getPostPicture/${id}`).then((response) => {
+	// 		setPicture(response.data.image);
+	// 	});
+	// }, []);
 	return (
 		<>
 			{state?.map((item) => (
+				
 				<Card
 					style={{
 						width: "80%",
@@ -27,12 +36,14 @@ const PostCard = () => {
 						borderRadius: 10,
 						marginBottom: 30,
 					}}
+					
 					cover={
-						<img
+							<img
 							alt="example"
-							src={"http://localhost:8000/uploads/NewsPictures/" + item.image}
+							src={"http://localhost:8000/uploads/PostPicture/" + item.firstPicture?.image}
 							style={{ padding: 10 }}
 						/>
+						
 					}
 					actions={[
 						<ShareAltOutlined key="share" />,
@@ -40,10 +51,30 @@ const PostCard = () => {
 						<EllipsisOutlined key="ellipsis" />,
 					]}
 				>
-					<Card bordered={false}>{item.body}</Card>
+					<Image.PreviewGroup>
+					{item.postPicture.map((item) => (
+					<>
+						<Image
+							alt="example"
+							width={100}
+							src={"http://localhost:8000/uploads/PostPicture/" + item.image}
+							style={{ 
+								// width:"25%",
+								height:"60px",
+								marginTop: "0.1rem",
+								marginLeft: "0.5rem",
+								marginRight: "0.5rem",
+								paddingLeft:"0.5rem"
+							}}
+						/>
+					</>
+				))}
+				</Image.PreviewGroup>
+				<Divider></Divider>
+					<Card bordered={false}>{item.postdata.body}</Card>
 					<Meta
 						avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-						title={item.name}
+						title={item.user[0].name}
 						description="Addis Ababa University"
 					/>
 				</Card>

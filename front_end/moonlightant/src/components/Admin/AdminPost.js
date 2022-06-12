@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Avatar,Button, message,} from "antd";
+import { Card, Modal,Avatar,Button, message,} from "antd";
 import {
 	HeartOutlined,
 	EllipsisOutlined,
@@ -11,6 +11,25 @@ import axios from "axios";
 const { Meta } = Card;
 const AdminPost = () => {
 	const [state, setState] = useState();
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [ids,setIds]=useState({id:''})
+  const showModal = (id) => {
+    setIsModalVisible(true);
+	console.log(isModalVisible);
+	setIds({id:id})
+
+
+  };
+
+  const handleOk = (id) => {
+    setIsModalVisible(false);
+	deletePost(id)
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+	
+  };
 	useEffect(() => {
 		axios.get("api/posts").then((response) => {
 			setState(response.data.postdata);
@@ -22,6 +41,9 @@ const AdminPost = () => {
         axios.delete(`/api/deletePost/${id}`).then((res) => {
             if (res.data.status === 200) {
                 message.success("Post deleted");
+				axios.get("api/posts").then((response) => {
+					setState(response.data.postdata);
+				});
               } else {
                 message.error("Post not deleted");
               }
@@ -29,6 +51,11 @@ const AdminPost = () => {
       };
 	return (
 		<>
+		<Modal title="Delete Post" visible={isModalVisible}
+			onOk={() => handleOk(ids.id)}
+			onCancel={handleCancel}>
+			Do You Want to Delete The Post
+		</Modal>
 			{state?.map((item) => (
 				<Card
 					style={{
@@ -51,7 +78,7 @@ const AdminPost = () => {
                         
                         <Button
                         type="text"
-                        onClick={() => deletePost(item.id)}
+						onClick={()=>showModal(item.id)}
                         key="list-loadmore-more"
                         icon={<CloseOutlined />}
                       />,

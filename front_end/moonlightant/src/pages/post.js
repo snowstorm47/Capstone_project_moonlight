@@ -37,9 +37,6 @@ const Post = () => {
 					onSearch={onSearch}
 				/>
 				<PostCard />
-				<PostCard />
-				<PostCard />
-				<PostCard />
 			</div>
 			<div className="leftContainer">
 				<Recomendation />
