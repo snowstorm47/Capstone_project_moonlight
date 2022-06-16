@@ -14,49 +14,31 @@ const PostDrawer = () => {
   };
   // const fData = new formData();
 
-  const [news, setNews] = useState({
-    body: "",
-    id: localStorage.getItem('auth_id'),
-    image: "",
-  });
-  let fd = new FormData();
-  const handleInput = (e) => {
-    setNews({ ...news, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = async (data) => {
-    console.log(news);
-    const fData = new FormData();
-    // fData.append("image", news.image);
-    fData.append("body", news.body);
-    fData.append("user_id", news.id);
-    axios.get("/sanctum/csrf-cookie").then((response) => {
-      axios.post("api/createPost", fData).then((response) => {
-        console.log(response);
-        if (response.data.message == "success") {
-          setPostId(response.data.post_id);
-          const formData = new FormData();
-        //   for (let i in data) {
-        //     if (i === "image[]") {
-        //       for (let file of data[i]) {
-        //         formData.append("image", file);
-        //       }
-        //     } else {
-        //       formData.append(i, data[i]);
-        //     }
-        //   }
-          axios
-            .post(`/api/postPicture/${postid}`, fd, {})
-            .then((res) => {
-              console.log(res);
-            })
-            .catch((err) => console.log(err));
-          message.info("Post created succesfully");
-          onClose();
-        } else {
-          message.error("Post was not created. Please try again");
-        }
-      });
-    });
+	const [news, setNews] = useState({
+		body: "",
+		id: "1",
+		image: "",
+	});
+	const handleInput = (e) => {
+		setNews({ ...news, [e.target.name]: e.target.value });
+	};
+	const handleSubmit = async () => {
+		console.log(news);
+		const fData = new FormData();
+		fData.append("image", news.image);
+		fData.append("body", news.body);
+		fData.append("id", localStorage.getItem("auth_id"));
+		axios.get("/sanctum/csrf-cookie").then((response) => {
+			axios.post("api/createPost", fData).then((response) => {
+				console.log(response);
+				if (response.data.message == "success") {
+					message.info("Post created succesfully");
+					onClose();
+				} else {
+					message.error("Post was not created. Please try again");
+				}
+			});
+		});
 
     setNews({ ...news, body: "" });
   };

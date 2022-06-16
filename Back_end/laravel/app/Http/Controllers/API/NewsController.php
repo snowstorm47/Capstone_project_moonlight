@@ -36,7 +36,8 @@ if($validator->fails()) {
             $News=new News;
             $News->title= $request->title;
             $News->body= $request->body;
-            $News->institution_id=$request->id;
+            $institution=institution::where('institution.user_id','=',$request->id)->get('institution.id');
+            $News->institution_id=$institution[0]->id;
             $News->image=$filename;
             $News->save();
             return response()->json(['message'=>'success']);
@@ -46,7 +47,7 @@ if($validator->fails()) {
     public function show(Request $request)
     {
         
-        $News=News::join('institution','institution.id','=','news.institution_id')->get(['institution.institutionName','news.title','news.body','news.created_at','news.id','news.image']);
+        $News=News::join('institution','institution.id','=','news.institution_id')->get(['institution.institutionName','institution.image','news.title','news.body','news.created_at','news.id','news.image']);
         return Response()->json([
             "newsdata"=>$News,
             "status"=>200,
@@ -54,12 +55,12 @@ if($validator->fails()) {
     }
     public function showMyInstitution(Request $request)
     {
-        $institution_id=User::leftJoin('student','student.user_id','users.id')
-        ->where('student.user_id','=',$request->id)->get('student.institution_id');
-        $institution=institution::find($institution_id);
-        $News=News::where('institution_id','=',$institution_id);
+        $institution_id=student::where('student.user_id','=',$request->id)->get('student.institution_id');
+        $institution=institution::where('institution.id','=',$institution_id[0]->institution_id)->get();
+        $News=News::join('institution','institution.id','=','news.institution_id')->where('institution_id','=',$institution[0]->id)->get(['institution.institutionName','institution.image','news.title','news.body','news.created_at','news.id','news.image']);
         return Response()->json([
-            "data"=>[$News]
+            "newsdata"=>$News,
+            "status"=>200,
         ]);
     }
 

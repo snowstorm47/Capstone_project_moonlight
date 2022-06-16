@@ -105,7 +105,7 @@ const ProfileDetail = () => {
 			<Card
 				type="inner"
 				title="Experience"
-				extra={<a href="#">More</a>}
+				extra={<a href="profilePage">More</a>}
 				style={{
 					marginTop: -10,
 					marginRight: -25,
@@ -125,7 +125,7 @@ const ProfileDetail = () => {
 			<Card
 				type="inner"
 				title="Skills"
-				extra={<a href="#">More</a>}
+				extra={<a href="profilePage">More</a>}
 				style={{
 					marginTop: -10,
 					marginRight: -25,

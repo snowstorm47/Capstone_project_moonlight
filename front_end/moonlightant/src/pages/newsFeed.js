@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import "../styles/newsFeed.css";
 import food from "../assets/p.jpg";
 import NewsCard from "../components/Newscard";
-import { Card, Input, Space, Switch } from "antd";
+import {
+	Alert,
+	AutoComplete,
+	Card,
+	Input,
+	Skeleton,
+	Space,
+	Switch,
+} from "antd";
 import { AudioOutlined } from "@ant-design/icons";
 import ProfileDetail from "../components/ProfieDetail";
 import NewsDrawer from "../components/createNewsDrawer";
@@ -19,6 +27,16 @@ const Newsfeed = () => {
 		/>
 	);
 	const [state, setState] = useState();
+	const [search, setSearch] = useState();
+	const showMyNews = () => {
+		setLoading(true);
+		return axios
+			.get(`api/showMyNews?id=${localStorage.getItem("auth_id")}`)
+			.then((response) => {
+				setState(response.data.newsdata);
+				setLoading(false);
+			});
+	};
 	const [institution, setInstitution] = useState(false);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
@@ -27,12 +45,12 @@ const Newsfeed = () => {
 			setLoading(false);
 		});
 	}, []);
-	const getAllNews = () => {
-		axios.get("api/newsfeed").then((response) => {
+	const getAllNews = (value) => {
+		setLoading(true);
+		return axios.get("api/newsfeed").then((response) => {
 			setState(response.data.newsdata);
 			setLoading(false);
 		});
-		console.log("state,,,", state);
 	};
 	useEffect(() => {
 		{
@@ -48,10 +66,17 @@ const Newsfeed = () => {
 		}
 	}, [institution]);
 
-	const onSearch = (value) => console.log(value);
+	const onSearch = (value) => {
+		setState(
+			state.filter((i) => {
+				return i.institutionName.includes(value);
+			})
+		);
+	};
 
 	return (
 		<div className="newsContainer">
+			{}
 			<div className="rightContainer">
 				<ProfileDetail />
 			</div>
@@ -59,19 +84,29 @@ const Newsfeed = () => {
 				<Search
 					placeholder="search"
 					allowClear
+					onChange={getAllNews}
 					enterButton="Search"
 					size="large"
 					style={{ padding: "40px 20px" }}
 					onSearch={onSearch}
 				/>
-				<NewsCard state={state} loading={loading} />
+				{loading ? (
+					<>
+						<Skeleton loading={true} active avatar></Skeleton>
+						<Skeleton loading={true} active avatar></Skeleton>
+						<Skeleton loading={true} active avatar></Skeleton>
+					</>
+				) : (
+					<NewsCard state={state} loading={loading} />
+				)}
 			</div>
 			<div className="leftContainer">
 				<Card>
+					My institution
+					<br />
 					<Switch
 						onChange={(checked) => {
-							console.log(institution);
-							setInstitution(checked);
+							return checked ? showMyNews() : getAllNews();
 						}}
 					/>
 				</Card>

@@ -22,18 +22,20 @@ const NewsDrawer = () => {
 	const handleInput = (e) => {
 		setNews({ ...news, [e.target.name]: e.target.value });
 	};
+	const [loading, setLoading] = useState(false);
 	const handleSubmit = async () => {
 		console.log(news);
 		const fData = new FormData();
 		fData.append("image", news.image);
 		fData.append("title", news.title);
 		fData.append("body", news.body);
-		fData.append("id", "1");
+		fData.append("id", localStorage.getItem("auth_id"));
 		axios.get("/sanctum/csrf-cookie").then((response) => {
 			axios.post("api/createNews", fData).then((response) => {
 				console.log(response);
 				if (response.data.message == "success") {
 					message.success("News created succesfully");
+					setLoading(false);
 					onClose();
 				} else {
 					message.error("News was not created. Please try again");
@@ -133,6 +135,7 @@ const NewsDrawer = () => {
 						</Form.Item>
 						<Button
 							type="primary"
+							loading={loading}
 							htmlType="submit"
 							onClick={() => {
 								handleSubmit();
