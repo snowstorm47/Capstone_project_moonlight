@@ -15,11 +15,11 @@ import AdminAboutus from "./components/Admin/AdminAboutus";
 import AdminInstitution from "./components/Admin/AdminInstitution";
 import AdminContact from "./components/Admin/AdminContact";
 import AdminContactDetail from "./components/Admin/AdminContactDetail";
+import AdminSignup from "./components/Admin/AdminSignup";
 const { Header, Footer, Sider, Content } = Layout;
 
 const AdminPage = () => {
 	const [selectedMenuItem, setSelectedMenuItem] = useState("add");
-
 	const componentsSwtich = (key) => {
 		switch (key) {
 			case "post":
@@ -34,6 +34,8 @@ const AdminPage = () => {
 				return <AdminHiring />;
 			case "contact":
 				return <AdminContact />;
+			case "register":
+				return <AdminSignup />;
 			case "admincontact":
 				return <AdminContactDetail />;
 			default:
@@ -49,7 +51,6 @@ const AdminPage = () => {
 					minHeight: "90vh",
 					marginTop: "2.6rem",
 				}}
-				theme="light"
 				// collapsible
 				// collapsed={this.state.collapsed}
 				// onCollapse={this.onCollapse}
@@ -58,7 +59,7 @@ const AdminPage = () => {
 					style={{
 						height: "32px",
 						background: "rgba(255,255,255,.2)",
-						color: "black",
+						color: "white",
 						margin: "16px",
 					}}
 				>
@@ -66,7 +67,7 @@ const AdminPage = () => {
 					Admin Menu
 				</div>
 				<Menu
-					// theme="light"
+					theme="dark"
 					mode="inline"
 					selectedKeys={selectedMenuItem}
 					onClick={(e) => setSelectedMenuItem(e.key)}
@@ -141,6 +142,10 @@ const AdminPage = () => {
 							offset={[20, 20]}
 						></Badge>
 					</Menu.Item>
+					<Menu.Item key="register">
+						<BookOutlined />
+						<span>Admin Register</span>
+					</Menu.Item>
 					<Menu.Item
 						key="contact"
 						style={{
@@ -157,7 +162,7 @@ const AdminPage = () => {
 						></Badge>
 					</Menu.Item>
 					<Menu.Item
-						key="aboutUs"
+						key="aboutus"
 						style={{
 							paddingBottom: "20px",
 						}}
@@ -175,14 +180,13 @@ const AdminPage = () => {
 			</Sider>
 			<Layout>
 				<Row>
-					<Col style={{ width: "100%" }}>
+					<Col span={20}>
 						<Content
 							style={{
-								margin: "40px 20px",
-								padding: 40,
-								paddingRight: 200,
+								margin: "40px 200px",
+								padding: 20,
 								background: "#fff",
-								minHeight: 500,
+								minHeight: 280,
 							}}
 						>
 							{componentsSwtich(selectedMenuItem)}

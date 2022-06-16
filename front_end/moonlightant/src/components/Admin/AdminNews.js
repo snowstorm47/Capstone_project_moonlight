@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { List, Avatar, Space, Skeleton, Button, message, Input } from "antd";
+import { List, Avatar, Space, Skeleton, Button, Modal, message } from "antd";
 import {
 	MessageOutlined,
 	LikeOutlined,
@@ -21,6 +21,22 @@ const AdminNews = () => {
 	);
 	const [state, setState] = useState();
 	const [loading, setLoading] = useState(true);
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [ids, setIds] = useState({ id: "" });
+	const showModal = (id) => {
+		setIsModalVisible(true);
+		console.log(isModalVisible);
+		setIds({ id: id });
+	};
+
+	const handleOk = (id) => {
+		setIsModalVisible(false);
+		deleteNews(id);
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
 	useEffect(() => {
 		axios.get("api/newsfeed").then((response) => {
 			setState(response.data.newsdata);
@@ -33,6 +49,10 @@ const AdminNews = () => {
 		axios.delete(`/api/deleteNews/${id}`).then((res) => {
 			if (res.data.status === 200) {
 				message.success("News deleted");
+				axios.get("api/newsfeed").then((response) => {
+					setState(response.data.newsdata);
+					setLoading(false);
+				});
 			} else {
 				message.error("News not deleted");
 			}
@@ -41,6 +61,14 @@ const AdminNews = () => {
 
 	return (
 		<>
+			<Modal
+				title="Delete News"
+				visible={isModalVisible}
+				onOk={() => handleOk(ids.id)}
+				onCancel={handleCancel}
+			>
+				Do You Want to Delete The News
+			</Modal>
 			<Input.Search
 				style={{ marginBottom: "5rem" }}
 				size="middium"
