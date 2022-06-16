@@ -15,6 +15,7 @@ import AdminAboutus from './components/Admin/AdminAboutus';
 import AdminInstitution from './components/Admin/AdminInstitution';
 import AdminContact from './components/Admin/AdminContact';
 import AdminContactDetail from './components/Admin/AdminContactDetail';
+import AdminSignup from './components/Admin/AdminSignup';
 const { Header, Footer, Sider, Content } = Layout;
    
   const AdminPage = () => {
@@ -33,9 +34,11 @@ const { Header, Footer, Sider, Content } = Layout;
       case "company":
         return <AdminHiring/>;
       case "contact":
-        return <AdminContact/>
+        return <AdminContact/>;
+        case "register":
+          return <AdminSignup/>;
         case "admincontact":
-        return <AdminContactDetail/>
+        return <AdminContactDetail/>;
       default:
         break;
     }
@@ -135,6 +138,10 @@ const { Header, Footer, Sider, Content } = Layout;
                 offset={[20, 20]}
               ></Badge>
             </Menu.Item>
+            <Menu.Item key="register">
+            <BookOutlined />
+              <span>Admin Register</span>
+            </Menu.Item>
             <Menu.Item key="contact"
               style={{
                 paddingBottom:"20px"
@@ -149,7 +156,7 @@ const { Header, Footer, Sider, Content } = Layout;
                 offset={[20, 20]}
               ></Badge>
             </Menu.Item>
-            <Menu.Item key="aboutUs"
+            <Menu.Item key="aboutus"
               style={{
                 paddingBottom:"20px"
               }}

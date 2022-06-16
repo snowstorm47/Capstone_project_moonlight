@@ -10,7 +10,7 @@ import Notification from "./pages/Notification";
 import SignUp from "./pages/create";
 import SignIn from "./pages/signin";
 import ProfilePageP from "./pages/profilePage";
-import LogIn from "./pages/Login";
+import LogIn from "./pages/login";
 import { Layout, Menu, Breadcrumb, Avatar, Dropdown } from "antd";
 import {
 	BellOutlined,
