@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Modal, Avatar, Button, message } from "antd";
+import { Card, Modal, Avatar, Button, message, Input } from "antd";
 import {
 	HeartOutlined,
 	EllipsisOutlined,

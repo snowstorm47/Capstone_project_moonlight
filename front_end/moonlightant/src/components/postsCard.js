@@ -1,8 +1,22 @@
-import { Form, Input, Button, Checkbox, Space, Select } from "antd";
+import {
+	Form,
+	Input,
+	Button,
+	Checkbox,
+	Space,
+	Select,
+	Card,
+	Avatar,
+} from "antd";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ConsoleSqlOutlined } from "@ant-design/icons";
+import {
+	ConsoleSqlOutlined,
+	EllipsisOutlined,
+	HeartOutlined,
+	ShareAltOutlined,
+} from "@ant-design/icons";
 const { Option } = Select;
 
 const { Meta } = Card;
@@ -53,4 +67,4 @@ const PostCard = ({ state }) => {
 	);
 };
 
-export default SignUp;
+export default PostCard;

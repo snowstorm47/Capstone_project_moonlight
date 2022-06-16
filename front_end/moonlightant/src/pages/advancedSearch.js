@@ -42,7 +42,6 @@ import { useLocation } from "react-router-dom";
 
 const AdvancedSearch = (props) => {
 	const notif = useLocation();
-
 	const [count, setCount] = useState(0);
 	const sendNotification = () => {
 		setSendLoading(true);
@@ -83,16 +82,12 @@ const AdvancedSearch = (props) => {
 			.get(`/api/advancedSearch`)
 			.then((res) => {
 				if (res.data.status === 200) {
-					// setSearchResults(res.data.data);
-					console.log(searchResults);
 					return res.data.data;
-				} else {
 				}
 			})
 			.then((data) => {
 				setSearchResults(
 					data.filter((item) => {
-						// setSearchResults(item.student[0]?.GPA);
 						if (
 							(search.skill
 								? item.skill
@@ -246,7 +241,6 @@ const AdvancedSearch = (props) => {
 		setLoad(true);
 		selected?.length >= 1
 			? selected?.forEach((item) => {
-					console.log(item);
 					const fData = new FormData();
 					fData.append("notificationTitle", notification.notificationTitle);
 					fData.append("notificationDetail", notification.notificationDetail);

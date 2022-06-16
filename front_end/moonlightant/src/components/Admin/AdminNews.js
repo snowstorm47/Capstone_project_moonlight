@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { List, Avatar, Space, Skeleton, Button, Modal, message } from "antd";
+import {
+	List,
+	Avatar,
+	Space,
+	Skeleton,
+	Button,
+	Modal,
+	message,
+	Input,
+} from "antd";
 import {
 	MessageOutlined,
 	LikeOutlined,
