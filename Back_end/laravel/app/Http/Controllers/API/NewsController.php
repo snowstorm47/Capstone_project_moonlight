@@ -108,4 +108,8 @@ if($validator->fails()) {
             "status"=>200,
         ]);
     }
+    public function institutionVerified(Request $request){
+        $user=User::join('institution','institution.user_id','=','users.id')->where('users.id','=',$request->id)->get('institution.id');
+        return Response()->json(['id'=>$user]);
+    }
 }

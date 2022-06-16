@@ -8,12 +8,16 @@ import {
 	Card,
 	Checkbox,
 	Col,
+	DatePicker,
 	Divider,
+	Form,
+	Input,
 	InputNumber,
 	Layout,
 	List,
 	Menu,
 	message,
+	Modal,
 	Radio,
 	Row,
 	Select,
@@ -29,6 +33,7 @@ import {
 	DownOutlined,
 	EyeFilled,
 	EyeOutlined,
+	SendOutlined,
 	UpOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
@@ -37,13 +42,12 @@ import { useLocation } from "react-router-dom";
 
 const AdvancedSearch = (props) => {
 	const notif = useLocation();
-	const navigate = useNavigate();
 
 	const [count, setCount] = useState(0);
 	const sendNotification = () => {
 		setSendLoading(true);
-		selected.length >= 1
-			? selected.forEach((item) => {
+		selected?.length >= 1
+			? selected?.forEach((item) => {
 					console.log(item);
 					const fData = new FormData();
 					fData.append(
@@ -95,9 +99,14 @@ const AdvancedSearch = (props) => {
 										.map((skillObj) => skillObj.skill)
 										.includes(search.skill)
 								: true) &&
-							(search.gpa ? item.student[0]?.GPA >= search.gpa : true) &&
 							(search.institution
 								? item.student[0]?.institution_id === search.institution
+								: true) &&
+							(search.department
+								? item.student[0]?.department === search.department
+								: true) &&
+							(search.endDate
+								? search.startDate === item.student[0].endDateClass
 								: true)
 						) {
 							return true;
@@ -120,17 +129,20 @@ const AdvancedSearch = (props) => {
 		experience: "",
 		educationStatus: "",
 		position: "",
+		startDate: "",
+		endDate: "",
 	});
 	const clear = () => {
 		setSearch({
 			skill: "",
-			gpa: "",
 			institution: "",
 			department: "",
 			college: "",
 			experience: "",
 			educationStatus: "",
 			position: "",
+			startDate: "",
+			endDate: "",
 		});
 
 		axios
@@ -148,7 +160,6 @@ const AdvancedSearch = (props) => {
 	const [department, setDepartment] = useState([{ departmentName: "-none-" }]);
 	const [sendloading, setSendLoading] = useState(false);
 	const [view, setView] = useState(false);
-
 	const [loading, setLoading] = useState(false);
 	const [state, setState] = useState();
 	const [searchResults, setSearchResults] = useState();
@@ -160,8 +171,7 @@ const AdvancedSearch = (props) => {
 		{ institutionName: "Unity college" },
 		{ institutionName: "Addis Ababa University" },
 	]);
-	const selected = [];
-
+	const [selected, setSelected] = useState([]);
 	const loadMoreData = () => {
 		if (loading) {
 			return;
@@ -178,12 +188,6 @@ const AdvancedSearch = (props) => {
 			.catch(() => {
 				setLoading(false);
 			});
-		// .then((res) => res.json())
-		// .then((body) => {
-		// 	setData([...data, ...body.results]);
-
-		// 	setLoading(false);
-		// })
 	};
 
 	useEffect(() => {
@@ -221,15 +225,118 @@ const AdvancedSearch = (props) => {
 			});
 		}, []);
 	}, []);
+	//modal logic
+	const talkClicked = (item) => {
+		selected >= 1
+			? setVisible(true)
+			: message.info("Please pick a user by using the check box provided");
+	};
+	const [visible, setVisible] = useState(false);
+	const [load, setLoad] = useState(false);
+
+	const [notification, setNotification] = useState({
+		notificationTitle: "",
+		notificationDetail: "",
+		sender_id: localStorage.getItem("auth_id"),
+		reciever_id: "",
+		seen_status: "False",
+	});
+
+	const handleSubmit = async () => {
+		setLoad(true);
+		selected?.length >= 1
+			? selected?.forEach((item) => {
+					console.log(item);
+					const fData = new FormData();
+					fData.append("notificationTitle", notification.notificationTitle);
+					fData.append("notificationDetail", notification.notificationDetail);
+					fData.append("sender_id", notification.sender_id);
+					fData.append("seen_status", notification.seen_status);
+					fData.append("reciever_id", item);
+					axios.post("api/postNotification", fData).then((response) => {
+						if (response.data.status === 200) {
+						} else {
+							message.error("Notification was not sent. Please try again");
+						}
+					});
+			  })
+			: message.error("please select a user to send the notification to");
+		message.success("Notification sent succesfully");
+		setLoad(false);
+		setVisible(false);
+		setNotification({
+			notificationTitle: "",
+			notificationDetail: "",
+			sender_id: localStorage.getItem("auth_id"),
+			reciever_id: "",
+			seen_status: "False",
+		});
+	};
+	const handleInput = (e) => {
+		setNotification({ ...notification, [e.target.name]: e.target.value });
+	};
 	return (
 		<Layout style={{ display: "flex", flexDirection: "row" }}>
+			<Modal
+				visible={visible}
+				title={"Send " + selected?.length + " users a notification"}
+				footer={false}
+				onCancel={() => setVisible(false)}
+			>
+				<Form
+					name="basic"
+					labelCol={{
+						span: 8,
+					}}
+					wrapperCol={{
+						span: 16,
+					}}
+					onFinish={() => handleSubmit()}
+					// autoComplete="off"
+					method="POST"
+				>
+					<Form.Item>
+						<Input
+							placeholder="Notification Title"
+							name="notificationTitle"
+							value={notification.notificationTitle}
+							onChange={handleInput}
+							required
+						/>
+					</Form.Item>
+
+					<Form.Item>
+						<Input.TextArea
+							placeholder="Notification Detail"
+							size="large"
+							name="notificationDetail"
+							value={notification.notificationDetail}
+							onChange={handleInput}
+							style={{ width: "100%" }}
+							required
+						/>
+					</Form.Item>
+
+					<Form.Item>
+						<Button
+							type="primary"
+							style={{ width: "100%" }}
+							htmlType="submit"
+							loading={load}
+						>
+							Create Notification <SendOutlined />
+						</Button>
+					</Form.Item>
+				</Form>
+			</Modal>
+
 			<Sider
 				width={256}
 				scrollable
 				style={{
 					minHeight: "90vh",
 					backgroundColor: "white",
-					padding: "10px 10px",
+					padding: "20px 10px",
 					overflowY: "hidden",
 				}}
 			>
@@ -275,33 +382,7 @@ const AdvancedSearch = (props) => {
 				<Divider orientation="left" style={{ color: "black" }}>
 					Academics
 				</Divider>
-				<strong
-					style={{
-						alignItems: "flex-start",
-						color: "white",
-						fontWeight: "bold",
-						fontSize: "12px",
-					}}
-				>
-					GPA
-				</strong>
-				<Slider
-					style={{ color: "white" }}
-					min={0}
-					max={4}
-					step={0.1}
-					value={search.gpa}
-					onChange={(e) => {
-						setSearch({ ...search, gpa: e });
-					}}
-					marks={{
-						0: "0",
-						1: "1",
-						2: "2",
-						3: "3",
-						4: "4",
-					}}
-				/>
+
 				<Select
 					style={{ width: "100%", margin: "5px" }}
 					placeholder="Institution"
@@ -346,6 +427,18 @@ const AdvancedSearch = (props) => {
 						</Select.Option>
 					))}
 				</Select>
+				<strong style={{ paddingTop: 10 }}>Date of graduation</strong>
+				<DatePicker
+					picker="year"
+					value={search.endDate}
+					format={"m/d/Y"}
+					onChange={(e) => {
+						console.log(e);
+						setSearch({ ...search, educationStatus: e.date });
+					}}
+					style={{ width: "100%" }}
+				/>
+
 				<Radio.Group
 					style={{ paddingTop: 10, paddingBottom: 10 }}
 					onChange={(e) => {
@@ -389,7 +482,6 @@ const AdvancedSearch = (props) => {
 				<div className="personInfoCard">
 					{state ? (
 						<>
-							{" "}
 							<div
 								style={{
 									animation: "fadeIn 500ms ease-out backwards",
@@ -593,7 +685,7 @@ const AdvancedSearch = (props) => {
 							</Divider>
 						</>
 					) : (
-						<p>it worrks</p>
+						<p>User data will be shown here</p>
 					)}
 				</div>
 
@@ -617,9 +709,13 @@ const AdvancedSearch = (props) => {
 							type="primary"
 							loading={sendloading}
 							style={{ display: "flex", marginLeft: "auto" }}
-							onClick={sendNotification}
+							onClick={
+								localStorage.getItem("auth_position") == "Hiring Company"
+									? talkClicked
+									: sendNotification
+							}
 						>
-							send
+							Send Notification
 						</Button>
 					</div>
 					<div style={{ overflowY: "auto", height: "100%", scrollbarWidth: 0 }}>
@@ -649,14 +745,16 @@ const AdvancedSearch = (props) => {
 												value={item.user.id}
 												onChange={(e) => {
 													if (e.target.checked) {
-														selected.push(item.user.id);
-														console.log(selected);
+														const arr = selected;
+														arr?.push(item.user.id);
+														setSelected(arr);
 													} else {
-														selected.splice(
-															selected.indexOf(e.target.value),
-															1
-														);
+														const arr = selected;
+
+														arr.splice(arr.indexOf(e.target.value), 1);
+														setSelected(arr);
 													}
+													console.log(selected, "selected...");
 												}}
 											/>
 											<Meta

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Card, Avatar,Button, message,} from "antd";
+import { Card, Avatar, Button, message, Input } from "antd";
 import {
 	HeartOutlined,
 	EllipsisOutlined,
 	ShareAltOutlined,
-    CloseOutlined,
+	CloseOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
+import PostCard from "../postsCard";
+import Search from "antd/lib/transfer/search";
 
 const { Meta } = Card;
 const AdminPost = () => {
@@ -16,52 +18,66 @@ const AdminPost = () => {
 			setState(response.data.postdata);
 		});
 	}, []);
-    
-    const deletePost = (id) => {
-        console.log(id)
-        axios.delete(`/api/deletePost/${id}`).then((res) => {
-            if (res.data.status === 200) {
-                message.success("Post deleted");
-              } else {
-                message.error("Post not deleted");
-              }
-        });
-      };
+
+	const deletePost = (id) => {
+		console.log(id);
+		axios.delete(`/api/deletePost/${id}`).then((res) => {
+			if (res.data.status === 200) {
+				message.success("Post deleted");
+			} else {
+				message.error("Post not deleted");
+			}
+		});
+	};
 	return (
 		<>
+			<Input.Search
+				style={{ marginBottom: "5rem" }}
+				size="middium"
+				placeholder="Search by name"
+				enterButton
+			/>
 			{state?.map((item) => (
 				<Card
 					style={{
+						boxShadow: " rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
 						width: "80%",
 						textAlign: "left",
 						alignSelf: "center",
 						borderRadius: 10,
 						marginBottom: 30,
 					}}
-
 					cover={
 						<img
 							alt="example"
-							src={"http://localhost:8000/uploads/NewsPictures/" + item.image}
+							src={
+								"http://localhost:8000/uploads/NewsPictures/" +
+								item.postdata?.image
+							}
 							style={{ padding: 10 }}
 						/>
-                        
 					}
 					actions={[
-                        
-                        <Button
-                        type="text"
-                        onClick={() => deletePost(item.id)}
-                        key="list-loadmore-more"
-                        icon={<CloseOutlined />}
-                      />,
+						<Button
+							type="text"
+							onClick={() => deletePost(item.id)}
+							key="list-loadmore-more"
+							icon={<CloseOutlined />}
+						/>,
 					]}
 				>
-					<Card bordered={false}>{item.body}</Card>
+					<Card bordered={false}>{item.postdata.body}</Card>
 					<Meta
-						avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-						title={item.name}
-						description="Addis Ababa University"
+						avatar={
+							<Avatar
+								src={
+									"http://localhost:8000/uploads/ProfileImage/" +
+									item.profileImage[0]?.image
+								}
+							/>
+						}
+						title={item.postdata.name}
+						description={item.postdata.email}
 					/>
 				</Card>
 			))}
