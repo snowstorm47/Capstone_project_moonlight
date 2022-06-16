@@ -102,11 +102,6 @@ class AdminController extends Controller
             'TitleTwoDetail'=>'required',
             'TitleThree'=>'required',
             'TitleThreeDetail'=>'required',
-            'image' => 'required',
-            'TitleOneImage' => 'required',
-            'TitleTwoImage' => 'required',
-            'TitleThreeImage' => 'required',
-
         ]);
         
         if($validator->fails())
@@ -130,56 +125,6 @@ class AdminController extends Controller
         $aboutus->TitleTwoDetail = $request->TitleTwoDetail;
         $aboutus->TitleThree = $request->TitleThree;
         $aboutus->TitleThreeDetail = $request->TitleThreeDetail;
-        $destination = 'uploads/AboutusPicture'.$aboutus->image;
-                    if(File::exists($destination))
-                    {
-                        File::delete($destination);
-                    }
-                    $file= $request->file('image');
-                    if($file){
-                    $filename= date('YmdHi').$file->getClientOriginalName();
-                    $file-> move(public_path('uploads/AboutusPicture'), $filename);
-                    $aboutus->image=$filename;
-                    
-                    }
-        $destination = 'uploads/AboutusPicture'.$aboutus->TitleOneImage;
-        if(File::exists($destination))
-        {
-            File::delete($destination);
-        }
-        $file= $request->file('TitleOneImage');
-        if($file){
-        $filename= date('YmdHi').$file->getClientOriginalName();
-        $file-> move(public_path('uploads/AboutusPicture'), $filename);
-        $aboutus->TitleOneImage=$filename;
-        
-        }
-
-        $destination = 'uploads/AboutusPicture'.$aboutus->TitleTwoImage;
-        if(File::exists($destination))
-        {
-            File::delete($destination);
-        }
-        $file= $request->file('TitleTwoImage');
-        if($file){
-        $filename= date('YmdHi').$file->getClientOriginalName();
-        $file-> move(public_path('uploads/AboutusPicture'), $filename);
-        $aboutus->TitleTwoImage=$filename;
-        
-        }
-
-        $destination = 'uploads/AboutusPicture'.$aboutus->TitleThreeImage;
-        if(File::exists($destination))
-        {
-            File::delete($destination);
-        }
-        $file= $request->file('TitleThreeImage');
-        if($file){
-        $filename= date('YmdHi').$file->getClientOriginalName();
-        $file-> move(public_path('uploads/AboutusPicture'), $filename);
-        $aboutus->TitleThreeImage=$filename;
-        
-        }
         $aboutus->save();
         if($aboutus)
         {
@@ -189,7 +134,124 @@ class AdminController extends Controller
         }
         }
 }
+public function editTitleOneImage(Request $request,$id)
+{
+    $validator = Validator::make($request->all(),[
+            
+        'TitleOneImage' => 'required',
+
+    ]);
+    $aboutus = aboutus::findOrFail($id);
+    $destination = 'uploads/AboutusPicture'.$aboutus->TitleOneImage;
+    if(File::exists($destination))
+    {
+        File::delete($destination);
+    }
+    $file= $request->file('TitleOneImage');
+    if($file){
+    $filename= date('YmdHi').$file->getClientOriginalName();
+    $file-> move(public_path('uploads/AboutusPicture'), $filename);
+    $aboutus->TitleOneImage=$filename;
+    $save =$aboutus->save();
+    if($save)
+    {
+        return response()->json([
+            'status'=>200
+        ]);
+    }
+    else{
+        return response()->json([
+            'result'=>"error"
+        ]);
+    }
+    }
+    else{
+        return response()->json([
+            'error'=>"did not get file"
+        ]);
+    }
+}
+
+public function editTitleTwoImage(Request $request,$id)
+{
+    $validator = Validator::make($request->all(),[
+            
+        'TitleTwoImage' => 'required',
+
+    ]);
+    $aboutus = aboutus::findOrFail($id);
+    $destination = 'uploads/AboutusPicture'.$aboutus->TitleTwoImage;
+    if(File::exists($destination))
+    {
+        File::delete($destination);
+    }
+    $file= $request->file('TitleTwoImage');
+    if($file){
+    $filename= date('YmdHi').$file->getClientOriginalName();
+    $file-> move(public_path('uploads/AboutusPicture'), $filename);
+    $aboutus->TitleTwoImage=$filename;
+    $save =$aboutus->save();
+    if($save)
+    {
+        return response()->json([
+            'status'=>200
+        ]);
+    }
+    else{
+        return response()->json([
+            'result'=>"error"
+        ]);
+    }
+    }
+    else{
+        return response()->json([
+            'error'=>"did not get file"
+        ]);
+    }
+}
+public function editTitleThreeImage(Request $request,$id)
+{
+    $validator = Validator::make($request->all(),[
+            
+        'TitleThreeImage' => 'required',
+
+    ]);
+    $aboutus = aboutus::findOrFail($id);
+    $destination = 'uploads/AboutusPicture'.$aboutus->TitleThreeImage;
+    if(File::exists($destination))
+    {
+        File::delete($destination);
+    }
+    $file= $request->file('TitleThreeImage');
+    if($file){
+    $filename= date('YmdHi').$file->getClientOriginalName();
+    $file-> move(public_path('uploads/AboutusPicture'), $filename);
+    $aboutus->TitleThreeImage=$filename;
+    $save =$aboutus->save();
+    if($save)
+    {
+        return response()->json([
+            'status'=>200
+        ]);
+    }
+    else{
+        return response()->json([
+            'result'=>"error"
+        ]);
+    }
+    }
+    else{
+        return response()->json([
+            'error'=>"did not get file"
+        ]);
+    }
+}
 public function editBackgroundAboutus(Request $request,$id){
+    $validator = Validator::make($request->all(),[
+            
+        'image' => 'required',
+
+    ]);
     $aboutus = aboutus::findOrFail($id);
     $destination = 'uploads/AboutusPicture'.$aboutus->image;
     if(File::exists($destination))

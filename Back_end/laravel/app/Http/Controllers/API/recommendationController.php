@@ -47,11 +47,6 @@ class recommendationController extends Controller
 
         public function filterStudent(Request $request,$id)
         {
-            // $student = DB::table('student')
-            // ->join('users', 'student.user_id', '=', 'users.id')
-            // ->join('instructor', 'student.institution_id', '=', 'instructor.institution_id')
-            // ->where('instructor.institution_id','=',$id)
-            // ->get(['users.name','student.id']);
         $student=student::join('users','users.id','=','student.user_id')
         ->where('student.institution_id','=',$id)
         ->get(['users.name','student.id']);
@@ -80,5 +75,59 @@ class recommendationController extends Controller
 
             }
         }
+
+        public function studentInstitutionId($id)
+        {
+            $student= User:: findOrFail($id);
+
+            if($student)
+            {
+                $institution_id= DB::table('student')->where('user_id',$id)->value('institution_id');
+                $sender_id=student::join('users','users.id','=','student.user_id')
+                ->where('users.id','=',$id)
+                ->get(['student.id']);
+        return Response()->json([
+            'institution_id'=>$institution_id,
+            "sender_id"=>$sender_id,
+            "status"=>200
+        ]);
+
+            }
+        }
+
+    public function getRecommendation(Request $request,$id)
+    {
+        $recommendation = recommendation::where('sender_id',$id)->get('recomendationDetail');
+        $instructor = instructor::where('user_id',$id)->first();
+        $student = student::where('user_id',$id)->first();
+        $image = DB::table('institution')->where('user_id', $id)->value('image');
+        $name = DB::table('users')->where('id', $id)->value('name');
+        if($student)
+        {
+        $image = DB::table('student')->where('user_id', $id)->value('image');
+            return Response()->json([
+                "recommendation"=>$recommendation,
+                "image"=>$image,
+                "name"=>$name,
+                "status"=>200
+            ]);
+        }
+        else if($instructor)
+        {
+            $image = DB::table('instructor')->where('user_id', $id)->value('image');
+            return Response()->json([
+                "recommendation"=>$recommendation,
+                "image"=>$image,
+                "name"=>$name,
+                "status"=>200
+            ]);
+        }
+        else{
+            return Response()->json([
+                "result"=>"error",
+                "status"=>200
+            ]);
+        }
+    }
         
 }
