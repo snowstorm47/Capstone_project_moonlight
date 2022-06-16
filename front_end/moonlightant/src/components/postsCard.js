@@ -1,12 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Card, Avatar } from "antd";
 import {
-	HeartOutlined,
+	Form,
+	Input,
+	Button,
+	Checkbox,
+	Space,
+	Select,
+	Card,
+	Avatar,
+} from "antd";
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+	ConsoleSqlOutlined,
 	EllipsisOutlined,
+	HeartOutlined,
 	ShareAltOutlined,
 } from "@ant-design/icons";
-import profileimage from "../assets/f.jpg";
-import axios from "axios";
+const { Option } = Select;
 
 const { Meta } = Card;
 const PostCard = ({ state }) => {

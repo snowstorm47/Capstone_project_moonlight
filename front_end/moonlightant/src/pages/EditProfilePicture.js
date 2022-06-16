@@ -50,8 +50,16 @@ const EditProfilePicture = ({ parentToChild }) => {
     axios.get("/sanctum/csrf-cookie").then((response) => {
       axios.post(`api/updateProfilePicture/${id}`, fData).then((response) => {
         if (response.data.status === 200) {
+          setIsModalVisible(false);
           message.success("Picture updated succesfully");
-    setIsModalVisible(false);
+          axios.get(`/api/getProfilePicture/${id}`).then((res) => {
+            if (res.data.status === 200) {
+              setProfilePicture(res.data);
+            } else {
+              console.log("couldnt retrieve data");
+            }
+          });
+    
 
         } else {
           message.error("Picture was not updated. Please try again");
@@ -101,6 +109,7 @@ const EditProfilePicture = ({ parentToChild }) => {
         title="Edit your profile image"
         visible={isModalVisible}
         onCancel={handleCancel}
+        onOk={() => handleSubmit()}
       >
         <Form
         name="dynamic_form_nest_item"
@@ -110,7 +119,6 @@ const EditProfilePicture = ({ parentToChild }) => {
         wrapperCol={{
           span: 16,
         }}
-        onFinish={() => handleSubmit()}
         autoComplete="off"
         method="POST"
       >
@@ -141,16 +149,7 @@ const EditProfilePicture = ({ parentToChild }) => {
             </Upload.Dragger>
           </Form.Item>
         </Form.Item>
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Update Profile Image
-          </Button>
-        </Form.Item>
+        
       </Form>
       </Modal>
       

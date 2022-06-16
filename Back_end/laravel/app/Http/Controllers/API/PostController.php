@@ -53,7 +53,8 @@ class PostController extends Controller
     {
         $Post=Post::find($request->id);
         return Response()->json([
-            "data"=>[$Post]
+            "data"=>[$Post],
+            
         ]);
     }
 

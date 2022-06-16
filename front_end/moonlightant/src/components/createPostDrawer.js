@@ -7,6 +7,7 @@ import axios from "axios";
 
 const PostDrawer = () => {
 	const [visible, setVisible] = useState(false);
+	const [postid, setPostId] = useState();
 	const layout = {
 		labelCol: { span: 8 },
 		wrapperCol: { span: 16 },
@@ -41,6 +42,24 @@ const PostDrawer = () => {
 
 		setNews({ ...news, body: "" });
 	};
+	//   const onSave = (data) => {
+	//     const formData = new FormData();
+	//     for (let i in data) {
+	//       if (i === "image[]") {
+	//         for (let file of data[i]) {
+	//           formData.append("image", file);
+	//         }
+	//       } else {
+	//         formData.append(i, data[i]);
+	//       }
+	//     }
+	//     axios
+	//       .post(`/api/postPicture`, formData, {})
+	//       .then((res) => {
+	//         console.log(res);
+	//       })
+	//       .catch((err) => console.log(err));
+	//   };
 	const showDrawer = () => {
 		setVisible(true);
 	};
@@ -57,6 +76,13 @@ const PostDrawer = () => {
 		}
 
 		return e && e.fileList;
+	};
+	const handlePicInput = (event) => {
+		let images = event.file.name;
+		console.log(images);
+		const fd = new FormData();
+
+		fd.append("image", images);
 	};
 
 	return (
@@ -113,10 +139,17 @@ const PostDrawer = () => {
 							>
 								<Upload.Dragger
 									name="image"
-									type="file"
+									listType="picture"
 									multiple={false}
+									accept=".png,.jpeg,.jpg"
+									//   onChange={(e) =>
+									//     setNews({ ...news, image: e.fileList[0].originFileObj })
+									//   }
 									onChange={(e) =>
-										setNews({ ...news, image: e.fileList[0].originFileObj })
+										setNews({
+											...news,
+											image: e.fileList[0].originFileObj,
+										})
 									}
 									style={{ width: "100%" }}
 								>

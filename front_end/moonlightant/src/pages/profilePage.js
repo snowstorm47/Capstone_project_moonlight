@@ -67,6 +67,9 @@ function ProfilePageP() {
 	//       newSkill:""
 	//   });
 
+	const showEmployment= ()=>{
+		<EditEmploymentHistory parentToChild={idemploy} />
+	}
 	useEffect(() => {
 		axios.get(`/api/all-institution`).then((res) => {
 			if (res.data.status === 200) {
@@ -177,7 +180,7 @@ function ProfilePageP() {
 				onCancel={handleCancel}
 			>
 				<EditEmploymentHistory parentToChild={idemploy} />
-			</Modal>
+				</Modal>
 			<Col
 				className="row"
 				span={5}
@@ -474,8 +477,10 @@ function ProfilePageP() {
 												key="list-loadmore-edit"
 												icon={<EditOutlined />}
 												onClick={() => {
-													showModal();
 													setIdemploy(item.id);
+													// <EditEmploymentHistory parentToChild={idemploy} />
+													showModal();
+													
 												}}
 											/>,
 
