@@ -9,15 +9,18 @@ import {
 	Modal,
 	Input,
 } from "antd";
-import { DeleteOutlined, CheckSquareOutlined } from "@ant-design/icons";
+import { DeleteOutlined, CheckSquareOutlined, ConsoleSqlOutlined } from "@ant-design/icons";
 import "../../styles/newsCard.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ContentCutOutlined } from "@mui/icons-material";
 
 const AdminInstitution = () => {
 	const [visible, setVisible] = useState(true);
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [isModalVisible1, setIsModalVisible1] = useState(false);
 	const [ids, setIds] = useState({ id: "", user_id: "" });
+	const [senderids, setsenderIds] = useState({ id: ""});
 	let iduserget;
 	const showModal = (id, user_id) => {
 		setIsModalVisible(true);
@@ -33,6 +36,21 @@ const AdminInstitution = () => {
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
+	const showModal1 = (id, user_id) => {
+		setIsModalVisible1(true);
+		console.log(isModalVisible);
+		setsenderIds({ id: id });
+	};
+
+	const handleOk1 = (id) => {
+		console.log(id)
+		setIsModalVisible1(false);
+		verify(id);
+	};
+
+	const handleCancel1 = () => {
+		setIsModalVisible1(false);
+	};
 	const navigate = useNavigate();
 	const [state, setState] = useState();
 	const [loading, setLoading] = useState(true);
@@ -41,11 +59,13 @@ const AdminInstitution = () => {
 		axios.get(`api/viewInstitutionNotification/${id}`).then((response) => {
 			setState(response.data.notification);
 			setIds(response.data.sender_id);
+			setsenderIds(response.data.sender_id);
 			setLoading(false);
 		});
 	}, []);
 
 	const verify = (id) => {
+		console.log(id)
 		axios.put(`api/verifyInstitution?sender_id=${id}`).then((response) => {
 			message.success("Institution Verified");
 			axios
@@ -57,6 +77,7 @@ const AdminInstitution = () => {
 							.then((response) => {
 								setState(response.data.notification);
 								setIds(response.data.sender_id);
+								setsenderIds(response.data.sender_id);
 								setLoading(false);
 							});
 					} else {
@@ -90,6 +111,14 @@ const AdminInstitution = () => {
 				onCancel={handleCancel}
 			>
 				Do You Want to Delete The Institution
+			</Modal>
+			<Modal
+				title="Verify Institution"
+				visible={isModalVisible1}
+				onOk={() => handleOk1(senderids.id)}
+				onCancel={handleCancel1}
+			>
+				Do You Want to Verify The Institution
 			</Modal>
 
 			<Input.Search
@@ -151,7 +180,7 @@ const AdminInstitution = () => {
 													style={{
 														width: "20px",
 													}}
-													onClick={() => verify(item.sender_id)}
+													onClick={() => showModal1(item.sender_id)}
 													key="list-loadmore-more"
 													icon={<CheckSquareOutlined />}
 												/>,

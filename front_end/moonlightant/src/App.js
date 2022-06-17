@@ -18,6 +18,7 @@ import {
 	Dropdown,
 	notification,
 	Button,
+	message,
 } from "antd";
 import {
 	BellOutlined,
@@ -28,6 +29,7 @@ import {
 	HomeOutlined,
 	UserOutlined,
 	EditFilled,
+	DashboardOutlined,
 } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import Post from "./pages/post";
@@ -46,7 +48,6 @@ import InstitutionCreateProfile from "./pages/InstitutionCreateProfile";
 import ProfilePageCompany from "./pages/profileCompany";
 import ProfilePageInstitution from "./pages/profileInstitution";
 import ProfilePageInstructor from "./pages/profileInstructor";
-import SendRecomendation from "./components/SendRecommendation";
 import AdminPage from "./AdminPage";
 import AdminAboutus from "./components/Admin/AdminAboutus";
 import { useEffect, useState } from "react";
@@ -214,30 +215,43 @@ function App() {
 							<HomeOutlined /> Home
 						</Link>
 					</Menu.Item>
-					<Menu.Item key="1">
+					{localStorage.getItem("auth_position")===null?null:<Menu.Item key="1">
 						<Link to="/newsfeed">
 							<ReadOutlined /> News Feed
 						</Link>
-					</Menu.Item>
-					{localStorage.getItem("auth_position") !== "Student" ? null : (
-						<Menu.Item key="2">
+					</Menu.Item>}
+					
+					{(localStorage.getItem("auth_position")==="Institution"|| localStorage.getItem("auth_position")==="Hiring Company"||localStorage.getItem("auth_position")===null)
+					? null:
+					<Menu.Item key="2">
 							<Link to="/post">
 								{" "}
 								<BookOutlined />
 								post
 							</Link>
 						</Menu.Item>
-					)}
+						}
+					{(localStorage.getItem("auth_position")==="Admin" )
+					? <Menu.Item key="8">
+					<Link to="/admin">
+						<DashboardOutlined /> Dashboard
+					</Link>
+				</Menu.Item>:null}
+				{localStorage.getItem("auth_position")===null?null:
+
 					<Menu.Item key="3">
 						<Link to="/Notification">
 							<BellOutlined /> Notification
 						</Link>
 					</Menu.Item>
+					}
 					<Menu.Item key="4">
 						<Link to="/aboutus">
 							<NotificationOutlined /> Aboutus
 						</Link>
 					</Menu.Item>
+					{(localStorage.getItem("auth_position")==="Admin" )
+					? null:
 					<Menu.Item key="5">
 						<Link to="/contactus">
 							{" "}
@@ -245,6 +259,8 @@ function App() {
 							Contact Us
 						</Link>
 					</Menu.Item>
+						}
+					
 					{AuthButtons}
 				</Menu>
 			</Header>
@@ -299,11 +315,10 @@ function App() {
 					<Route path="editcompanyprofile" element={<ProfilePageCompany />} />
 					<Route path="/signin" element={<LogIn />} />
 					<Route path="/signup" element={<SignUp />} />
-					<Route path="recomendation" element={<SendRecomendation />} />
 					<Route
 						path="admin"
 						element={
-							localStorage.getItem("auth_position") === "admin" ? (
+							localStorage.getItem("auth_position") === "Admin" ? (
 								<AdminPage />
 							) : (
 								<LogIn />

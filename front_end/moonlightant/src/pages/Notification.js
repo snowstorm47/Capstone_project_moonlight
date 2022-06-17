@@ -63,7 +63,7 @@ const Notification = () => {
 					}}
 				>
 					{" "}
-					Menu
+					Notification
 				</div>
 				<Menu
 					// theme="dark"
@@ -75,7 +75,8 @@ const Notification = () => {
 						<PlusCircleOutlined />
 						<span>Create Notification</span>
 					</Menu.Item>
-
+					{(localStorage.getItem("auth_position")==="Hiring Company")
+					 ?"" : 
 					<Menu.Item
 						key="institution"
 						style={{
@@ -85,7 +86,7 @@ const Notification = () => {
 						<BankOutlined />
 						<span
 							style={{
-								color: "#dddddd",
+								color: "#000000",
 							}}
 						>
 							Institution
@@ -96,7 +97,7 @@ const Notification = () => {
 							status="warning"
 							offset={[20, 20]}
 						></Badge>
-					</Menu.Item>
+					</Menu.Item>}
 					<Menu.Item
 						key="instructor"
 						style={{
@@ -127,7 +128,18 @@ const Notification = () => {
 							offset={[20, 20]}
 						></Badge>
 					</Menu.Item>
-					<Menu.Item key="company">
+					{(localStorage.getItem("auth_position")==="Institution" || localStorage.getItem("auth_position")==="Hiring Company")
+					 ?"" : <Menu.Item key="company">
+					 <BankOutlined />
+					 <span>Hiring Company</span>
+					 <Badge
+						 count={0}
+						 overflowCount={10}
+						 status="warning"
+						 offset={[20, 20]}
+					 ></Badge>
+				 </Menu.Item>}
+					{/* <Menu.Item key="company">
 						<BankOutlined />
 						<span>Hiring Company</span>
 						<Badge
@@ -136,7 +148,7 @@ const Notification = () => {
 							status="warning"
 							offset={[20, 20]}
 						></Badge>
-					</Menu.Item>
+					</Menu.Item> */}
 					<Menu.Item
 						key="seen"
 						style={{

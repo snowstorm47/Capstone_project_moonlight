@@ -29,7 +29,7 @@ const CreateRecommendationDrawer = () => {
         setInstitutionId(res.data.institution_id);
         setSenderId(res.data.sender_id[0].id);
         console.log(institutionId);
-        axios.get(`/api/filterStudent/${institutionId}`).then((res) => {
+        axios.get(`/api/filterStudent/${institutionId}?user_id=${localStorage.getItem("auth_id")}`).then((res) => {
             if (res.data.status === 200) {
               setStudentList(res.data.student);
               console.log(res.data.student);
@@ -139,7 +139,7 @@ const CreateRecommendationDrawer = () => {
             <Col>
               <Form.Item
                 label="Recommendation"
-                style={{ width: "50%", borderRadius: "50px",marginLeft:"-1rem" }}
+                style={{ width: "50%", borderRadius: "50px",marginLeft:"-1rem",marginTop:"2rem" }}
               >
                 <br/><br/>
                 <Input.TextArea

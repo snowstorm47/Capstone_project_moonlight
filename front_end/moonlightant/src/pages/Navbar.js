@@ -33,6 +33,9 @@ const Navbar = () => {
           <Menu.Item key="7">
             <a href="profilepage">Profile</a>
           </Menu.Item>
+          <Menu.Item key="8">
+            <a href="admin">Dashboard</a>
+          </Menu.Item>
         </Menu>
       </Header>
     </Layout>
