@@ -97,37 +97,30 @@ class recommendationController extends Controller
 
     public function getRecommendation(Request $request,$id)
     {
-        $recommendation = recommendation::where('sender_id',$id)->get('recomendationDetail');
-        $instructor = instructor::where('user_id',$id)->first();
-        $student = student::where('user_id',$id)->first();
-        $image = DB::table('institution')->where('user_id', $id)->value('image');
-        $name = DB::table('users')->where('id', $id)->value('name');
-        if($student)
-        {
-        $image = DB::table('student')->where('user_id', $id)->value('image');
-            return Response()->json([
-                "recommendation"=>$recommendation,
-                "image"=>$image,
-                "name"=>$name,
-                "status"=>200
+            $result=collect([
             ]);
-        }
-        else if($instructor)
-        {
-            $image = DB::table('instructor')->where('user_id', $id)->value('image');
+            $Image;
+            $recommendation=recommendation::join('users','users.id','=','recomendation.sender_id')
+            ->join('student','student.id','=','recomendation.student_id')
+            ->where('student.user_id','=',$id)
+            ->get(['users.name','recomendation.recomendationDetail','recomendation.sender_id']);
+            foreach ($recommendation as $recomend) {
+                $imageStudent=student::where('student.user_id','=',$recomend->sender_id)->get('student.image');
+                $imageInstructor=instructor::where('instructor.user_id','=',$recomend->sender_id)->get('instructor.image');
+                if ( isset ($imageStudent) && count($imageStudent) > 0 ) {
+                   $Image = $imageStudent;
+                }
+                else{
+                    $Image = $imageInstructor;
+                }
+                $result->push(['recommendation'=>$recomend,'image'=>$Image]);
+            }
+            
             return Response()->json([
-                "recommendation"=>$recommendation,
-                "image"=>$image,
-                "name"=>$name,
-                "status"=>200
+                "recommendation"=>$result,
+                "status"=>200,
             ]);
-        }
-        else{
-            return Response()->json([
-                "result"=>"error",
-                "status"=>200
-            ]);
-        }
+        
     }
         
 }

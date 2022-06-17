@@ -85,22 +85,6 @@ class profileController extends Controller
 
         }
 }
-    public function getInstitutionName(Request $request)
-    {
-        $institutionId = $request->institution_id;
-        $collegeId = $request->college_id;
-        $departmentId = $request->department_id;
-        $institutionName = DB::table('institution')->where('id', $institutionId)->value('institutionName');
-        $collegeName = DB::table('college')->where('id', $collegeId)->value('collegeName');
-        $departmentName = DB::table('department')->where('id', $departmentId)->value('departmentName');
-        return response()->json([
-            'status'=> 200,
-            'institutionName'=>$institutionName,
-            'collegeName'=>$collegeName,
-            'departmentName'=>$departmentName
-
-        ]);
-    }
     
     public function getProfilePicture($id){
         $image = DB::table('student')->where('user_id', $id)->value('image');
@@ -358,7 +342,6 @@ if($validator->fails()) {
         if($student||$instructor||$institution||$hiring)
         {
             return response()->json([
-                "instructor"=>$instructor,
                 "status"=>200,
                 "first"=>1]);
         }
@@ -377,8 +360,11 @@ if($validator->fails()) {
         $email = DB::table('users')->where('id', $id)->value('email');
         
         $institution_id = DB::table('student')->where('user_id', $id)->value('institution_id');
+        $institutionName= DB::table('institution')->where('id', $institution_id)->value('institutionName');
         $college_id = DB::table('student')->where('user_id', $id)->value('college_id');
+        $collegeName = DB::table('college')->where('id', $college_id)->value('collegeName');
         $department_id = DB::table('student')->where('user_id', $id)->value('department_id');
+        $departmentName = DB::table('department')->where('id', $department_id)->value('departmentName');
         $phoneNumber = DB::table('student')->where('user_id', $id)->value('phoneNumber');
         $startDateClass= DB::table('student')->where('user_id', $id)->value('startDateClass');
         $endDateClass= DB::table('student')->where('user_id', $id)->value('endDateClass');
@@ -421,7 +407,10 @@ if($validator->fails()) {
                     'email'=>$email,
                     'institution_id'=>$institution_id,
                     'college_id'=>$college_id,
-                    'department_id'=>$department_id
+                    'department_id'=>$department_id,
+                    'institutionName'=>$institutionName,
+                    'collegeName'=>$collegeName,
+                    'departmentName'=>$departmentName
                 ]);
             }
             else

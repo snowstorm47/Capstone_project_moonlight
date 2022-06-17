@@ -102,8 +102,6 @@ Route::post('addEmploymentHistory',[profileController::class,'addEmploymentHisto
 Route::post('addCertificate',[profileController::class,'addCertificate']);
 Route::post('addSkill',[profileController::class,'addSkill']);
 Route::post('addSocialMediaLink',[profileController::class,'addsocialMediaLink']);
-Route::get('getInstitutionName',[profileController::class,'getInstitutionName']);
-Route::get('getInstructorInstitution',[instructorProfileController::class, 'getInstructorInstitution']);
 Route::get('all-institution',[institutionRegistration::class, 'allinstitution']);
 Route::get('advancedSearch',[searchController::class, 'AdvancedSearch']);
 Route::get('institutions',[searchController::class, 'getInstitutions']);
