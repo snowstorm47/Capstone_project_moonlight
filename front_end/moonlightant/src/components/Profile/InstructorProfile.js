@@ -8,10 +8,6 @@ function InstructorProfile() {
     image: "",
   });
   const [visible, setVisible] = useState(true);
-  const [institutionData, setInstitutionData] = useState([]);
-  const [institutionId, setInstitutionId] = useState([]);
-  const [collegeId, setCollegeId] = useState([]);
-  const [departmentId, setDepartmentId] = useState([]);
   const [success, setSuccess] = useState();
   const [skillList, setSkillList] = useState([]);
   const [editProfile, setEditProfile] = useState({
@@ -21,9 +17,7 @@ function InstructorProfile() {
     startDate: "",
     endDate: "",
     sex: "",
-    institution_id: "",
-    college_id: "",
-    department_id: "",
+    institutionName:"",
     companyName: "",
     GPA: "",
     major: "",
@@ -40,19 +34,8 @@ function InstructorProfile() {
   useEffect(() => {
     axios.get(`/api/instructorprofile/${id}`).then((res) => {
       if (res.data.status === 200) {
-          setInstitutionId(res.data.institution_id);
-          const data = {
-              institutionId: institutionId,
-          }
-          axios.get(`/api/getInstructorInstitution?institution_id=${institutionId}`,data).then((res) => {
-            if (res.data.status === 200) {
-                setInstitutionData(res.data);
-                console.log(institutionData)
-            } else {
-              console.log("couldnt retrieve data");
-            }
-          });
         setEditProfile(res.data);
+        console.log(editProfile)
         setSkillList(res.data.skill);
       } else {
         console.log("couldnt retrieve data");
@@ -148,7 +131,7 @@ function InstructorProfile() {
           <Col>
             <Divider>Academic</Divider>
             <span>
-                <label style={{fontWeight:"bold"}}>Institution : </label> {institutionData.institutionName}
+                <label style={{fontWeight:"bold"}}>Institution : </label> {editProfile.institutionName}
               </span>
               <br/>
               <br/>

@@ -143,7 +143,7 @@ function App() {
 		if (localStorage.getItem("auth_position") === "Student") {
 			editProfile = "/createprofile";
 		} else if (localStorage.getItem("auth_position") === "Institution") {
-			editProfile = "/createprofileinstitution";
+			editProfile = "#";
 		} else if (localStorage.getItem("auth_position") === "Instructor") {
 			editProfile = "/createprofileinstructor";
 		} else if (localStorage.getItem("auth_position") === "Hiring Company") {

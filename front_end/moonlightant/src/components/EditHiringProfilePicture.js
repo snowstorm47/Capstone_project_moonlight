@@ -45,6 +45,13 @@ const EditHiringProfilePicture = ({ parentToChild }) => {
         if (response.data.status === 200) {
             
           message.success("Picture updated succesfully");
+          axios.get(`/api/getHiringCompanyProfilePicture/${id}`).then((res) => {
+            if (res.data.status === 200) {
+              setProfilePicture(res.data);
+            } else {
+              console.log("couldnt retrieve data");
+            }
+          });
           setIsModalVisible(false);
         } else {
           message.error("Picture was not updated. Please try again");
