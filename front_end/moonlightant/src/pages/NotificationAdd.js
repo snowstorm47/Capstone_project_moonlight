@@ -103,15 +103,11 @@ const NotificationAdd = () => {
 				/>
 			</Form.Item>
 
-			<Form.Item
-				wrapperCol={{
-					offset: 8,
-					span: 16,
-				}}
-			>
-				<Button type="primary" htmlType="submit">
+			<Form.Item>
+				<Button type="primary" style={{ width: "100%" }} htmlType="submit">
 					Create Notification <SendOutlined />
 				</Button>
+				<br />
 				<a
 					style={{ textDecoration: "underlined" }}
 					onClick={goToAdvancedSearch}

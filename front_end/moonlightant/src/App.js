@@ -54,6 +54,8 @@ import StudentProfile from "./components/Profile/StudentProfile";
 import InstructorProfile from "./components/Profile/InstructorProfile";
 import HiringProfile from "./components/Profile/HiringProfile";
 import InstitutionProfile from "./components/Profile/InstitutionProfile";
+import HiringCompany from "./pages/hiringCompany";
+import { LocalHospitalTwoTone } from "@mui/icons-material";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -205,6 +207,7 @@ function App() {
 				}}
 			>
 				<div className="logo" />
+
 				<Menu theme="light" mode="horizontal">
 					<Menu.Item key="0">
 						<Link to="/">
@@ -247,7 +250,16 @@ function App() {
 			</Header>
 			<Content style={{ padding: "50px 0 0 0" }}>
 				<Routes>
-					<Route path="/" element={<Home />} />
+					<Route
+						path="/"
+						element={
+							localStorage.getItem("auth_position") !== "Hiring Company" ? (
+								<Home />
+							) : (
+								<HiringCompany />
+							)
+						}
+					/>
 					<Route
 						path="/newsfeed"
 						element={
@@ -270,6 +282,7 @@ function App() {
 						path="/notification/advancedSearch"
 						element={<AdvancedSearch />}
 					/>
+					<Route path="/advancedSearch" element={<AdvancedSearch />} />
 					{/* <Route path="/signin" element={<SignIn />} /> */}
 					{/* <Route path="/signup" element={<SignUp />} /> */}
 					<Route path="newsfeed/news" element={<NewsDetail />} />
@@ -287,7 +300,16 @@ function App() {
 					<Route path="/signin" element={<LogIn />} />
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="recomendation" element={<SendRecomendation />} />
-					<Route path="admin" element={<AdminPage />} />
+					<Route
+						path="admin"
+						element={
+							localStorage.getItem("auth_position") === "admin" ? (
+								<AdminPage />
+							) : (
+								<LogIn />
+							)
+						}
+					/>
 					<Route path="editabout" element={<AdminAboutus />} />
 					<Route
 						path="createprofileinstructor"

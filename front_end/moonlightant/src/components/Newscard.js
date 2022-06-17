@@ -44,23 +44,23 @@ const Newscard = ({ state, loading }) => {
 								aspectRatio: 2 / 0.78,
 							}}
 							key={item.id}
-							actions={[
-								<IconText
-									icon={StarOutlined}
-									text="156"
-									key="list-vertical-star-o"
-								/>,
-								<IconText
-									icon={LikeOutlined}
-									text="156"
-									key="list-vertical-like-o"
-								/>,
-								<IconText
-									icon={MessageOutlined}
-									text="2"
-									key="list-vertical-message"
-								/>,
-							]}
+							// actions={[
+							// 	<IconText
+							// 		icon={StarOutlined}
+							// 		text="156"
+							// 		key="list-vertical-star-o"
+							// 	/>,
+							// 	<IconText
+							// 		icon={LikeOutlined}
+							// 		text="156"
+							// 		key="list-vertical-like-o"
+							// 	/>,
+							// 	<IconText
+							// 		icon={MessageOutlined}
+							// 		text="2"
+							// 		key="list-vertical-message"
+							// 	/>,
+							// ]}
 							extra={
 								<div
 									style={{

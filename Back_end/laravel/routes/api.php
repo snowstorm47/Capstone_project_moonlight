@@ -101,6 +101,8 @@ Route::get('institutions',[searchController::class, 'getInstitutions']);
 Route::get('Department',[searchController::class, 'getDepartment']);
 Route::get('College',[searchController::class, 'getCollege']);
 Route::get('showMyNews',[NewsController::class,'showMyInstitution']);
+Route::get('institutionVerified',[NewsController::class,'institutionVerified']);
+
 
 
 

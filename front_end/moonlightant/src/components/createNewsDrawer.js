@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Drawer, Button, Upload, Popover, Card, message } from "antd";
 import { Form, Input } from "antd";
 import { UploadOutlined, InboxOutlined, SendOutlined } from "@ant-design/icons";
@@ -45,6 +45,14 @@ const NewsDrawer = () => {
 
 		setNews({ ...news, title: "", body: "" });
 	};
+	const [verified, setVerified] = useState(false);
+	useEffect(() => {
+		let id = localStorage.getItem("auth_id");
+		axios.get(`api/institutionVerified?id=${id}`).then((res) => {
+			setVerified(res.data.id ? true : false);
+			console.log(res.data.id.length >= 1 ? true : false, "....");
+		});
+	});
 	const showDrawer = () => {
 		setVisible(true);
 	};
@@ -87,65 +95,72 @@ const NewsDrawer = () => {
 				visible={visible}
 			>
 				<Card bordered={false}>
-					<Form
-						name="nest-messages"
-						method="POST"
-						style={{
-							display: "flex",
-							flexDirection: "column",
-						}}
-					>
-						<Form.Item name={["user", "Title"]} required>
-							<label required>Title</label>
-							<Input name="title" value={news.title} onChange={handleInput} />
-						</Form.Item>
-						<Form.Item name={["user", "Body"]} required>
-							<label>Body</label>
-							<Input.TextArea
-								size="large"
-								name="body"
-								value={news.body}
-								onChange={handleInput}
-								style={{ width: "100%" }}
-							/>
-						</Form.Item>
-						<Form.Item>
-							<Form.Item
-								name="dragger"
-								valuePropName="fileList"
-								getValueFromEvent={normFile}
-							>
-								<Upload.Dragger
-									name="image"
-									type="file"
-									multiple={false}
-									onChange={(e) =>
-										setNews({ ...news, image: e.fileList[0].originFileObj })
-									}
-									style={{ width: "100%" }}
-								>
-									<p className="ant-upload-drag-icon">
-										<InboxOutlined />
-									</p>
-									<p className="ant-upload-text">
-										Click or drag file to this area to upload
-									</p>
-								</Upload.Dragger>
-							</Form.Item>
-						</Form.Item>
-						<Button
-							type="primary"
-							loading={loading}
-							htmlType="submit"
-							onClick={() => {
-								handleSubmit();
+					{verified ? (
+						<Form
+							name="nest-messages"
+							method="POST"
+							style={{
+								display: "flex",
+								flexDirection: "column",
 							}}
-							style={{ width: "100%" }}
 						>
-							Submit
-							<SendOutlined />
-						</Button>
-					</Form>
+							<Form.Item name={["user", "Title"]} required>
+								<label required>Title</label>
+								<Input name="title" value={news.title} onChange={handleInput} />
+							</Form.Item>
+							<Form.Item name={["user", "Body"]} required>
+								<label>Body</label>
+								<Input.TextArea
+									size="large"
+									name="body"
+									value={news.body}
+									onChange={handleInput}
+									style={{ width: "100%" }}
+								/>
+							</Form.Item>
+							<Form.Item>
+								<Form.Item
+									name="dragger"
+									valuePropName="fileList"
+									getValueFromEvent={normFile}
+								>
+									<Upload.Dragger
+										name="image"
+										type="file"
+										multiple={false}
+										onChange={(e) =>
+											setNews({ ...news, image: e.fileList[0].originFileObj })
+										}
+										style={{ width: "100%" }}
+									>
+										<p className="ant-upload-drag-icon">
+											<InboxOutlined />
+										</p>
+										<p className="ant-upload-text">
+											Click or drag file to this area to upload
+										</p>
+									</Upload.Dragger>
+								</Form.Item>
+							</Form.Item>
+							<Button
+								type="primary"
+								loading={loading}
+								htmlType="submit"
+								onClick={() => {
+									handleSubmit();
+								}}
+								style={{ width: "100%" }}
+							>
+								Submit
+								<SendOutlined />
+							</Button>
+						</Form>
+					) : (
+						<p>
+							This feature is not available for this account until we verify
+							your identity.thank you for your paitence.
+						</p>
+					)}
 				</Card>
 			</Drawer>
 		</>
