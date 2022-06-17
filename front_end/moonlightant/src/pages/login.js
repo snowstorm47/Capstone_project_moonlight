@@ -1,16 +1,15 @@
 import { Form, Input, Button, Checkbox, Space } from 'antd';
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 const LogIn = () => {
 
   const location = useLocation();
-	let first = 1;
 	const navigate = useNavigate();
 	const [message, setMessage] = useState(null);
 	const [failMessage, setFailMessage] = useState(null);
-
+  const [first,setFirst]=useState();
 	const [loginInput, setLogin] = useState({
 		email: "",
 		password: "",
@@ -40,9 +39,11 @@ const LogIn = () => {
 					localStorage.setItem("auth_position", res.data.position);
 					setMessage(res.data.message);
 					console.log(res.data.message);
-
-					if (location?.state?.first === 0) {
-						location.state.first++;
+            axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
+              setFirst(response.data.first);
+              console.log(response.data.first);
+            });
+					if (first === 0) {
 						if (localStorage.getItem("auth_position") === "Student") {
 							navigate("/createprofile");
 						} else if (

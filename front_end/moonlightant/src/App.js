@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -51,6 +50,10 @@ import SendRecomendation from "./components/SendRecommendation";
 import AdminPage from "./AdminPage";
 import AdminAboutus from "./components/Admin/AdminAboutus";
 import { useEffect, useState } from "react";
+import StudentProfile from "./components/Profile/StudentProfile";
+import InstructorProfile from "./components/Profile/InstructorProfile";
+import HiringProfile from "./components/Profile/HiringProfile";
+import InstitutionProfile from "./components/Profile/InstitutionProfile";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -89,6 +92,7 @@ function App() {
 		});
 	};
 	const [image, setImage] = useState();
+	const [first,setFirst] = useState();
 	const navigate = useNavigate();
 	const logoutSubmit = (e) => {
 		axios.post("/api/logout").then((res) => {
@@ -115,9 +119,15 @@ function App() {
 			}
 		});
 	}, []);
+	useEffect(() => {
+		axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
+		  setFirst(response.data.first);
+		  console.log(response.data.first);
+		});
+	  }, []);
+	// console.log(localStorage.getItem("auth_profile"));
 	let editProfile = "";
-	console.log(localStorage.getItem("auth_profile"));
-	if (localStorage.getItem("auth_profile") == 1) {
+	if (first=== 1) {
 		if (localStorage.getItem("auth_position") === "Student") {
 			editProfile = "/profilepage";
 		} else if (localStorage.getItem("auth_position") === "Institution") {
@@ -291,6 +301,11 @@ function App() {
 						path="createprofileinstitution"
 						element={<InstitutionCreateProfile />}
 					/>
+					<Route path="StudentProfile" element={<StudentProfile />} />
+					<Route path="InstructorProfile" element={<InstructorProfile />} />
+					<Route path="InstitutionProfile" element={<InstitutionProfile />} />
+					<Route path="HiringProfile" element={<HiringProfile />} />
+
 				</Routes>
 			</Content>
 			<Footer

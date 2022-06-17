@@ -27,6 +27,7 @@ const  AddSkill = () =>{
           }
         });
       }, []);
+      setSkillList({ ...skillList, skill: ""});
     };
 
     const handleInput = (e) => {
