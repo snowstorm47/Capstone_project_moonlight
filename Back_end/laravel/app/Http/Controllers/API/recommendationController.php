@@ -47,8 +47,10 @@ class recommendationController extends Controller
 
         public function filterStudent(Request $request,$id)
         {
+            $user_id=$request->user_id;
         $student=student::join('users','users.id','=','student.user_id')
         ->where('student.institution_id','=',$id)
+        ->where('users.id','!=',$user_id)
         ->get(['users.name','student.id']);
 
         return Response()->json([
