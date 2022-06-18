@@ -47,13 +47,10 @@ class recommendationController extends Controller
 
         public function filterStudent(Request $request,$id)
         {
-            // $student = DB::table('student')
-            // ->join('users', 'student.user_id', '=', 'users.id')
-            // ->join('instructor', 'student.institution_id', '=', 'instructor.institution_id')
-            // ->where('instructor.institution_id','=',$id)
-            // ->get(['users.name','student.id']);
+            $user_id=$request->user_id;
         $student=student::join('users','users.id','=','student.user_id')
         ->where('student.institution_id','=',$id)
+        ->where('users.id','!=',$user_id)
         ->get(['users.name','student.id']);
 
         return Response()->json([
@@ -80,5 +77,52 @@ class recommendationController extends Controller
 
             }
         }
+
+        public function studentInstitutionId($id)
+        {
+            $student= User:: findOrFail($id);
+
+            if($student)
+            {
+                $institution_id= DB::table('student')->where('user_id',$id)->value('institution_id');
+                $sender_id=student::join('users','users.id','=','student.user_id')
+                ->where('users.id','=',$id)
+                ->get(['student.id']);
+        return Response()->json([
+            'institution_id'=>$institution_id,
+            "sender_id"=>$sender_id,
+            "status"=>200
+        ]);
+
+            }
+        }
+
+    public function getRecommendation(Request $request,$id)
+    {
+            $result=collect([
+            ]);
+            $Image;
+            $recommendation=recommendation::join('users','users.id','=','recomendation.sender_id')
+            ->join('student','student.id','=','recomendation.student_id')
+            ->where('student.user_id','=',$id)
+            ->get(['users.name','recomendation.recomendationDetail','recomendation.sender_id']);
+            foreach ($recommendation as $recomend) {
+                $imageStudent=student::where('student.user_id','=',$recomend->sender_id)->get('student.image');
+                $imageInstructor=instructor::where('instructor.user_id','=',$recomend->sender_id)->get('instructor.image');
+                if ( isset ($imageStudent) && count($imageStudent) > 0 ) {
+                   $Image = $imageStudent;
+                }
+                else{
+                    $Image = $imageInstructor;
+                }
+                $result->push(['recommendation'=>$recomend,'image'=>$Image]);
+            }
+            
+            return Response()->json([
+                "recommendation"=>$result,
+                "status"=>200,
+            ]);
+        
+    }
         
 }
