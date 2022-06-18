@@ -59,6 +59,7 @@ Route::get('showInstitutionNotification/{id}',[notificationController::class, 's
 Route::get('showInstructorNotification/{id}',[notificationController::class, 'showInstructorNotification']);
 Route::get('showHiringCompanyNotification/{id}',[notificationController::class, 'showHiringCompanyNotification']);
 Route::get('profile/{id}',[profileController::class,'profile']);
+Route::get('checkCreateProfile',[profileController::class,'checkCreateProfile']);
 Route::get('instructorprofile/{id}',[instructorProfileController::class,'profile']);
 Route::get('hiringCompanyprofile/{id}',[hiringCompanyController::class,'profile']);
 Route::get('institutionprofile/{id}',[institutionRegistration::class,'profile']);
@@ -73,9 +74,15 @@ Route::post('addHiringCompanyProfile/{id}',[hiringCompanyController::class,'addH
 Route::get('getSocialMediaLink/{id}',[profileController::class,'getSocialMediaLink']);
 Route::get('filterStudent/{id}',[recommendationController::class,'filterStudent']);
 Route::get('getInstructorInstitutionId/{id}',[recommendationController::class,'instructorInstitutionId']);
+Route::get('getRecommendation/{id}',[recommendationController::class,'getRecommendation']);
+Route::get('getStudentInstitutionId/{id}',[recommendationController::class,'studentInstitutionId']);
 Route::get('getSocialMediaLinkSingle/{id}',[profileController::class,'getSocialMediaLinkSingle']);
 Route::get('getEmploymentHistory/{id}',[profileController::class,'getEmploymentHistory']);
 Route::put('updateProfile/{id}',[profileController::class,'profileEdit']);
+Route::post('editBackgroundAboutus/{id}',[AdminController::class,'editBackgroundAboutus']);
+Route::post('editTitleOneImageAboutus/{id}',[AdminController::class,'editTitleOneImage']);
+Route::post('editTitleTwoImageAboutus/{id}',[AdminController::class,'editTitleTwoImage']);
+Route::post('editTitleThreeImageAboutus/{id}',[AdminController::class,'editTitleThreeImage']);
 Route::put('updateInstructorProfile/{id}',[instructorProfileController::class,'profileEdit']);
 Route::put('updateInstitutionProfile/{id}',[institutionRegistration::class,'profileEdit']);
 Route::put('updateHiringCompanyProfile/{id}',[hiringCompanyController::class,'profileEdit']);

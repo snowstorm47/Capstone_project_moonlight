@@ -5,22 +5,11 @@ import "../styles/recomendations.css";
 
 const Recomendation = () => {
 	const [recommend, setRecommend] = useState();
-	const data = [
-		{
-			title: "Yohanes Samuel",
-		},
-		{
-			title: "Amanuel Zerihun",
-		},
-		{
-			title: "Yabsera Daniel",
-		},
-	];
 	const id = localStorage.getItem('auth_id');
 	useEffect(() => {
 		axios.get(`/api/getRecommendation/${id}`).then((res) => {
 		  if (res.data.status === 200) {
-			setRecommend(res.data);
+			setRecommend(res.data.recommendation);
 			console.log(res.data)
 		  } else {
 			console.log("couldnt retrieve data");
@@ -46,16 +35,16 @@ const Recomendation = () => {
 		>
 			<List
 				itemLayout="horizontal"
-				dataSource={data}
+				dataSource={recommend}
 				renderItem={(item) => (
 					<List.Item>
 						<List.Item.Meta
 							avatar={<Avatar src={
 								"http://localhost:8000/uploads/ProfilePicture/" +
-								item.image
+								item.image[0].image
 							}/>}
-							title={<span>{item.title}</span>}
-							description={item.title}
+							title={<span>{item.recommendation.name}</span>}
+							description={item.recommendation.recomendationDetail}
 						/>
 					</List.Item>
 				)}

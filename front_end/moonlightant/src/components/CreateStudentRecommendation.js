@@ -28,7 +28,7 @@ const CreateStudentRecommendation = () => {
           if (res.data.status === 200) {
             setInstitutionId(res.data.institution_id);
             setSenderId(res.data.sender_id[0].id);
-            axios.get(`/api/filterStudent/${institutionId}`).then((res) => {
+            axios.get(`/api/filterStudent/${institutionId}?user_id=${localStorage.getItem("auth_id")}`).then((res) => {
                 if (res.data.status === 200) {
                   setStudentList(res.data.student);
                 }
@@ -109,7 +109,6 @@ const CreateStudentRecommendation = () => {
 				visible={visible}
 			>
 				<Card
-			title="Recommendation"
 			bordered={true}
 			className="cards"
 			style={{
@@ -142,7 +141,7 @@ const CreateStudentRecommendation = () => {
               showCount
               maxLength={200}
           autoSize={{ minRows: 2, maxRows: 4 }}
-          style={{marginLeft:"-7.1rem",marginRight:"-6rem"}}
+          style={{marginLeft:"-7.1rem",marginRight:"-6rem",marginTop:"2rem"}}
           cols={10}    
           name="recomendationDetail"
                 onChange={handleInput}

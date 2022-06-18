@@ -111,54 +111,57 @@ const ProfileDetail = () => {
 				</div>
 				<span style={{ color: "gray" }}>{userData.email}</span>
 			</Card>
-			<Card
-				type="inner"
-				title="Experience"
-				extra={<a href={showProfile}>More</a>}
-				style={{
-					marginTop: -10,
-					marginRight: -25,
-					marginLeft: -25,
-					paddingBottom: 20,
-					textAlign: "left",
-					minHeight: "150px",
-				}}
-			>
-				{userData.employmentHistory.map((item) => (
-					<>
-						<h4 >{item.companyName}</h4>
-						<span style={{ color: "gray" }}>{item.position}</span>
-					</>
-				))}
-			</Card>
-			<Card
-				type="inner"
-				title="Skills"
-				extra={<a href={showProfile}>More</a>}
-				style={{
-					marginTop: -10,
-					marginRight: -25,
-					marginLeft: -25,
-					paddingBottom: 20,
-					marginBottom: 0,
-					textAlign: "left",
-					minHeight: "200px",
-				}}
-			>
-				{userData.skill.map((skill) => (
-					<button
+			{(localStorage.getItem("auth_position")==="Institution" || localStorage.getItem("auth_position")==="Hiring Company"||localStorage.getItem("auth_position")==="Admin")
+			?null:(
+			<><Card
+						type="inner"
+						title="Experience"
+						extra={<a href={showProfile}>More</a>}
 						style={{
-							color: "white",
-							borderRadius: 100,
-							border: 0,
-							margin: 2,
-							backgroundColor: "#0080ff",
+							marginTop: -10,
+							marginRight: -25,
+							marginLeft: -25,
+							paddingBottom: 20,
+							textAlign: "left",
+							minHeight: "150px",
 						}}
 					>
-						#{skill.skill}
-					</button>
-				))}
-			</Card>
+						{userData.employmentHistory.map((item) => (
+							<>
+								<h4>{item.companyName}</h4>
+								<span style={{ color: "gray" }}>{item.position}</span>
+							</>
+						))}
+					</Card><Card
+						type="inner"
+						title="Skills"
+						extra={<a href={showProfile}>More</a>}
+						style={{
+							marginTop: -10,
+							marginRight: -25,
+							marginLeft: -25,
+							paddingBottom: 20,
+							marginBottom: 0,
+							textAlign: "left",
+							minHeight: "200px",
+						}}
+					>
+							{userData.skill.map((skill) => (
+								<button
+									style={{
+										color: "white",
+										borderRadius: 100,
+										border: 0,
+										margin: 2,
+										backgroundColor: "#0080ff",
+									}}
+								>
+									#{skill.skill}
+								</button>
+							))}
+						</Card></>)
+			}
+			
 		</Card>
 		
 	);

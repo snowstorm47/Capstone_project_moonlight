@@ -12,6 +12,7 @@ class certificate extends Model
     public $timestamps = false;
     protected $fillable = [
         'certificate',
+        'description'
         
     ];
 }

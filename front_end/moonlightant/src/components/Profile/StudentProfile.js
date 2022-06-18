@@ -30,6 +30,9 @@ function StudentProfile() {
     startDateClass: "",
     endDateClass: "",
     image: "",
+    institutionName:"",
+    departmentName:"",
+    collegeName:"",
     skill: [],
     employmentHistory: [],
     newSkill: "",
@@ -40,24 +43,7 @@ function StudentProfile() {
   useEffect(() => {
     axios.get(`/api/profile/${id}`).then((res) => {
       if (res.data.status === 200) {
-          setInstitutionId(res.data.institution_id);
-          setCollegeId(res.data.college_id);
-          setDepartmentId(res.data.department_id);
-          const data = {
-              institutionId: institutionId,
-              collegeId: collegeId,
-              departmentId: departmentId,
-          }
-          axios.get(`/api/getInstitutionName?institution_id=${institutionId}&college_id=${collegeId}&department_id=${departmentId}`,data).then((res) => {
-            if (res.data.status === 200) {
-                setInstitutionData(res.data);
-                console.log(institutionData)
-            } else {
-              console.log("couldnt retrieve data");
-            }
-          });
         setEditProfile(res.data);
-        console.log(res.data.ins);
         setSkillList(res.data.skill);
         console.log(skillList.skill);
       } else {
@@ -153,7 +139,7 @@ function StudentProfile() {
           <Col>
             <Divider>Academic</Divider>
             <span>
-                <label style={{fontWeight:"bold"}}>Institution : </label> {institutionData.institutionName}
+                <label style={{fontWeight:"bold"}}>Institution : </label> {editProfile.institutionName}
               </span>
               <br/>
               <br/>
@@ -161,7 +147,7 @@ function StudentProfile() {
 
           <Col>
           <span>
-                <label style={{fontWeight:"bold"}}>College : </label> {institutionData.collegeName}
+                <label style={{fontWeight:"bold"}}>College : </label> {editProfile.collegeName}
               </span>
               <br/>
               <br/>
@@ -169,7 +155,7 @@ function StudentProfile() {
 
           <Col>
             <span>
-                <label style={{fontWeight:"bold"}}>Department : </label> {institutionData.departmentName}
+                <label style={{fontWeight:"bold"}}>Department : </label> {editProfile.departmentName}
               </span>
               <br/>
               <br/>

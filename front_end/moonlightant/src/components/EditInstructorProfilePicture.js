@@ -46,6 +46,13 @@ const EditInstructorProfilePicture = ({ parentToChild }) => {
             
           message.success("Picture updated succesfully");
           setIsModalVisible(false);
+          axios.get(`/api/getInstructorProfilePicture/${id}`).then((res) => {
+            if (res.data.status === 200) {
+              setProfilePicture(res.data);
+            } else {
+              console.log("couldnt retrieve data");
+            }
+          });
         } else {
           message.error("Picture was not updated. Please try again");
         }

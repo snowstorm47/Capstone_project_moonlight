@@ -20,6 +20,13 @@ import CreateRecommendationDrawer from "../components/CreateRecommendationDrawer
 import CreateStudentRecommendation from "../components/CreateStudentRecommendation";
 const { Search } = Input;
 const Newsfeed = () => {
+	const [first,setFirst] = useState();
+	useEffect(() => {
+		axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
+		  setFirst(response.data.first);
+		  console.log(response.data.first);
+		});
+	  }, []);
 	const suffix = (
 		<AudioOutlined
 			style={{
@@ -125,9 +132,9 @@ const Newsfeed = () => {
 					window.innerWidth>=500?<Recomendation />:null
 				) : null}
 				
-				{localStorage.getItem("auth_position") === "Institution" ? (
+				{(localStorage.getItem("auth_position") === "Institution" ?(first=== 1)?(
 					<NewsDrawer />
-				) : null}
+				) :null : null)}
 			</div>
 		</div>
 	);
