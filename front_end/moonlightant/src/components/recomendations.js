@@ -1,8 +1,10 @@
 import { Card, List, Avatar } from "antd";
-
+import { useState,useEffect } from "react";
+import axios from "axios";
 import "../styles/recomendations.css";
 
 const Recomendation = () => {
+	const [recommend, setRecommend] = useState();
 	const data = [
 		{
 			title: "Yohanes Samuel",
@@ -14,10 +16,22 @@ const Recomendation = () => {
 			title: "Yabsera Daniel",
 		},
 	];
+	const id = localStorage.getItem('auth_id');
+	useEffect(() => {
+		axios.get(`/api/getRecommendation/${id}`).then((res) => {
+		  if (res.data.status === 200) {
+			setRecommend(res.data);
+			console.log(res.data)
+		  } else {
+			console.log("couldnt retrieve data");
+		  }
+		});
+	  }, []);
 	return (
+		
 		<Card
-			title="Recomendations"
-			extra={<a href="#">More</a>}
+			title="Recommendations"
+			// extra={<a href="#">More</a>}
 			bordered={true}
 			className="cards"
 			style={{
@@ -36,9 +50,12 @@ const Recomendation = () => {
 				renderItem={(item) => (
 					<List.Item>
 						<List.Item.Meta
-							avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-							title={<a href="https://ant.design">{item.title}</a>}
-							description="Very professional and well versed in the field. would be a greate addition to your team"
+							avatar={<Avatar src={
+								"http://localhost:8000/uploads/ProfilePicture/" +
+								item.image
+							}/>}
+							title={<span>{item.title}</span>}
+							description={item.title}
 						/>
 					</List.Item>
 				)}
