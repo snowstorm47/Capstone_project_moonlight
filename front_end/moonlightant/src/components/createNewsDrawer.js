@@ -49,7 +49,7 @@ const NewsDrawer = () => {
 	useEffect(() => {
 		let id = localStorage.getItem("auth_id");
 		axios.get(`api/institutionVerified?id=${id}`).then((res) => {
-			setVerified(res.data.id ? true : false);
+			setVerified(res.data.id.length >= 1 ? true : false);
 			console.log(res.data.id.length >= 1 ? true : false, "....");
 		});
 	});

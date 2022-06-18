@@ -10,8 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\User;
 use App\Models\skill;
 use Illuminate\Database\Eloquent\Model;
-
-
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -48,13 +47,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-      public function sendPasswordResetNotification($token)
-{
-    $url = 'http://localhost:3000/password-reset/'.$token;
+    public function sendPasswordResetNotification($token)
+    {
+        $url = 'http://localhost:3000/resetPassword/'.$token;
  
-    $this->notify(new ResetPasswordNotification($url));
-}
-public function skill(){
-    return $this->hasMany(skill::class);
-}
+        $this->notify(new ResetPasswordNotification($url));
+    }
+    public function skill()
+    {
+        return $this->hasMany(skill::class);
+    }
 }

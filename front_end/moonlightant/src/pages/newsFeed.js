@@ -80,7 +80,7 @@ const Newsfeed = () => {
 		<div className="newsContainer">
 			{}
 			<div className="rightContainer">
-				<ProfileDetail />
+				{window.innerWidth>=500?<ProfileDetail />:null}
 				{localStorage.getItem("auth_position") === "Instructor"? (
 					<CreateRecommendationDrawer/>
 				) : null}
@@ -93,7 +93,7 @@ const Newsfeed = () => {
 				<Search
 					placeholder="search"
 					allowClear
-					onChange={getAllNews}
+					onChange={(value)=>{return value?null:getAllNews}}
 					enterButton="Search"
 					size="large"
 					style={{ padding: "40px 20px" }}
@@ -110,6 +110,7 @@ const Newsfeed = () => {
 				)}
 			</div>
 			<div className="leftContainer">
+				{localStorage.getItem("auth_position") === "Student" ?
 				<Card>
 					My institution
 					<br />
@@ -118,9 +119,10 @@ const Newsfeed = () => {
 							return checked ? showMyNews() : getAllNews();
 						}}
 					/>
-				</Card>
+				</Card>:null
+				}
 				{localStorage.getItem("auth_position") === "Student" ? (
-					<Recomendation />
+					window.innerWidth>=500?<Recomendation />:null
 				) : null}
 				
 				{localStorage.getItem("auth_position") === "Institution" ? (

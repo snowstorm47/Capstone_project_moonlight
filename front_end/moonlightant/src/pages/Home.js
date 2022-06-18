@@ -23,10 +23,10 @@ const Home = () => {
 	}, []);
 	return (
 		<div className="homeContainer">
-			<div className="topContainer">
-				<div className="wordCaroselContainer">
+			<div className={window.innerWidth<=500?"topContainermob":"topContainer"}>
+				<div className={window.innerWidth<=500?"wordCaroselContainerMob":"wordCaroselContainer"}>
 					<div>
-						{console.log(window.innerWidth, ".............................")}
+						{console.log(window.innerWidth, ".............................width")}
 						<Carousel
 							style={{ width: "auto", marginleft: "20px", display: "flex" }}
 							autoplay
@@ -91,7 +91,7 @@ const Home = () => {
 					</div>
 				</div>
 
-				<div className="image">
+				<div className={window.innerWidth<=500?"imageMob":"image"}>
 					<img src={illustration} className="illustration" alt="" />
 				</div>
 			</div>
@@ -114,8 +114,9 @@ const Home = () => {
 					<div
 						style={{
 							width: "35%",
-							height: 450,
+							height: 'auto',
 							marginRight: 0,
+							paddingBottom:40,
 							display: "flex",
 							flexDirection: "column",
 							boxShadow: " rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
@@ -132,10 +133,14 @@ const Home = () => {
 							<h2>Join a community with</h2>
 						</div>
 						<div
-							style={{
+							style={window.innerWidth<=500?{
 								display: "flex",
-
-								lexDirection: "row",
+								flexDirection: "column",
+								justifyContent: "space-evenly",
+								paddingTop: 20,
+							}:{
+								display: "flex",
+								flexDirection: "row",
 								justifyContent: "space-evenly",
 								paddingTop: 20,
 							}}
@@ -144,11 +149,16 @@ const Home = () => {
 							<Statistic title="Students" value={250} />
 						</div>
 						<div
-							style={{
+							style={window.innerWidth<=500?{
 								display: "flex",
-								lexDirection: "row",
-								paddingTop: 20,
+								flexDirection: "column",
 								justifyContent: "space-evenly",
+								paddingTop: 20,
+							}:{
+								display: "flex",
+								flexDirection: "row",
+								justifyContent: "space-evenly",
+								paddingTop: 20,
 							}}
 						>
 							<Statistic title="Graduates" value={347} />

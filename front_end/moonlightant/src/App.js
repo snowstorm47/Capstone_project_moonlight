@@ -56,6 +56,8 @@ import HiringProfile from "./components/Profile/HiringProfile";
 import InstitutionProfile from "./components/Profile/InstitutionProfile";
 import HiringCompany from "./pages/hiringCompany";
 import { LocalHospitalTwoTone } from "@mui/icons-material";
+import ForgotPassword from "./pages/forgotPassword";
+import ResetPassword from "./pages/resetPassword";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -327,6 +329,9 @@ function App() {
 					<Route path="InstructorProfile" element={<InstructorProfile />} />
 					<Route path="InstitutionProfile" element={<InstitutionProfile />} />
 					<Route path="HiringProfile" element={<HiringProfile />} />
+					<Route path="signin/forgotpassword" element={<ForgotPassword />} />
+					<Route path="resetPassword" element={<ResetPassword />} />
+
 
 				</Routes>
 			</Content>

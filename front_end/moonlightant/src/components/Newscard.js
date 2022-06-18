@@ -88,10 +88,12 @@ const Newscard = ({ state, loading }) => {
 							<List.Item.Meta
 								style={{
 									textAlign: "left",
+									overflow: "hidden",
+
 								}}
 								avatar={<Avatar src={mainimage} />}
 								title={
-									<a href={item.href} style={{ fontSize: "1.2vw" }}>
+									<a href={item.href} style={{  }}>
 										{item.institutionName}
 									</a>
 								}

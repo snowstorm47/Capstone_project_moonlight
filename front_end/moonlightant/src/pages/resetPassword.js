@@ -1,10 +1,10 @@
 import { Form, Input, Button, Checkbox, Space, Divider } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import "../styles/signIn.css";
 import { useLocation } from "react-router-dom";
-const LogIn = () => {
+const ResetPassword = () => {
 
   const location = useLocation();
 	const navigate = useNavigate();
@@ -12,8 +12,9 @@ const LogIn = () => {
 	const [failMessage, setFailMessage] = useState(null);
   const [first,setFirst]=useState();
 	const [loginInput, setLogin] = useState({
-		email: "",
+
 		password: "",
+        confirmPassword:"",
 		error_list: [],
 	});
 
@@ -22,56 +23,7 @@ const LogIn = () => {
 		setLogin({ ...loginInput, [e.target.name]: e.target.value });
 	};
 
-	const loginSubmit = (e) => {
-		// e.preventDefault();
-
-		const data = {
-			email: loginInput.email,
-			password: loginInput.password,
-		};
-
-		axios.get("/sanctum/csrf-cookie").then((response) => {
-			axios.post("api/login", data).then((res) => {
-				if (res.data.status === 200) {
-					localStorage.setItem("auth_token", res.data.token);
-					localStorage.setItem("auth_email", res.data.email);
-					localStorage.setItem("auth_name", res.data.name);
-					localStorage.setItem("auth_id", res.data.id);
-					localStorage.setItem("auth_position", res.data.position);
-					setMessage(res.data.message);
-					console.log(res.data.message);
-            axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
-              setFirst(response.data.first);
-              console.log(response.data.first);
-            });
-					if (first === 0) {
-						if (localStorage.getItem("auth_position") === "Student") {
-							navigate("/createprofile");
-						} else if (
-							localStorage.getItem("auth_position") === "Institution"
-						) {
-							navigate("/createprofileinstitution");
-						} else if (localStorage.getItem("auth_position") === "Instructor") {
-							navigate("/createprofileinstructor");
-						} else if (
-							localStorage.getItem("auth_position") === "Hiring Company"
-						) {
-							navigate("/createprofilehiring");
-						}
-					} else {
-						navigate("/newsfeed");
-					}
-				} else if (res.data.status === 401) {
-					console.log(res.data.message);
-					setFailMessage(res.data.message);
-					console.log(message);
-				} else {
-					setLogin({ ...loginInput, error_list: res.data.validation_errors });
-				}
-			});
-		});
-	};
-
+	
 	return (
 		<div
 			style={{
@@ -99,7 +51,7 @@ const LogIn = () => {
 				}}
 			>
 				<Divider>
-					<h1>Log In</h1>
+					<h1>Reset password</h1>
 				</Divider>
 
 				<Form
@@ -113,32 +65,11 @@ const LogIn = () => {
 						remember: true,
 					}}
 					layout="vertical"
-					onFinish={loginSubmit}
+		
 					autoComplete="off"
 				>
 					<div style={{ color: "green" }}>{message}</div>
 					<div style={{ color: "red" }}>{failMessage}</div>
-					<Form.Item
-						style={{ fontWeight: "bold" }}
-						label="Email"
-						rules={[
-							{
-								required: true,
-								message: "Please input your email!",
-							},
-						]}
-					>
-						<Input
-							placeholder="Enter your email"
-							name="email"
-							style={{ display: "flex", width: "100%" }}
-							onChange={handleInput}
-							value={loginInput.email}
-						/>
-						<span style={{ color: "red", fontWeight: "normal" }}>
-							{loginInput.error_list.email}
-						</span>
-					</Form.Item>
 
 					{/* <Space className='space-align-center'> */}
 					<Form.Item
@@ -163,20 +94,12 @@ const LogIn = () => {
 					</Form.Item>
 					{/* </Space> */}
 
-					<Form.Item
-						// style={{alignItems:'center', paddingRight:'5rem'}}
-						name="remember"
-						valuePropName="checked"
-					>
-						<Checkbox style={{}}>Remember me</Checkbox>
-					</Form.Item>
 
 					<Form.Item style={{}}>
 						<Button type="primary" style={{ width: "100%" }} htmlType="submit">
 							Login
 						</Button>
 					</Form.Item>
-					<Link to="forgotPassword">Forgot password?</Link>
 				</Form>
 			</div>
 			<svg
@@ -194,4 +117,4 @@ const LogIn = () => {
 	);
 };
 
-export default LogIn;
+export default ResetPassword;

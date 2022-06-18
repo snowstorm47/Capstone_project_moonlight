@@ -63,9 +63,9 @@ const ProfileDetail = () => {
 				marginTop: 30,
 				marginRight: 10,
 				marginLeft: 10,
-				width: 250,
+				width: "20%",
 				position: "fixed",
-				height: 500,
+				height: "auto",
 				borderRadius: 10,
 				backgroundImage: `url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs8XGHyMmmTM7yi39nHzdGsfyCU7xl0_LwRQ&usqp=CAU")`,
 			}}
@@ -126,7 +126,7 @@ const ProfileDetail = () => {
 			>
 				{userData.employmentHistory.map((item) => (
 					<>
-						<h4>{item.companyName}</h4>
+						<h4 >{item.companyName}</h4>
 						<span style={{ color: "gray" }}>{item.position}</span>
 					</>
 				))}

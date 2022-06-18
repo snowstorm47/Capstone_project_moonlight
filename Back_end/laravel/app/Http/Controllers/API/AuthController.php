@@ -17,7 +17,7 @@ class AuthController extends Controller
     //
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'email'=>'required|email|max:191|unique:users,email',
             'password'=>'required|min:8',
             'name'=>'required|max:191',
@@ -25,13 +25,11 @@ class AuthController extends Controller
 
         ]);
  
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
                 'validation_errors'=> $validator->messages(),
             ]);
-        }
-        else{
+        } else {
             $user = User::create([
                 'name'=> $request->name,
                 'password'=> Hash::make($request->password),
@@ -55,33 +53,27 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-       $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'email'=>'required|max:191',
             'password'=>'required'
        ]);
 
-       if($validator->fails())
-       {
+        if ($validator->fails()) {
             return response()->json([
                 'validation_errors'=> $validator->messages(),
             ]);
-       }
-       else
-       {
-        $user = User::where('email', $request->email)->first();
+        } else {
+            $user = User::where('email', $request->email)->first();
  
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json([
+            if (! $user || ! Hash::check($request->password, $user->password)) {
+                return response()->json([
                 'status' => 401,
                 'message' => "Invalid Credentials"
             ]);
-           
-        }
-        else
-        {
-            $token = $user->createToken($user->email.'_Token')->plainTextToken;
+            } else {
+                $token = $user->createToken($user->email.'_Token')->plainTextToken;
             
-            return response()->json([
+                return response()->json([
                 'status'=>200,
                 'email'=> $user->email,
                 'token'=> $token,
@@ -90,8 +82,8 @@ class AuthController extends Controller
                 'position'=>$user->position,
                 'message'=>'Logged in Successfully'
             ]);
+            }
         }
-       }
     }
 
     public function logout()
@@ -104,48 +96,46 @@ class AuthController extends Controller
     }
     
     
-    public function forgotPassword(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function forgotPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'email'=>'required|max:191',
        ]);
-        $status = Password::sendResetLink(
-        $request->only('email')
-    );
-    
-       if($sent=Password::RESET_LINK_SENT)
-       {return response()->json([
-            'status' => 200,
-            'status2'=>$sent,
-            'email'=> $request->email,
-            'message' => 'a message with a reset link has been sent to your email'
-        ]);
-}
+        $request->validate(['email' => 'required|email']);
  
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+ 
+        return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
     }
 
 
-    public function resetPassword(Request $request){
+    public function resetPassword(Request $request)
+    {
         $request->validate([
         'token' => 'required',
         'password' => 'required|min:8|confirmed',
     ]);
   
-    $status = Password::reset(
-        $request->only( 'password', 'password_confirmation', 'token'),
-        function ($user, $password) {
-            $user->forceFill([
+        $status = Password::reset(
+            $request->only('password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
                 'password' => Hash::make($password)
             ])->setRememberToken(Str::random(60));
  
-            $user->save();
+                $user->save();
  
-            event(new PasswordReset($user));
-        }
-    );
+                event(new PasswordReset($user));
+            }
+        );
  
-     return response()->json([
+        return response()->json([
             'status' => 200,
             'message' => 'password reset successfully'
         ]);
-}
+    }
 }
