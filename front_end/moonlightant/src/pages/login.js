@@ -9,7 +9,11 @@ const LogIn = () => {
   const navigate = useNavigate();
   const [message, setMessage] = useState(null);
   const [failMessage, setFailMessage] = useState(null);
-  const [first, setFirst] = useState();
+  // const [first, setFirst] = useState(1);
+  let check ;
+  const [valid,setValid] = useState({
+		first:null
+	});
   const [loginInput, setLogin] = useState({
     email: "",
     password: "",
@@ -42,9 +46,13 @@ const LogIn = () => {
           axios
             .get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`)
             .then((response) => {
-              setFirst(response.data.first);
-              console.log(response.data.first);
-			  if (first === 0) {
+              // setFirst(response.data.first);
+              // setFirst(0);
+              check = response.data.first;
+              console.log(check)
+              // setValid({...valid,first:check});
+              // console.log(valid.first,'valid');
+			  if (check === 0) {
 				if (localStorage.getItem("auth_position") === "Student") {
 				  navigate("/createprofile");
 				} else if (
@@ -188,7 +196,7 @@ const LogIn = () => {
       >
         <path
           fill="#0099ff"
-          fill-opacity="1"
+          fillOpacity="1"
           d="M0,128L60,122.7C120,117,240,107,360,112C480,117,600,139,720,128C840,117,960,75,1080,48C1200,21,1320,11,1380,5.3L1440,0L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
         ></path>
       </svg>

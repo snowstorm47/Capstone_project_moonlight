@@ -27,7 +27,6 @@ const CreateStudentRecommendation = () => {
         axios.get(`/api/getStudentInstitutionId/${id}`).then((res) => {
           if (res.data.status === 200) {
             setInstitutionId(res.data.institution_id);
-            setSenderId(res.data.sender_id[0].id);
             axios.get(`/api/filterStudent/${institutionId}?user_id=${localStorage.getItem("auth_id")}`).then((res) => {
                 if (res.data.status === 200) {
                   setStudentList(res.data.student);

@@ -58,8 +58,8 @@ Route::get('showNotification/{id}', [notificationController::class, 'showNotific
 Route::get('showInstitutionNotification/{id}', [notificationController::class, 'showInstitutionNotification']);
 Route::get('showInstructorNotification/{id}', [notificationController::class, 'showInstructorNotification']);
 Route::get('showHiringCompanyNotification/{id}', [notificationController::class, 'showHiringCompanyNotification']);
+Route::get('showInstructorVerifyNotification/{id}', [notificationController::class, 'viewNotificationInstructorVerify']);
 Route::get('profile/{id}', [profileController::class,'profile']);
-Route::get('profileInstitution/{id}', [profileController::class,'profileInstitution']);
 Route::get('checkCreateProfile', [profileController::class,'checkCreateProfile']);
 Route::get('instructorprofile/{id}', [instructorProfileController::class,'profile']);
 Route::get('hiringCompanyprofile/{id}', [hiringCompanyController::class,'profile']);
@@ -104,12 +104,17 @@ Route::post('addCertificate', [profileController::class,'addCertificate']);
 Route::post('addSkill', [profileController::class,'addSkill']);
 Route::post('addSocialMediaLink', [profileController::class,'addsocialMediaLink']);
 Route::get('all-institution', [institutionRegistration::class, 'allinstitution']);
+Route::put('verifyInstructor/{id}', [institutionRegistration::class, 'verifyInstructor']);
+Route::delete('deleteVerifyInstructor', [instructorProfileController::class, 'deleteInstructorVerification']);
+Route::get('checkVerifyInstructor/{id}', [instructorProfileController::class, 'checkInstructorVerification']);
 Route::get('advancedSearch', [searchController::class, 'AdvancedSearch']);
 Route::get('institutions', [searchController::class, 'getInstitutions']);
 Route::get('Department', [searchController::class, 'getDepartment']);
 Route::get('College', [searchController::class, 'getCollege']);
 Route::get('showMyNews', [NewsController::class,'showMyInstitution']);
 Route::get('institutionVerified', [NewsController::class,'institutionVerified']);
+Route::get('profileInstitution/{id}', [profileController::class,'profileInstitution']);
+
 
 
 
