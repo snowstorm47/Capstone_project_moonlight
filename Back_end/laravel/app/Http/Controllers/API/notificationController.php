@@ -92,6 +92,22 @@ class notificationController extends Controller
         ]);
     }
 
+    public function viewNotificationInstructorVerify($id)
+    {
+        $instructor = DB::table('instructor')
+        ->join('users', 'instructor.user_id', '=', 'users.id')
+        ->join('notification', 'instructor.user_id', '=', 'notification.sender_id')
+        ->where('instructor.verificationStatus','=',0)
+        ->where('notification.reciever_id','=',$id)
+        ->get(['notification.notificationTitle','notification.id','notification.notificationDetail','notification.sender_id','instructor.image','users.name','notification.created_at']);
+        // $notificationDetail = DB::table('notification')->where('user_id', $id)->value('notificationDetail');
+
+        return Response()->json([
+            "status"=>200,
+            "notification"=>$instructor,
+        ]);
+    }
+
     public function viewNotificationRecieved($id)
     {
         $student = DB::table('student')

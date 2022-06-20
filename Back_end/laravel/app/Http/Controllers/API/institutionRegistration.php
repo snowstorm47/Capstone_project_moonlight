@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\institution;
 use App\Models\college;
+use App\Models\instructor;
 use App\Models\department;
+use App\Models\notification;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -246,4 +248,30 @@ class institutionRegistration extends Controller
         $college->collegeName = $request->collegeName;
         $college->save();
     }
+
+    public function verifyInstructor(Request $request, $id)
+    {
+        $instructor= instructor::where('user_id',$id)->first();
+        $institution= institution::findOrFail($instructor->institution_id);
+        if($institution->id==$instructor->institution_id)
+        {
+            
+            $instructor->verificationStatus=1;
+            $verify=$instructor->save();
+            $notification = notification::findOrFail($request->notificationId);
+            $notification->delete();
+            if($notification)
+            {
+                return response()->json([
+                    'status'=> 200,
+                ]);
+            }
+        }
+        else{
+            return response()->json([
+                'status'=> 404,
+            ]);
+        }
+    }
+    
 }
