@@ -97,8 +97,8 @@ return [
         ],
     ],
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'yohanesdejene74@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Capstone'),
+        'address' => env('MAIL_FROM_ADDRESS', 'johnydeju19@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'moonlight'),
     ],
 
     /*

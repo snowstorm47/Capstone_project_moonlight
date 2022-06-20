@@ -127,7 +127,7 @@ function App() {
 	useEffect(() => {
 		axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
 		  setFirst(response.data.first);
-		  console.log(response.data.first);
+		  console.log(response.data.first,'first...');
 		});
 	  }, []);
 	// console.log(localStorage.getItem("auth_profile"));
@@ -345,7 +345,7 @@ function App() {
 					<Route path="InstitutionProfile" element={<InstitutionProfile />} />
 					<Route path="HiringProfile" element={<HiringProfile />} />
 					<Route path="signin/forgotpassword" element={<ForgotPassword />} />
-					<Route path="resetPassword" element={<ResetPassword />} />
+					<Route path="resetPassword/:id" element={<ResetPassword />} />
 
 
 				</Routes>

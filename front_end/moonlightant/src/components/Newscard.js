@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { List, Avatar, Space, Skeleton } from "antd";
 import profileimage from "../assets/f.jpg";
-import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
+import { MessageOutlined, LikeOutlined, StarOutlined, UserOutlined } from "@ant-design/icons";
 import mainimage from "../assets/p.jpg";
 import "../styles/newsCard.css";
 import axios from "axios";
@@ -91,7 +91,11 @@ const Newscard = ({ state, loading }) => {
 									overflow: "hidden",
 
 								}}
-								avatar={<Avatar src={mainimage} />}
+								avatar={<Avatar size="large"	src={
+									"http://localhost:8000/uploads/ProfilePicture/" +
+									item?.profile
+								}
+								icon={<UserOutlined />} />}
 								title={
 									<a href={item.href} style={{  }}>
 										{item.institutionName}

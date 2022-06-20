@@ -1,34 +1,55 @@
-import { Form, Input, Button, Checkbox, Space, Divider } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Form, Input, Button, Checkbox, Space, Divider,message } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import "../styles/signIn.css";
 import { useLocation } from "react-router-dom";
-const ResetPassword = () => {
+const ResetPassword = (props) => {
 
   const location = useLocation();
 	const navigate = useNavigate();
 	const [message, setMessage] = useState(null);
 	const [failMessage, setFailMessage] = useState(null);
   const [first,setFirst]=useState();
+	let {id}=useParams();
+	const[loading,setLoading]=useState(false);
 	const [loginInput, setLogin] = useState({
-
+		email:"",
+		token:id,
 		password: "",
-        confirmPassword:"",
+        password_confirmation:"",
 		error_list: [],
 	});
-
 	const handleInput = (e) => {
+		console.log(id);
 		e.persist();
 		setLogin({ ...loginInput, [e.target.name]: e.target.value });
 	};
 
-	
+	const handleSubmit=()=>{
+		setLoading(true);
+		if(window.navigator.onLine)
+        axios.get("/sanctum/csrf-cookie").then((response) => {
+			axios.post('api/resetPassword',loginInput).then((res)=>{
+				console.log(res);
+				setLoading(false);
+				if(res.data.status==200){
+					message.success(res.data.message);
+					setMessage(res.data.message);
+				}
+				else{
+					message.error(res.data.message);
+
+				}
+
+			})
+		});
+		else{setFailMessage('no internet')}
+	}
 	return (
 		<div
 			style={{
 				width: "100%",
-
 				display: "flex",
 				height: 640,
 				justifyContent: "center",
@@ -61,6 +82,7 @@ const ResetPassword = () => {
 						width: 300,
 					}}
 					name="basic"
+					onFinish={handleSubmit}
 					initialValues={{
 						remember: true,
 					}}
@@ -72,6 +94,26 @@ const ResetPassword = () => {
 					<div style={{ color: "red" }}>{failMessage}</div>
 
 					{/* <Space className='space-align-center'> */}
+					<Form.Item
+						style={{ fontWeight: "bold" }}
+						label="Email"
+						placeholder="Enter your Email"
+						rules={[
+							{
+								required: true,
+								message: "Please input your Email!",
+							},
+						]}
+					>
+						<Input
+							name="email"
+							onChange={handleInput}
+							value={loginInput.email}
+						/>
+						<span style={{ color: "red", fontWeight: "normal" }}>
+							{loginInput.error_list.email}
+						</span>
+					</Form.Item>
 					<Form.Item
 						style={{ fontWeight: "bold" }}
 						label="Password"
@@ -92,11 +134,31 @@ const ResetPassword = () => {
 							{loginInput.error_list.password}
 						</span>
 					</Form.Item>
+					<Form.Item
+						style={{ fontWeight: "bold" }}
+						label="Confirm password"
+						placeholder="Confirm your password"
+						rules={[
+							{
+								required: true,
+								message: "Please input your password!",
+							},
+						]}
+					>
+						<Input.Password
+							name="password_confirmation"
+							onChange={handleInput}
+							value={loginInput.password_confirmation}
+						/>
+						<span style={{ color: "red", fontWeight: "normal" }}>
+							{loginInput.error_list.password}
+						</span>
+					</Form.Item>
 					{/* </Space> */}
 
 
 					<Form.Item style={{}}>
-						<Button type="primary" style={{ width: "100%" }} htmlType="submit">
+						<Button type="primary" loading={loading} style={{ width: "100%" }} htmlType="submit">
 							Login
 						</Button>
 					</Form.Item>
