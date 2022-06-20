@@ -265,7 +265,7 @@ function App() {
 					}
 				} */}
 				{(localStorage.getItem("auth_position"))===null?null:
-					(((localStorage.getItem("auth_position")==="Institution")&&(valid.first===1))||((localStorage.getItem("auth_position")==="Instructor") &&(valid.verify===1))||(localStorage.getItem("auth_position")==="Student")||(localStorage.getItem("auth_position")==="Hiring Company"))
+					(((localStorage.getItem("auth_position")==="Institution")&&(valid.first===1))||((localStorage.getItem("auth_position")==="Instructor") &&(valid.verify===1))||((localStorage.getItem("auth_position")==="Student")&&(valid.first===1))||((localStorage.getItem("auth_position")==="Hiring Company")&&(valid.first===1)))
 					?
 					<Menu.Item key="3">
 						<Link to="/Notification">

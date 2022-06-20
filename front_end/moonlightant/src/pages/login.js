@@ -10,9 +10,9 @@ const LogIn = () => {
   const [message, setMessage] = useState(null);
   const [failMessage, setFailMessage] = useState(null);
   // const [first, setFirst] = useState(1);
-  let first ;
+  let check ;
   const [valid,setValid] = useState({
-		first:1
+		first:null
 	});
   const [loginInput, setLogin] = useState({
     email: "",
@@ -48,12 +48,11 @@ const LogIn = () => {
             .then((response) => {
               // setFirst(response.data.first);
               // setFirst(0);
-              first = response.data.first;
-              setValid({
-                first:first
-              })
-              console.log(valid.first);
-			  if (valid.first === 0) {
+              check = response.data.first;
+              console.log(check)
+              // setValid({...valid,first:check});
+              // console.log(valid.first,'valid');
+			  if (check === 0) {
 				if (localStorage.getItem("auth_position") === "Student") {
 				  navigate("/createprofile");
 				} else if (
