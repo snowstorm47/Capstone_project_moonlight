@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\employmentHistory;
 use App\Models\socialMediaLink;
 use App\Models\certificate;
+use App\Models\institution;
+use App\Models\hiringCompany;
+use App\Models\instructor;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
@@ -82,6 +85,7 @@ class profileController extends Controller
 
         }
 }
+    
     public function getProfilePicture($id){
         $image = DB::table('student')->where('user_id', $id)->value('image');
         return response()->json([
@@ -287,8 +291,21 @@ public function editSocialMediaLink(Request $request, $id)
     }
 
     public function addCertificate(Request $request){
+        $validator = Validator::make($request->all(),[
+            'certificate' => 'required',
+            'description'=>'required',
+        ]);
+if($validator->fails()) {
+            return response()->json(
+                [ 'validation_errors'=> $validator->messages(),]);
+        }
+        else{
+            $file= $request->file('certificate');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('uploads/Certificates'), $filename);
         $certificate = new certificate;
-        $certificate->certificate = $request->input('certificate');
+        $certificate->certificate = $filename;
+        $certificate->description = $request->input('description');
         $certificate->user_id = $request->input('user_id');
         $certificate->save();
         if($certificate)
@@ -297,6 +314,7 @@ public function editSocialMediaLink(Request $request, $id)
                 "status"=>200,
                 "result"=>"certificate added"]);
         }
+    }
     }
 
     public function addSocialMediaLink(Request $request){
@@ -311,15 +329,42 @@ public function editSocialMediaLink(Request $request, $id)
                 "result"=>"socialMediaLink added"]);
         }
     }
-   
+    
+    public function checkCreateProfile(Request $request)
+    {
+        $id= $request->id;
+        // return $id;
+        $student = student::where('user_id', $id)->first();
+        $instructor = instructor::where('user_id', $id)->first();
+        $institution = institution::where('user_id', $id)->first();
+        $hiring = hiringCompany::where('user_id', $id)->first();
+        // return $student;
+        if($student||$instructor||$institution||$hiring)
+        {
+            return response()->json([
+                "status"=>200,
+                "first"=>1]);
+        }
+        else{
+            return response()->json([
+                "status"=>200,
+                "first"=>0]);
+        }
+    }
     public function profile($id){
         
         $user = User::findOrFail($id);
         // $student = student::where('user_id', $id)->get();
         $employmentHistory = employmentHistory::where('user_id', $id)->get();
+        $certificate = certificate::where('user_id', $id)->get();
         $email = DB::table('users')->where('id', $id)->value('email');
-
-   
+        
+        $institution_id = DB::table('student')->where('user_id', $id)->value('institution_id');
+        $institutionName= DB::table('institution')->where('id', $institution_id)->value('institutionName');
+        $college_id = DB::table('student')->where('user_id', $id)->value('college_id');
+        $collegeName = DB::table('college')->where('id', $college_id)->value('collegeName');
+        $department_id = DB::table('student')->where('user_id', $id)->value('department_id');
+        $departmentName = DB::table('department')->where('id', $department_id)->value('departmentName');
         $phoneNumber = DB::table('student')->where('user_id', $id)->value('phoneNumber');
         $startDateClass= DB::table('student')->where('user_id', $id)->value('startDateClass');
         $endDateClass= DB::table('student')->where('user_id', $id)->value('endDateClass');
@@ -358,8 +403,14 @@ public function editSocialMediaLink(Request $request, $id)
                     'recommendationDetail'=>$recommendationDetail,
                     'skill'=>$skill,
                     'employmentHistory'=>$employmentHistory,
-                    'email'=>$email
-
+                    'certificate'=>$certificate,
+                    'email'=>$email,
+                    'institution_id'=>$institution_id,
+                    'college_id'=>$college_id,
+                    'department_id'=>$department_id,
+                    'institutionName'=>$institutionName,
+                    'collegeName'=>$collegeName,
+                    'departmentName'=>$departmentName
                 ]);
             }
             else

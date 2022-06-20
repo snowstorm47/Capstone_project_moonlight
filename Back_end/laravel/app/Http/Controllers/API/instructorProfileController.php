@@ -71,6 +71,8 @@ public function profile($id){
     $user = User::findOrFail($id);
     $employmentHistory = employmentHistory::where('user_id', $id)->get();
 
+    $institution_id = DB::table('instructor')->where('user_id', $id)->value('institution_id');
+    $institutionName = DB::table('institution')->where('id', $institution_id)->value('institutionName');
     $phoneNumber = DB::table('instructor')->where('user_id', $id)->value('phoneNumber');
     $sex = DB::table('instructor')->where('user_id', $id)->value('sex');
     $major = DB::table('instructor')->where('user_id', $id)->value('major');
@@ -98,7 +100,9 @@ public function profile($id){
                 'image'=>$image,
                 // 'recommendationDetail'=>$recommendationDetail,
                 'skill'=>$skill,
-                'employmentHistory'=>$employmentHistory
+                'employmentHistory'=>$employmentHistory,
+                'institution_id'=>$institution_id,
+                'institutionName'=>$institutionName
             ]);
         }
         else
