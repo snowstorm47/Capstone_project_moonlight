@@ -31,7 +31,16 @@ const ProfileDetail = () => {
 
 	const [skills, setSkill] = useState([]);
 	const [history, setHistory] = useState([]);
-
+	let showProfile = "";
+	if (localStorage.getItem("auth_position") === "Student") {
+		showProfile = "/StudentProfile";
+	} else if (localStorage.getItem("auth_position") === "Institution") {
+		showProfile = "/InstitutionProfile";
+	} else if (localStorage.getItem("auth_position") === "Instructor") {
+		showProfile = "/InstructorProfile";
+	} else if (localStorage.getItem("auth_position") === "Hiring Company") {
+		showProfile = "/HiringProfile";
+	}
 	const id = localStorage.getItem("auth_id");
 	useEffect(() => {
 		// axios.get('/sanctum/csrf-cookie').then(res => {
@@ -105,7 +114,7 @@ const ProfileDetail = () => {
 			<Card
 				type="inner"
 				title="Experience"
-				extra={<a href="profilePage">More</a>}
+				extra={<a href={showProfile}>More</a>}
 				style={{
 					marginTop: -10,
 					marginRight: -25,
@@ -125,7 +134,7 @@ const ProfileDetail = () => {
 			<Card
 				type="inner"
 				title="Skills"
-				extra={<a href="profilePage">More</a>}
+				extra={<a href={showProfile}>More</a>}
 				style={{
 					marginTop: -10,
 					marginRight: -25,
@@ -151,6 +160,7 @@ const ProfileDetail = () => {
 				))}
 			</Card>
 		</Card>
+		
 	);
 };
 export default ProfileDetail;

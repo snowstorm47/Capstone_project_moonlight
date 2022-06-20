@@ -16,6 +16,8 @@ import ProfileDetail from "../components/ProfieDetail";
 import NewsDrawer from "../components/createNewsDrawer";
 import Recomendation from "../components/recomendations";
 import axios from "axios";
+import CreateRecommendationDrawer from "../components/CreateRecommendationDrawer";
+import CreateStudentRecommendation from "../components/CreateStudentRecommendation";
 const { Search } = Input;
 const Newsfeed = () => {
 	const suffix = (
@@ -79,6 +81,13 @@ const Newsfeed = () => {
 			{}
 			<div className="rightContainer">
 				<ProfileDetail />
+				{localStorage.getItem("auth_position") === "Instructor"? (
+					<CreateRecommendationDrawer/>
+				) : null}
+				{localStorage.getItem("auth_position") === "Student" ? (
+					<CreateStudentRecommendation/>
+				) : null}
+				
 			</div>
 			<div className="centerContainer">
 				<Search
@@ -110,7 +119,10 @@ const Newsfeed = () => {
 						}}
 					/>
 				</Card>
-				<Recomendation />
+				{localStorage.getItem("auth_position") === "Student" ? (
+					<Recomendation />
+				) : null}
+				
 				{localStorage.getItem("auth_position") === "Institution" ? (
 					<NewsDrawer />
 				) : null}

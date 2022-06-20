@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Layout } from "antd";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { Select } from "antd";
 import { DatePicker, Space, List, Modal } from "antd";
 import { Avatar, Image } from "antd";
 import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
-import { Divider } from "antd";
+import { Divider ,Card} from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AddSkill from "../components/AddSkill";
 import AddEmploymentHistory from "../components/AddEmploymentHistory";
 import EditEmploymentHistory from "../components/EditEmploymentHistory";
 import EditInstructorProfilePicture from "../components/EditInstructorProfilePicture";
+import AddCertificate from "../components/AddCertificate";
 // import '/App.css';
 
 const { Option } = Select;
 
 function ProfilePageInstructor() {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleCertificate, setIsModalVisibleCertificate] = useState(false);
+  const [idsCertificate, setIdsCertificate] = useState({ id: "" });
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -26,6 +29,19 @@ function ProfilePageInstructor() {
   // const handleOk = () => {
   //   setIsModalVisible(false);
   // };
+  const showModalCertificate = (id) => {
+    setIsModalVisibleCertificate(true);
+    setIdsCertificate({ id: id });
+  };
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+
+    if (Array.isArray(e)) {
+      return e;
+    }
+
+    return e && e.fileList;
+  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -89,6 +105,24 @@ function ProfilePageInstructor() {
       }
     });
   }, []);
+
+  const deleteCertificate = (id) => {
+    axios.delete(`/api/deleteCertificate/${id}`).then((res) => {
+      if (res.data.status === 200) {
+        message.success("Certificate deleted");
+		axios.get(`/api/profile/${id}`).then((res) => {
+			if (res.data.status === 200) {
+			  setEditProfile(res.data);
+			  setSkillList(res.data.skill);
+			} else {
+			  console.log("couldnt retrieve data");
+			}
+		  });
+      } else {
+        message.error("Certificate not deleted");
+      }
+    });
+  };
 
   const navigate = useNavigate();
 
@@ -159,12 +193,27 @@ function ProfilePageInstructor() {
       });
     }, []);
   };
+  const handleOkCertificate = (id) => {
+    setIsModalVisibleCertificate(false);
+    deleteCertificate(id);
+  };
+
+  const handleCancelCertificate = () => {
+    setIsModalVisibleCertificate(false);
+  };
 
   <Avatar icon={<UserOutlined />} />;
   return (
     <Row className="row1" style={{ margin: "3em", marginLeft: "0em" }}>
       <span>{success}</span>
-
+      <Modal
+        title="Delete Notification"
+        visible={isModalVisibleCertificate}
+        onOk={() => handleOkCertificate(idsCertificate.id)}
+        onCancel={handleCancelCertificate}
+      >
+        Do You Want to Delete The Certificate
+      </Modal>
       <Col
         className="row"
         span={5}
@@ -374,6 +423,59 @@ function ProfilePageInstructor() {
             />
           ) : null}
         </Col>
+        <Col>
+            <Divider>Certificates</Divider>
+            {visible ? (
+              <List
+                itemLayout="horizontal"
+                dataSource={editProfile.certificate}
+                renderItem={(item) => (
+                  <List.Item
+                    style={{
+                      marginBottom: "1em",
+                      float:"left",
+                      marginLeft:"2rem"
+                    }}
+                  >
+                    <Card
+                      cover={
+                        <>
+                          <Image
+                            width={250}
+                            height={90}
+                            src={
+                              "http://localhost:8000/uploads/Certificates/" +
+                              item.certificate
+                            }
+                            name="image"
+                            style={{
+                              borderRadius: "0px",
+                              alignContent: "left",
+                              marginLeft: "0rem",
+                              marginTop: "1rem",
+                              marginBottom: "-1rem",
+                            }}
+                          />
+                          <br/>
+                          <span style={{ marginTop: "2rem",marginLeft:"1rem", marginBottom:"-2rem"}}>
+                            {item.description}
+                          </span>
+                        </>
+                      }
+                      actions={[
+                        <Button
+                          type="text"
+                          onClick={() => showModalCertificate(item.id)}
+                          key="list-loadmore-more"
+                          icon={<CloseOutlined />}
+                        />,
+                      ]}
+                    ></Card>
+                  </List.Item>
+                )}
+              />
+            ) : null}
+          </Col>
       </Col>
 
       <Col
@@ -389,6 +491,10 @@ function ProfilePageInstructor() {
           <Divider>Add Employment History</Divider>
           <AddEmploymentHistory />
         </Col>
+        <Col>
+            <Divider>Certificates</Divider>
+            <AddCertificate />
+          </Col>
       </Col>
     </Row>
   );
