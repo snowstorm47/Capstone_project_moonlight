@@ -20,13 +20,32 @@ import CreateRecommendationDrawer from "../components/CreateRecommendationDrawer
 import CreateStudentRecommendation from "../components/CreateStudentRecommendation";
 const { Search } = Input;
 const Newsfeed = () => {
-	const [first,setFirst] = useState();
+	let first;
+	let verify;
+	const [valid,setValid] = useState({
+		first:1,
+		verify:1
+	});
 	useEffect(() => {
 		axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
-		  setFirst(response.data.first);
+		  first = response.data.first;
+		  setValid({
+			first:first
+		  })
 		  console.log(response.data.first);
 		});
 	  }, []);
+	  const id = localStorage.getItem('auth_id');
+	  if(localStorage.getItem('auth_position')==="Instructor")
+	  {
+		  axios.get(`api/checkVerifyInstructor/${id}`).then((response) => {
+			verify = response.data.verified;
+			setValid({
+				verify:verify
+			})
+			console.log(response.data.verified);
+		  });
+	  }
 	const suffix = (
 		<AudioOutlined
 			style={{
@@ -37,6 +56,7 @@ const Newsfeed = () => {
 	);
 	const [state, setState] = useState();
 	const [search, setSearch] = useState();
+	
 	const showMyNews = () => {
 		setLoading(true);
 		return axios
@@ -88,7 +108,7 @@ const Newsfeed = () => {
 			{}
 			<div className="rightContainer">
 				<ProfileDetail />
-				{localStorage.getItem("auth_position") === "Instructor"? (
+				{localStorage.getItem("auth_position") === "Instructor"&&(valid.verify===1)? (
 					<CreateRecommendationDrawer/>
 				) : null}
 				{localStorage.getItem("auth_position") === "Student" ? (
@@ -130,9 +150,9 @@ const Newsfeed = () => {
 					<Recomendation />
 				) : null}
 				
-				{(localStorage.getItem("auth_position") === "Institution" ?(first=== 1)?(
-					<NewsDrawer />
-				) :null : null)}
+				{(localStorage.getItem("auth_position") === "Institution" &&(valid.first=== 1)?
+					<NewsDrawer />:
+				null)}
 			</div>
 		</div>
 	);

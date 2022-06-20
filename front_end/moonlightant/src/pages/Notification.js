@@ -15,6 +15,7 @@ import NotificationSeen from "./NotificationSeen";
 import NotificationRecieved from "./NotificationRecieved";
 import NotificationInstructor from "./NotificationInstructor";
 import NotificationHiring from "./NotificationHiring";
+import NotificationInstructorVerify from "./NotificationInstructorVerify";
 const { Header, Footer, Sider, Content } = Layout;
 
 // Introduce submenu components
@@ -39,6 +40,8 @@ const Notification = () => {
 				return <NotificationSeen />;
 			case "instructor":
 				return <NotificationInstructor />;
+			case "verifyInstructor":
+				return <NotificationInstructorVerify/>;
 			default:
 				break;
 		}
@@ -139,16 +142,19 @@ const Notification = () => {
 						 offset={[20, 20]}
 					 ></Badge>
 				 </Menu.Item>}
-					{/* <Menu.Item key="company">
-						<BankOutlined />
-						<span>Hiring Company</span>
+				 {(localStorage.getItem("auth_position")==="Institution" )
+					?
+					<Menu.Item key="verifyInstructor">
+						<UserOutlined />
+						<span>Verify Instructor</span>
 						<Badge
 							count={0}
 							overflowCount={10}
 							status="warning"
 							offset={[20, 20]}
 						></Badge>
-					</Menu.Item> */}
+					</Menu.Item>
+					:null}
 					<Menu.Item
 						key="seen"
 						style={{

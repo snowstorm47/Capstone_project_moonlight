@@ -84,6 +84,7 @@ const SignUp = () => {
 								});
 							});
 						}
+						
 						console.log(res.data.message);
 						console.log(first);
 						// swal("Success", res.data.message, "success");
