@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\File;
 use App\Models\employmentHistory;
+use App\Models\notification;
+use App\Models\institution;
 use Illuminate\Support\Facades\DB;
 use App\Models\instructor;
 
@@ -154,6 +156,36 @@ public function getProfilePicture($id){
                 
             }
         }
+public function checkInstructorVerification(Request $request,$id)
+{
+    $instructor = instructor::where("user_id",$id)->first();
+    if($instructor->verificationStatus===1)
+    {
+        return response()->json([
+            'status'=> 200,
+            'verified'=>1
+        ]);
+    }
+    else{
+    return response()->json([
+        'status'=> 200,
+        'verified'=>0
+    ]);
+}
+}
+
+public function deleteInstructorVerification(Request $request)
+{
+    $notification = notification::findOrFail($request->id);
+    $notification->delete();
+    $instructor=instructor::where('user_id',$request->sender_id)->first();
+    $instructor->delete();
+    $user = User::findOrFail($request->sender_id);
+    $user->delete();
+    return response()->json([
+        'status'=> 200,
+    ]);
+}
     
 public function addInstructorProfile(Request $request,$id)
 {
@@ -191,6 +223,20 @@ public function addInstructorProfile(Request $request,$id)
         $instructor->image=$filename;
         $instructor->user_id=$id;
         $instructor->save();
+        $institution = institution::findOrFail($request->institution_id);
+        if($institution)
+        {
+            $notification = new notification;
+        $notification->notificationTitle = "Instructor has Registered";
+        $notification->notificationDetail = "Please Verify Instructor ".$user->name;
+        $notification->sender_id = $id;
+        $notification->reciever_id = $institution->user_id;
+        $notification->seen_status = "False";
+        $notification->save();
+        return response()->json([
+            'status'=>200,
+            'message'=> "Post Successful"
+        ]);}
         return response()->json([
             "status" => 200,
             'message'=>'profile created']);
