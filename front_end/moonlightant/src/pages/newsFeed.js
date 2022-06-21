@@ -31,11 +31,13 @@ const Newsfeed = () => {
 		  first = response.data.first;
 		  setValid({
 			first:first
-		  })
+		  });
 		  console.log(response.data.first);
 		});
 	  }, []);
 	  const id = localStorage.getItem('auth_id');
+	useEffect(() => {
+
 	  if(localStorage.getItem('auth_position')==="Instructor")
 	  {
 		  axios.get(`api/checkVerifyInstructor/${id}`).then((response) => {
@@ -43,9 +45,10 @@ const Newsfeed = () => {
 			setValid({
 				verify:verify
 			})
-			console.log(response.data.verified);
 		  });
 	  }
+	}, []);
+
 	const suffix = (
 		<AudioOutlined
 			style={{

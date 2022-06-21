@@ -19,6 +19,8 @@ function AboutUs() {
     TitleThree: "",
     TitleThreeDetail: "",
     image:"",
+    imageTitle:"",
+    imageDetail:"",
     TitleOneImage:"",
     TitleTwoImage:"",
     TitleThreeImage:""
@@ -64,20 +66,15 @@ function AboutUs() {
             >
               <Title 
               style={{ 
-                color: "white",
+                color: "#000000",
                 opacity:1,
                   }} 
               level={1}>
                 <br/>
-                Connecting Everyone
+                {editAboutus.imageTitle}
               </Title>
-              <Title level={5} style={{ color: "white",opacity:1, textAlign: "left" , marginLeft:"30px" }}>
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                proident, sunt in culpa qui officia deserunt mollit anim id est
-                laborum.
+              <Title level={5} style={{ color: "#000000",opacity:1, textAlign: "left" , marginLeft:"30px" }}>
+                {editAboutus.imageDetail}
               </Title>
             {/* </Col> */}
           </Col>

@@ -42,6 +42,7 @@ import { useLocation } from "react-router-dom";
 
 const AdvancedSearch = (props) => {
 	const notif = useLocation();
+	const navigate = useNavigate();
 	const [count, setCount] = useState(0);
 	const sendNotification = () => {
 		setSendLoading(true);
@@ -236,7 +237,18 @@ const AdvancedSearch = (props) => {
 		reciever_id: "",
 		seen_status: "False",
 	});
-
+	const profile=(position,id)=>{
+		console.log(id);
+		if (position=== "Student") {
+			navigate("/StudentProfile",{state:{id}});
+		} else if (position === "Institution") {
+			navigate("/InstitutionProfile",{state:{id}})
+		} else if (position === "Instructor") {
+			navigate("/InstructorProfile",{state:{id}})
+		} else if (position === "Hiring Company") {
+			navigate("/HiringProfile",{state:{id}})
+		}
+	}
 	const handleSubmit = async () => {
 		setLoad(true);
 		selected?.length >= 1
@@ -508,6 +520,7 @@ const AdvancedSearch = (props) => {
 										description={state.user?.email}
 									/>
 									<button
+										onClick={()=>profile(state.user?.position,state.user?.id)}
 										type=""
 										style={{
 											marginLeft: "auto",
