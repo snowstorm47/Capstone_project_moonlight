@@ -21,14 +21,23 @@ const ForgotPassword = () => {
 		setLogin({ ...loginInput, [e.target.name]: e.target.value });
 	};
     const forgotSubmit=()=>{
-        axios.get("/sanctum/csrf-cookie").then((response) => {
+	
+        axios.get("/sanctum/csrf-cookie").then((response) => {	
             axios.post("api/forgotPassword",loginInput).then((res)=>{
-                if(res.status==200){
+				console.log(res);
+                if(res.data.status==200){
+					setMessage(res.data.message);
                     message.info('check your email');
+		
+					setLogin({...loginInput,email: ""})
                 }
-                else{message.info('failed to send an email')}
+                else{
+					setFailMessage(res.data.message)
+					message.info('failed to send an email')}
             })
         })
+	
+
     }
 	
 				

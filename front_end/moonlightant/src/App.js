@@ -378,7 +378,7 @@ function App() {
 					<Route path="InstitutionProfile" element={<InstitutionProfile />} />
 					<Route path="HiringProfile" element={<HiringProfile />} />
 					<Route path="signin/forgotpassword" element={<ForgotPassword />} />
-					<Route path="resetPassword" element={<ResetPassword />} />
+					<Route path="resetPassword/:id" element={<ResetPassword />} />
 
 
 				</Routes>

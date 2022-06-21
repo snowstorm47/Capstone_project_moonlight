@@ -13,6 +13,8 @@ import {
 } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
 import ProfileDetail from "../components/ProfieDetail";
+import ProfileDetailInstitution from "../components/profileDetailInstitution";
+
 import NewsDrawer from "../components/createNewsDrawer";
 import Recomendation from "../components/recomendations";
 import axios from "axios";
@@ -73,6 +75,7 @@ const Newsfeed = () => {
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		axios.get("api/newsfeed").then((response) => {
+			console.log(response,"thisis the data/.........");
 			setState(response.data.newsdata);
 			setLoading(false);
 		});
@@ -110,8 +113,9 @@ const Newsfeed = () => {
 		<div className="newsContainer">
 			{}
 			<div className="rightContainer">
-				<ProfileDetail />
-				{localStorage.getItem("auth_position") === "Instructor"&&(valid.verify===1)? (
+				  
+				{window.innerWidth>=500?localStorage.getItem("auth_position") === "Institution"?<ProfileDetailInstitution/>:<ProfileDetail />:null}
+				{localStorage.getItem("auth_position") === "Instructor"? (
 					<CreateRecommendationDrawer/>
 				) : null}
 				{localStorage.getItem("auth_position") === "Student" ? (

@@ -1,5 +1,5 @@
 import { Form, Input, Button, Checkbox, Space, Divider } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/signIn.css";
@@ -186,6 +186,7 @@ const LogIn = () => {
               Login
             </Button>
           </Form.Item>
+          <Link to="forgotPassword">Forgot password?</Link>
         </Form>
       </div>
       <svg
