@@ -227,7 +227,6 @@ class profileController extends Controller
                 }
             }
         }
-<<<<<<< HEAD
 }
     public function addSkill(Request $request){
         $validator = Validator::make($request->all(),[
@@ -242,11 +241,6 @@ class profileController extends Controller
         }
         else
         {
-=======
-    }
-    public function addSkill(Request $request)
-    {
->>>>>>> c162afd1e0b25f538a3b01c4927ed942b335cb71
         $skill = new skill;
         $skill->skill = $request->input('skill');
         $skill->user_id = $request->input('user_id');
@@ -259,7 +253,6 @@ class profileController extends Controller
     }
     }
 
-<<<<<<< HEAD
     public function addEmploymentHistory(Request $request){
         $validator = Validator::make($request->all(),[
             'companyName'=>'required',
@@ -276,10 +269,6 @@ class profileController extends Controller
         }
         else
         {
-=======
-    public function addEmploymentHistory(Request $request)
-    {
->>>>>>> c162afd1e0b25f538a3b01c4927ed942b335cb71
         $employmentHistory = new employmentHistory;
         $employmentHistory->user_id = $request->input('user_id');
         $employmentHistory->companyName = $request->input('companyName');
@@ -323,7 +312,6 @@ class profileController extends Controller
         }
     }
 
-<<<<<<< HEAD
     public function addSocialMediaLink(Request $request){
         $validator = Validator::make($request->all(),[
             'link'=>'required',
@@ -337,10 +325,6 @@ class profileController extends Controller
         }
         else
         {
-=======
-    public function addSocialMediaLink(Request $request)
-    {
->>>>>>> c162afd1e0b25f538a3b01c4927ed942b335cb71
         $socialMediaLink = new socialMediaLink;
         $socialMediaLink ->link  = $request->input('link');
         $socialMediaLink ->user_id = $request->input('user_id');
