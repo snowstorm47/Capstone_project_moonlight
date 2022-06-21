@@ -57,7 +57,7 @@ class profileController extends Controller
                 $student ->sex = $request->input('sex');
                 $student ->institution_id = $request->input('institution_id');
                 $student ->college_id = $request->input('college_id');
-                $student ->major = $request->input('major');
+                $student ->experience = $request->input('experience');
                 $student ->GPA = $request->input('GPA');
                 $student ->department_id = $request->input('department_id');
                 $student ->StartDateClass = $request->input('startDateClass');
@@ -122,7 +122,7 @@ class profileController extends Controller
             
             'phoneNumber'=>'required|max:13|min:10',
             'sex'=>'required',
-            'major'=>'required',
+            'experience'=>'required',
             'GPA'=>'required|numeric|between:1.50,4.00',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
@@ -145,7 +145,7 @@ class profileController extends Controller
                 $filename= date('YmdHi').$file->getClientOriginalName();
                 $file-> move(public_path('uploads/ProfilePicture'), $filename);
                 $student->phoneNumber = $request->phoneNumber;
-                $student->major = $request->major;
+                $student->experience = $request->experience;
                 $student->startDateClass = $request->startDateClass;
                 $student->endDateClass = $request->endDateClass;
                 $student->GPA = $request->GPA;
@@ -383,7 +383,7 @@ class profileController extends Controller
         $startDateClass= DB::table('student')->where('user_id', $id)->value('startDateClass');
         $endDateClass= DB::table('student')->where('user_id', $id)->value('endDateClass');
         $sex = DB::table('student')->where('user_id', $id)->value('sex');
-        $major = DB::table('student')->where('user_id', $id)->value('major');
+        $experience = DB::table('student')->where('user_id', $id)->value('experience');
         $GPA = DB::table('student')->where('user_id', $id)->value('GPA');
         $image = DB::table('student')->where('user_id', $id)->value('image');
         //should I add instructor_id foreign key in users table
@@ -410,7 +410,7 @@ class profileController extends Controller
                     'startDateClass'=>$startDateClass,
                     'endDateClass'=>$endDateClass,
                     'sex'=>$sex,
-                    'major'=>$major,
+                    'experience'=>$experience,
                     'GPA'=>$GPA,
                     'image'=>$image,
                     'recommendationDetail'=>$recommendationDetail,
