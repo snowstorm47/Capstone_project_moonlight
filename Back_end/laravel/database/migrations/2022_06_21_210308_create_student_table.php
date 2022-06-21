@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('department_id')->constrained('department');
             $table->string('phoneNumber');
             $table->string("sex");
-            $table->string("major");
+            $table->string("experience");
             $table->date("startDateClass");
             $table->date("endDateClass");
             $table->string("GPA");

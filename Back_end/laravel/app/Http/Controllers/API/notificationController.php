@@ -53,6 +53,16 @@ class notificationController extends Controller
             'result'=>'notification deleted']);
     }
 
+    public function filterUser(Request $request)
+    {
+        $user = User::where('position','!=','Admin')->get();
+
+    return Response()->json([
+        "user"=>$user,
+        "status"=>200,
+    ]);
+    }
+
     public function seenNotification(Request $request, $id)
     {
         $notification = notification::findOrFail($id);

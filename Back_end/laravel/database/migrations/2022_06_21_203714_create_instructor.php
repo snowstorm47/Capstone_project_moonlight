@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('institution_id')->constrained('institution');
+            $table->foreignId('department_id')->constrained('department');
+            $table->foreignId('college_id')->constrained('college');
             $table->string('phoneNumber');
             $table->string("sex");
-            $table->string("major");
+            $table->string("experience");
             $table->string("GPA");
             $table->string('image')->nullable();
             $table->boolean('verificationStatus');

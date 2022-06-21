@@ -30,6 +30,8 @@ class aboutusSeeder extends Seeder
             'TitleTwoDetail' => 'Employers accross the country will have access to your profile through our advanced filtering method for better compatability.',
             'TitleThree' => 'Get the latest news from Institutions',
             'TitleThreeDetail' => 'Get news from multiple institutions located in different cities accross the country with the option to filter it to your personal institution of choice.',
+            'imageDetail'=>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere leo eu tristique volutpat. Suspendisse potenti. Proin vulputate tortor et ipsum sagittis, sit amet commodo mi elementum. Donec aliquam augue vitae est malesuada tincidunt. Suspendisse non massa non eros vehicula lacinia. Donec semper ut mi vel sollicitudin. Nullam vestibulum accumsan pellentesque. Suspendisse non pharetra ipsum. Donec a nisl id nisl lacinia iaculis at eget metus.",
+            'imageTitle'=>"Connecting Everyone",
             'image' =>'202205311734lily.jpg',
             'TitleOneImage' =>'202205311734lily.jpg',
             'TitleTwoImage' =>'202205311734lily.jpg',

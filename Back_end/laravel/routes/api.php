@@ -74,6 +74,7 @@ Route::post('addInstructorProfile/{id}',[instructorProfileController::class,'add
 Route::post('addHiringCompanyProfile/{id}',[hiringCompanyController::class,'addHiringCompanyProfile']);
 Route::get('getSocialMediaLink/{id}',[profileController::class,'getSocialMediaLink']);
 Route::get('filterStudent/{id}',[recommendationController::class,'filterStudent']);
+Route::get('filterUser',[notificationController::class,'filterUser']);
 Route::get('getInstructorInstitutionId/{id}',[recommendationController::class,'instructorInstitutionId']);
 Route::get('getRecommendation/{id}',[recommendationController::class,'getRecommendation']);
 Route::get('getStudentInstitutionId/{id}',[recommendationController::class,'studentInstitutionId']);

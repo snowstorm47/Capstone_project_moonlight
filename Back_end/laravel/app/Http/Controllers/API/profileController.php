@@ -27,7 +27,7 @@ class profileController extends Controller
             
             'phoneNumber'=>'required|max:13|min:10',
             'sex'=>'required',
-            'major'=>'required',
+            'experience'=>'required',
             'name'=>'required|max:191',
             'GPA'=>'required',
             'startDateClass'=>'required',
@@ -136,7 +136,7 @@ class profileController extends Controller
             'phoneNumber'=>'required|max:13|min:10',
             'sex'=>'required',
             'major'=>'required',
-            'GPA'=>'required',
+            'GPA'=>'required|numeric|between:1.50,4.00',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
             'institution_id' => 'required',
@@ -260,6 +260,18 @@ public function editSocialMediaLink(Request $request, $id)
         }
 }
     public function addSkill(Request $request){
+        $validator = Validator::make($request->all(),[
+            'skill'=>'required',
+        ]);
+        
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
         $skill = new skill;
         $skill->skill = $request->input('skill');
         $skill->user_id = $request->input('user_id');
@@ -271,8 +283,24 @@ public function editSocialMediaLink(Request $request, $id)
                 "result"=>"skill added"]);
         }
     }
+    }
 
     public function addEmploymentHistory(Request $request){
+        $validator = Validator::make($request->all(),[
+            'companyName'=>'required',
+            'position'=>'required',
+            'startDate'=>'required',
+            'endDate'=>'required|after:startDate',
+        ]);
+        
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
         $employmentHistory = new employmentHistory;
         $employmentHistory->user_id = $request->input('user_id');
         $employmentHistory->companyName = $request->input('companyName');
@@ -287,7 +315,7 @@ public function editSocialMediaLink(Request $request, $id)
                 "status"=>200,
                 "result"=>"Employment History added"
             ]);
-        }
+        }}
     }
 
     public function addCertificate(Request $request){
@@ -318,6 +346,18 @@ if($validator->fails()) {
     }
 
     public function addSocialMediaLink(Request $request){
+        $validator = Validator::make($request->all(),[
+            'link'=>'required',
+        ]);
+        
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
         $socialMediaLink = new socialMediaLink;
         $socialMediaLink ->link  = $request->input('link');
         $socialMediaLink ->user_id = $request->input('user_id');
@@ -327,7 +367,7 @@ if($validator->fails()) {
             return response()->json([
                 "status"=>200,
                 "result"=>"socialMediaLink added"]);
-        }
+        }}
     }
     
     public function checkCreateProfile(Request $request)

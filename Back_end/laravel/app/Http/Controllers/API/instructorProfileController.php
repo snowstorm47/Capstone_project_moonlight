@@ -22,7 +22,7 @@ class instructorProfileController extends Controller
             
             'phoneNumber'=>'required|max:13|min:10',
             'sex'=>'required',
-            'major'=>'required',
+            'experience'=>'required',
             'name'=>'required|max:191',
             'GPA'=>'required',
             // 'image' => 'required',
@@ -47,7 +47,9 @@ class instructorProfileController extends Controller
                 $instructor ->phoneNumber = $request->input('phoneNumber');
                 $instructor ->sex = $request->input('sex');
                 $instructor ->institution_id = $request->input('institution_id');
-                $instructor ->major = $request->input('major');
+                $instructor ->college_id = $request->input('college_id');
+                $instructor ->department_id = $request->input('department_id');
+                $instructor ->experience = $request->input('experience');
                 $instructor ->GPA = $request->input('GPA');
                 $instructor->verificationStatus = $request->input('verificationStatus');
                 $resultInstructor = $instructor->save();
@@ -75,9 +77,13 @@ public function profile($id){
 
     $institution_id = DB::table('instructor')->where('user_id', $id)->value('institution_id');
     $institutionName = DB::table('institution')->where('id', $institution_id)->value('institutionName');
+    $department_id = DB::table('instructor')->where('user_id', $id)->value('department_id');
+    $departmentName = DB::table('department')->where('id', $department_id)->value('departmentName');
+    $college_id = DB::table('instructor')->where('user_id', $id)->value('college_id');
+    $collegeName = DB::table('college')->where('id', $college_id)->value('collegeName');
     $phoneNumber = DB::table('instructor')->where('user_id', $id)->value('phoneNumber');
     $sex = DB::table('instructor')->where('user_id', $id)->value('sex');
-    $major = DB::table('instructor')->where('user_id', $id)->value('major');
+    $experience = DB::table('instructor')->where('user_id', $id)->value('experience');
     $GPA = DB::table('instructor')->where('user_id', $id)->value('GPA');
     $image = DB::table('instructor')->where('user_id', $id)->value('image');
     // $recommendationDetail = DB::table('recomendation')->where('instructor_id', $id)->value('recomendationDetail');
@@ -97,7 +103,7 @@ public function profile($id){
                 'name' => $user->name,
                 'phoneNumber'=>$phoneNumber,
                 'sex'=>$sex,
-                'major'=>$major,
+                'experience'=>$experience,
                 'GPA'=>$GPA,
                 'image'=>$image,
                 // 'recommendationDetail'=>$recommendationDetail,
@@ -193,7 +199,7 @@ public function addInstructorProfile(Request $request,$id)
         
         'phoneNumber'=>'required|max:13|min:10',
         'sex'=>'required',
-        'major'=>'required',
+        'experience'=>'required',
         'GPA'=>'required',
         'institution_id' => 'required',
         'image'=>'required'
@@ -215,10 +221,12 @@ public function addInstructorProfile(Request $request,$id)
         $filename= date('YmdHi').$file->getClientOriginalName();
         $file-> move(public_path('uploads/ProfilePicture'), $filename);
         $instructor->phoneNumber = $request->phoneNumber;
-        $instructor->major = $request->major;
+        $instructor->experience = $request->experience;
         $instructor->GPA = $request->GPA;
         $instructor->sex = $request->sex;
         $instructor ->institution_id = $request->institution_id;
+        $instructor ->college_id = $request->college_id;
+        $instructor ->department_id = $request->department_id;
         $instructor->verificationStatus = $request->input('verificationStatus');
         $instructor->image=$filename;
         $instructor->user_id=$id;
