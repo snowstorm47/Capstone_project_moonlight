@@ -110,19 +110,20 @@ const NotificationRecieved = () => {
                           alt="logo"
                           src={
                             "http://localhost:8000/uploads/NotificationPicture/" +
-                            item.notificationImage
+                            item.image
                           }
                         />
                       }
                       title={
-                        <a
+                        <p
                           href="#"
                           style={{
                             marginLeft: "0em",
                           }}
                         >
+                          <a >{item.name}{" "}</a><span>{item.created_at}</span><br/><br/>
                           {item.notificationTitle}
-                        </a>
+                        </p>
                       }
                       description={item.notificationDetail}
                       style={{

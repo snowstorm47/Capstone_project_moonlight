@@ -247,77 +247,86 @@ const AdvancedSearch = (props) => {
   const [visible, setVisible] = useState(false);
   const [load, setLoad] = useState(false);
 
-  const [notification, setNotification] = useState({
-    notificationTitle: "",
-    notificationDetail: "",
-    sender_id: localStorage.getItem("auth_id"),
-    reciever_id: "",
-    seen_status: "False",
-  });
-
-  const handleSubmit = async () => {
-    setLoad(true);
-    selected?.length >= 1
-      ? selected?.forEach((item) => {
-          const fData = new FormData();
-          fData.append("notificationTitle", notification.notificationTitle);
-          fData.append("notificationDetail", notification.notificationDetail);
-          fData.append("sender_id", notification.sender_id);
-          fData.append("seen_status", notification.seen_status);
-          fData.append("reciever_id", item);
-          axios.post("api/postNotification", fData).then((response) => {
-            if (response.data.status === 200) {
-            } else {
-              message.error("Notification was not sent. Please try again");
-            }
-          });
-        })
-      : message.error("please select a user to send the notification to");
-    message.success("Notification sent succesfully");
-    setLoad(false);
-    setVisible(false);
-    setNotification({
-      notificationTitle: "",
-      notificationDetail: "",
-      sender_id: localStorage.getItem("auth_id"),
-      reciever_id: "",
-      seen_status: "False",
-    });
-  };
-  const handleInput = (e) => {
-    const date=new Date();
-    console.log();
-    setNotification({ ...notification, [e.target.name]: e.target.value });
-  };
-  return (
-    <Layout style={{ display: "flex", flexDirection: "row" }}>
-      <Modal
-        visible={visible}
-        title={"Send " + selected?.length + " users a notification"}
-        footer={false}
-        onCancel={() => setVisible(false)}
-      >
-        <Form
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          onFinish={() => handleSubmit()}
-          // autoComplete="off"
-          method="POST"
-        >
-          <Form.Item>
-            <Input
-              placeholder="Notification Title"
-              name="notificationTitle"
-              value={notification.notificationTitle}
-              onChange={handleInput}
-              required
-            />
-          </Form.Item>
+	const [notification, setNotification] = useState({
+		notificationTitle: "",
+		notificationDetail: "",
+		sender_id: localStorage.getItem("auth_id"),
+		reciever_id: "",
+		seen_status: "False",
+	});
+	const profile=(position,id)=>{
+		console.log(id);
+		if (position=== "Student") {
+			navigate("/StudentProfile",{state:{id}});
+		} else if (position === "Institution") {
+			navigate("/InstitutionProfile",{state:{id}})
+		} else if (position === "Instructor") {
+			navigate("/InstructorProfile",{state:{id}})
+		} else if (position === "Hiring Company") {
+			navigate("/HiringProfile",{state:{id}})
+		}
+	}
+	const handleSubmit = async () => {
+		setLoad(true);
+		selected?.length >= 1
+			? selected?.forEach((item) => {
+					const fData = new FormData();
+					fData.append("notificationTitle", notification.notificationTitle);
+					fData.append("notificationDetail", notification.notificationDetail);
+					fData.append("sender_id", notification.sender_id);
+					fData.append("seen_status", notification.seen_status);
+					fData.append("reciever_id", item);
+					axios.post("api/postNotification", fData).then((response) => {
+						if (response.data.status === 200) {
+						} else {
+							message.error("Notification was not sent. Please try again");
+						}
+					});
+			  })
+			: message.error("please select a user to send the notification to");
+		message.success("Notification sent succesfully");
+		setLoad(false);
+		setVisible(false);
+		setNotification({
+			notificationTitle: "",
+			notificationDetail: "",
+			sender_id: localStorage.getItem("auth_id"),
+			reciever_id: "",
+			seen_status: "False",
+		});
+	};
+	const handleInput = (e) => {
+		setNotification({ ...notification, [e.target.name]: e.target.value });
+	};
+	return (
+		<Layout style={{ display: "flex", flexDirection: "row" }}>
+			<Modal
+				visible={visible}
+				title={"Send " + selected?.length + " users a notification"}
+				footer={false}
+				onCancel={() => setVisible(false)}
+			>
+				<Form
+					name="basic"
+					labelCol={{
+						span: 8,
+					}}
+					wrapperCol={{
+						span: 16,
+					}}
+					onFinish={() => handleSubmit()}
+					// autoComplete="off"
+					method="POST"
+				>
+					<Form.Item>
+						<Input
+							placeholder="Notification Title"
+							name="notificationTitle"
+							value={notification.notificationTitle}
+							onChange={handleInput}
+							required
+						/>
+					</Form.Item>
 
           <Form.Item>
             <Input.TextArea
@@ -492,215 +501,216 @@ const AdvancedSearch = (props) => {
       >
         {/* personal card here with info */}
 
-        <div className="personInfoCard">
-          {state ? (
-            <>
-              <div
-                style={{
-                  animation: "fadeIn 500ms ease-out backwards",
-                  backgroundColor: "white",
-                  padding: "20px",
-                  borderBottomRightRadius: "20px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Meta
-                    style={{ textAlign: "left", width: "auto" }}
-                    avatar={
-                      <Avatar
-                        src={
-                          "http://localhost:8000/uploads/ProfilePicture/" +
-                          state?.user.image
-                        }
-                        icon={<UserOutlined />}
-                        alt="A"
-                        size={64}
-                      />
-                    }
-                    title={state ? state.user.name : "john doe"}
-                    description={state.user?.email}
-                  />
-                  <button
-                    type=""
-                    style={{
-                      marginLeft: "auto",
-                      color: "white",
-                      padding: "5px 10px",
-                      borderRadius: "5px",
-                      border: 0,
-                      margin: 2,
-                      backgroundColor: "#0080ff",
-                    }}
-                  >
-                    View Profile
-                  </button>
-                </div>
-                <div style={{ textAlign: "left", paddingTop: "10px" }}>
-                  {state.skill.map((item) => {
-                    return (
-                      <button
-                        style={{
-                          color: "white",
-                          borderRadius: 100,
-                          border: 0,
-                          margin: 2,
-                          backgroundColor: "#0080ff",
-                        }}
-                      >
-                        #{item.skill}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-              {view ? (
-                <div
-                  style={{
-                    flexDirection: "row",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    borderTopLeftRadius: "20px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "    45%",
-                      textAlign: "left",
-                      padding: "10px",
-                      fontFamily: "monospace",
-                    }}
-                  >
-                    {" "}
-                    <Divider
-                      orientation="left"
-                      style={{ width: "20px", color: "black" }}
-                    >
-                      Academics
-                    </Divider>
-                    <div style={{ padding: "10px 0px" }}>
-                      <span
-                        style={{
-                          fontSize: "15px",
-                          color: "black",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Institution
-                      </span>
-                      <br />
-                      <span style={{ color: "gray" }}>
-                        {
-                          institutions[state.student[0]?.institution_id - 1]
-                            ?.institutionName
-                        }
-                      </span>
-                    </div>
-                    <div style={{ padding: "10px 0px" }}>
-                      <span
-                        style={{
-                          fontSize: "15px",
-                          color: "black",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Department
-                      </span>
-                      <br />
-                      <span style={{ color: "gray" }}>
-                        {" "}
-                        College of Electrical and Mechanical engineering
-                      </span>
-                    </div>
-                    <div style={{ padding: "10px 0px" }}>
-                      <span
-                        style={{
-                          fontSize: "15px",
-                          color: "black",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Major
-                      </span>
-                      <br />
-                      <span style={{ color: "gray" }}>
-                        {" "}
-                        {state.student[0]?.major}
-                      </span>
-                    </div>
-                    <div style={{ padding: "10px 0px" }}>
-                      <span
-                        style={{
-                          fontSize: "15px",
-                          color: "black",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        GPA
-                      </span>
-                      <br />
-                      <span style={{ color: "gray" }}>
-                        {state.student[0]?.GPA}
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      width: "45%",
-                      textAlign: "left",
-                      padding: "10px",
-                      fontFamily: "sans-serif",
-                    }}
-                    bordered={false}
-                  >
-                    <Divider
-                      orientation="left"
-                      style={{ width: "20px", color: "black" }}
-                    >
-                      Experience
-                    </Divider>
-                    {state.history.map((history) => {
-                      return (
-                        <>
-                          <span
-                            style={{
-                              fontSize: "15px",
-                              fontWeight: "bold",
-                              color: "black",
-                            }}
-                          >
-                            {history.companyName}
-                          </span>
-                          <br />
-                          <span style={{ color: "gray" }}>
-                            {history.position}
-                          </span>
-                          <br />
-                        </>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : null}
-              <Divider>
-                <Button
-                  onClick={() => setView(!view)}
-                  style={{ borderRadius: 500 }}
-                >
-                  View {view ? "Less" : "More"}
-                  {view ? <UpOutlined /> : <DownOutlined />}
-                </Button>
-              </Divider>
-            </>
-          ) : (
-            <p>User data will be shown here</p>
-          )}
-        </div>
+				<div className="personInfoCard">
+					{state ? (
+						<>
+							<div
+								style={{
+									animation: "fadeIn 500ms ease-out backwards",
+									backgroundColor: "white",
+									padding: "20px",
+									borderBottomRightRadius: "20px",
+								}}
+							>
+								<div
+									style={{
+										display: "flex",
+										flexDirection: "row",
+										alignItems: "center",
+									}}
+								>
+									<Meta
+										style={{ textAlign: "left", width: "auto" }}
+										avatar={
+											<Avatar
+												src={
+													"http://localhost:8000/uploads/ProfilePicture/" +
+													state?.user.image
+												}
+												icon={<UserOutlined />}
+												alt="A"
+												size={64}
+											/>
+										}
+										title={state ? state.user.name : "john doe"}
+										description={state.user?.email}
+									/>
+									<button
+										onClick={()=>profile(state.user?.position,state.user?.id)}
+										type=""
+										style={{
+											marginLeft: "auto",
+											color: "white",
+											padding: "5px 10px",
+											borderRadius: "5px",
+											border: 0,
+											margin: 2,
+											backgroundColor: "#0080ff",
+										}}
+									>
+										View Profile
+									</button>
+								</div>
+								<div style={{ textAlign: "left", paddingTop: "10px" }}>
+									{state.skill.map((item) => {
+										return (
+											<button
+												style={{
+													color: "white",
+													borderRadius: 100,
+													border: 0,
+													margin: 2,
+													backgroundColor: "#0080ff",
+												}}
+											>
+												#{item.skill}
+											</button>
+										);
+									})}
+								</div>
+							</div>
+							{view ? (
+								<div
+									style={{
+										flexDirection: "row",
+										display: "flex",
+										justifyContent: "space-between",
+										borderTopLeftRadius: "20px",
+									}}
+								>
+									<div
+										style={{
+											width: "    45%",
+											textAlign: "left",
+											padding: "10px",
+											fontFamily: "monospace",
+										}}
+									>
+										{" "}
+										<Divider
+											orientation="left"
+											style={{ width: "20px", color: "black" }}
+										>
+											Academics
+										</Divider>
+										<div style={{ padding: "10px 0px" }}>
+											<span
+												style={{
+													fontSize: "15px",
+													color: "black",
+													fontWeight: "bold",
+												}}
+											>
+												Institution
+											</span>
+											<br />
+											<span style={{ color: "gray" }}>
+												{
+													institutions[state.student[0]?.institution_id - 1]
+														?.institutionName
+												}
+											</span>
+										</div>
+										<div style={{ padding: "10px 0px" }}>
+											<span
+												style={{
+													fontSize: "15px",
+													color: "black",
+													fontWeight: "bold",
+												}}
+											>
+												Department
+											</span>
+											<br />
+											<span style={{ color: "gray" }}>
+												{" "}
+												College of Electrical and Mechanical engineering
+											</span>
+										</div>
+										<div style={{ padding: "10px 0px" }}>
+											<span
+												style={{
+													fontSize: "15px",
+													color: "black",
+													fontWeight: "bold",
+												}}
+											>
+												Major
+											</span>
+											<br />
+											<span style={{ color: "gray" }}>
+												{" "}
+												{state.student[0]?.major}
+											</span>
+										</div>
+										<div style={{ padding: "10px 0px" }}>
+											<span
+												style={{
+													fontSize: "15px",
+													color: "black",
+													fontWeight: "bold",
+												}}
+											>
+												GPA
+											</span>
+											<br />
+											<span style={{ color: "gray" }}>
+												{state.student[0]?.GPA}
+											</span>
+										</div>
+									</div>
+									<div
+										style={{
+											width: "45%",
+											textAlign: "left",
+											padding: "10px",
+											fontFamily: "sans-serif",
+										}}
+										bordered={false}
+									>
+										<Divider
+											orientation="left"
+											style={{ width: "20px", color: "black" }}
+										>
+											Experience
+										</Divider>
+										{state.history.map((history) => {
+											return (
+												<>
+													<span
+														style={{
+															fontSize: "15px",
+															fontWeight: "bold",
+															color: "black",
+														}}
+													>
+														{history.companyName}
+													</span>
+													<br />
+													<span style={{ color: "gray" }}>
+														{history.position}
+													</span>
+													<br />
+												</>
+											);
+										})}
+									</div>
+								</div>
+							) : null}
+							<Divider>
+								<Button
+									onClick={() => setView(!view)}
+									style={{ borderRadius: 500 }}
+								>
+									View {view ? "Less" : "More"}
+									{view ? <UpOutlined /> : <DownOutlined />}
+								</Button>
+							</Divider>
+						</>
+					) : (
+						<p>User data will be shown here</p>
+					)}
+				</div>
 
         <div className="searchResultContainer">
           <div

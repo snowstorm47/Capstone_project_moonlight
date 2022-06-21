@@ -98,7 +98,7 @@ function App() {
 	};
 	const [image, setImage] = useState();
 	const [valid,setValid] = useState({
-		first:1,
+		first:null,
 		verify:1
 	});
 	let first;
@@ -131,15 +131,19 @@ function App() {
 		});
 	}, []);
 	useEffect(() => {
+
 		axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
-		//   setFirst(response.data.first);
-		first = response.data.first;
-		setValid({
-			first:first
-		})
-		  console.log(valid.first);
-		});
-	  }, []);
+			//   setFirst(response.data.first);
+			first = response.data.first;
+			setValid({
+				first:first
+			})
+			  console.log(valid.first);
+			});
+	}, []);
+
+	useEffect(() => {
+
 	  if(localStorage.getItem('auth_position')==="Instructor")
 		{
 			axios.get(`api/checkVerifyInstructor/${id}`).then((response) => {
@@ -150,6 +154,8 @@ function App() {
 			  console.log(response.data.verified);
 			});
 		}
+	}, []);
+
 	  
 	// console.log(localStorage.getItem("auth_profile"));
 	let editProfile = "";

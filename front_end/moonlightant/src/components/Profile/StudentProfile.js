@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { List, Image,Row, Col,Card } from "antd";
+import { List, Image,Row, Col,Card,Avatar } from "antd";
 import { Divider } from "antd";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 function StudentProfile() {
+	const location = useLocation();
   const [profilePicture, setProfilePicture] = useState({
     image: "",
   });
   const [visible, setVisible] = useState(true);
-  const [institutionData, setInstitutionData] = useState([]);
-  const [institutionId, setInstitutionId] = useState([]);
-  const [collegeId, setCollegeId] = useState([]);
-  const [departmentId, setDepartmentId] = useState([]);
+  const [recommend, setRecommend] = useState();
   const [success, setSuccess] = useState();
   const [skillList, setSkillList] = useState([]);
   const [editProfile, setEditProfile] = useState({
@@ -38,7 +37,7 @@ function StudentProfile() {
     newSkill: "",
     error_list: [],
   });
-  const id = localStorage.getItem("auth_id");
+  const id = location.state.id;
 
   useEffect(() => {
     axios.get(`/api/profile/${id}`).then((res) => {
@@ -52,6 +51,16 @@ function StudentProfile() {
     });
   }, []);
 
+  useEffect(() => {
+		axios.get(`/api/getRecommendation/${id}`).then((res) => {
+		  if (res.data.status === 200) {
+			setRecommend(res.data.recommendation);
+			console.log(res.data)
+		  } else {
+			console.log("couldnt retrieve data");
+		  }
+		});
+	  }, []);
   useEffect(() => {
     axios.get(`/api/getProfilePicture/${id}`).then((res) => {
       if (res.data.status === 200) {
@@ -172,6 +181,37 @@ function StudentProfile() {
               </span>
             
           </Col>
+        <Divider>Recommendations</Divider>
+        <Card
+			// extra={<a href="#">More</a>}
+			bordered={true}
+			className="cards"
+			style={{
+				width: "97%",
+				textAlign: "left",
+				marginTop: 30,
+				borderRadius: 10,
+				marginRight: 10,
+				marginLeft: 10,
+			}}
+		>
+			<List
+				itemLayout="horizontal"
+				dataSource={recommend}
+				renderItem={(item) => (
+					<List.Item>
+						<List.Item.Meta
+							avatar={<Avatar src={
+								"http://localhost:8000/uploads/ProfilePicture/" +
+								item.image[0].image
+							}/>}
+							title={<span>{item.recommendation.name}</span>}
+							description={item.recommendation.recomendationDetail}
+						/>
+					</List.Item>
+				)}
+			/><br/>
+		</Card>
           </Col>
           <Col
           className="row"

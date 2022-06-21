@@ -8,11 +8,14 @@ import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 // import '/App.css';
 
 const { Option } = Select;
 
 function HiringProfile() {
+	const location = useLocation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [profilePicture, setProfilePicture] = useState({
     image: "",
@@ -20,6 +23,8 @@ function HiringProfile() {
   const showModal = () => {
     setIsModalVisible(true);
   };
+  const id = location.state.id;
+
   useEffect(() => {
     // axios.get('/sanctum/csrf-cookie').then(res => {
     axios.get(`/api/getHiringCompanyProfilePicture/${id}`).then((res) => {
@@ -50,8 +55,6 @@ function HiringProfile() {
     image: "",
     error_list: [],
   });
-
-  const id = localStorage.getItem("auth_id");
 
   //
   useEffect(() => {

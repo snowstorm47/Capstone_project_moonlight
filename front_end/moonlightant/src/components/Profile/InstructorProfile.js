@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { List, Image,Row, Col,Form } from "antd";
 import { Divider,Card } from "antd";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 function InstructorProfile() {
+	const location = useLocation();
   const [profilePicture, setProfilePicture] = useState({
     image: "",
   });
@@ -29,13 +31,12 @@ function InstructorProfile() {
     newSkill: "",
     error_list: [],
   });
-  const id = localStorage.getItem("auth_id");
-
+  const id = location.state.id;
+  console.log(id);
   useEffect(() => {
     axios.get(`/api/instructorprofile/${id}`).then((res) => {
       if (res.data.status === 200) {
         setEditProfile(res.data);
-        console.log(editProfile)
         setSkillList(res.data.skill);
       } else {
         console.log("couldnt retrieve data");

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Card, Avatar } from "antd";
+import { Card, Avatar,Button } from "antd";
 import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
 import food from "../assets/man.jpg";
 import verified from "../assets/verifiedblack.svg";
 import { Verified } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const ProfileDetail = () => {
@@ -28,19 +29,22 @@ const ProfileDetail = () => {
 		email: "",
 		error_list: [],
 	});
-
+	const navigate = useNavigate();
 	const [skills, setSkill] = useState([]);
 	const [history, setHistory] = useState([]);
 	let showProfile = "";
-	if (localStorage.getItem("auth_position") === "Student") {
-		showProfile = "/StudentProfile";
-	} else if (localStorage.getItem("auth_position") === "Institution") {
-		showProfile = "/InstitutionProfile";
-	} else if (localStorage.getItem("auth_position") === "Instructor") {
-		showProfile = "/InstructorProfile";
-	} else if (localStorage.getItem("auth_position") === "Hiring Company") {
-		showProfile = "/HiringProfile";
+	const profile=()=>{
+		if (localStorage.getItem("auth_position") === "Student") {
+			navigate("/StudentProfile",{state:{id}});
+		} else if (localStorage.getItem("auth_position") === "Institution") {
+			navigate("/InstitutionProfile",{state:{id}})
+		} else if (localStorage.getItem("auth_position") === "Instructor") {
+			navigate("/InstructorProfile",{state:{id}})
+		} else if (localStorage.getItem("auth_position") === "Hiring Company") {
+			navigate("/HiringProfile",{state:{id}})
+		}
 	}
+	
 	const id = localStorage.getItem("auth_id");
 	useEffect(() => {
 		// axios.get('/sanctum/csrf-cookie').then(res => {
@@ -116,7 +120,9 @@ const ProfileDetail = () => {
 			<><Card
 						type="inner"
 						title="Experience"
-						extra={<a href={showProfile}>More</a>}
+						extra={
+						<Button type="text" style={{color:"blue"}}onClick={()=>profile()}>More</Button>
+						}
 						style={{
 							marginTop: -10,
 							marginRight: -25,
@@ -135,7 +141,9 @@ const ProfileDetail = () => {
 					</Card><Card
 						type="inner"
 						title="Skills"
-						extra={<a href={showProfile}>More</a>}
+						extra={						
+						<Button type="text" style={{color:"blue"}}onClick={()=>profile()}>More</Button>
+					}
 						style={{
 							marginTop: -10,
 							marginRight: -25,
