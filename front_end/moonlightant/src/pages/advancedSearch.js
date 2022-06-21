@@ -47,7 +47,6 @@ const AdvancedSearch = (props) => {
     setSendLoading(true);
     selected?.length >= 1
       ? selected?.forEach((item) => {
-          console.log(item);
           const fData = new FormData();
           fData.append(
             "notificationImage",
@@ -88,6 +87,7 @@ const AdvancedSearch = (props) => {
       .then((data) => {
         setSearchResults(
           data.filter((item) => {
+            let date=new Date();
             if (
               (search.skill
                 ? item.skill
@@ -101,8 +101,24 @@ const AdvancedSearch = (props) => {
                 ? item.student[0]?.department === search.department
                 : true) &&
               (search.endDate
-                ? search.startDate === item.student[0].endDateClass
-                : true)
+                ? search.endDate >= item.student[0].endDateClass
+                : true)&&(
+                  search.educationStatus?search.educationStatus=='Graduation'?(()=>{
+                    let date=new Date();
+                    let endDate=new Date(item.student[0]?.endDateClass);
+                    if(date.getFullYear()>=endDate.getFullYear()){ return true;}
+                    else{
+                      return false;
+                    }
+                   }):(()=>{
+                    let date=new Date();
+                    let endDate=new Date(item.student[0]?.endDateClass);
+                    if(date.getFullYear()<=endDate.getFullYear()){ return true;}
+                    else{
+                      return false;
+                    }
+                   }):true
+                )
             ) {
               return true;
             } else {
@@ -115,8 +131,8 @@ const AdvancedSearch = (props) => {
         setLoader(false);
       });
   };
-  const [search, setSearch] = useState({
-    skill: "",
+  const [ search, setSearch] = useState({
+  skill: "",
     gpa: "",
     institution: "",
     department: "",
@@ -200,12 +216,11 @@ const AdvancedSearch = (props) => {
 
   useEffect(() => {
     axios.get("/sanctum/csrf-cookie").then((res) => {
-      console.time();
+
       axios.get(`/api/institutions`).then((res) => {
         if (res.data.status === 200) {
           setinstitutions(res.data.data);
-          console.log(institutions, res.data.data);
-          console.timeEnd();
+         
         } else {
         }
       });
@@ -270,6 +285,8 @@ const AdvancedSearch = (props) => {
     });
   };
   const handleInput = (e) => {
+    const date=new Date();
+    console.log();
     setNotification({ ...notification, [e.target.name]: e.target.value });
   };
   return (
@@ -424,17 +441,6 @@ const AdvancedSearch = (props) => {
             </Select.Option>
           ))}
         </Select>
-        <strong style={{ paddingTop: 10 }}>Date of graduation</strong>
-        <DatePicker
-          picker="year"
-          value={search.endDate}
-          format={"m/d/Y"}
-          onChange={(e) => {
-            console.log(e);
-            setSearch({ ...search, educationStatus: e.date });
-          }}
-          style={{ width: "100%" }}
-        />
 
         <Radio.Group
           style={{ paddingTop: 10, paddingBottom: 10 }}
@@ -450,6 +456,16 @@ const AdvancedSearch = (props) => {
           </Radio>
         </Radio.Group>
         <br />
+       {search.educationStatus=="Graduated"?(<> <normal style={{ paddingTop: 10 }}>Date of graduation</normal>
+        <DatePicker
+          picker="year"
+          value={search.endDate}
+          format={"m/d/Y"}
+          onChange={(e)=>{setSearch({...search,endDate:e.date})}}
+          style={{ width: "100%" }}
+        /><br/></>):null}
+        
+   
         <Button
           type="primary"
           onClick={filter}
@@ -751,7 +767,6 @@ const AdvancedSearch = (props) => {
                             arr.splice(arr.indexOf(e.target.value), 1);
                             setSelected(arr);
                           }
-                          console.log(selected, "selected...");
                         }}
                       />
                       <Meta
