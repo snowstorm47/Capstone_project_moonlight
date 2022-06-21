@@ -8,11 +8,14 @@ import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 // import '/App.css';
 
 const { Option } = Select;
 
 function InstitutionProfile() {
+	const location = useLocation();
   const [profilePicture, setProfilePicture] = useState({
     image: "",
   });
@@ -26,7 +29,8 @@ function InstitutionProfile() {
   });
 
 
-  const id = localStorage.getItem("auth_id");
+  const id = location.state.id;
+
   useEffect(() => {
     axios.get(`/api/institutionprofile/${id}`).then((res) => {
       if (res.data.status === 200) {

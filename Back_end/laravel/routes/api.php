@@ -114,7 +114,7 @@ Route::get('Department',[searchController::class, 'getDepartment']);
 Route::get('College',[searchController::class, 'getCollege']);
 Route::get('showMyNews',[NewsController::class,'showMyInstitution']);
 Route::get('institutionVerified',[NewsController::class,'institutionVerified']);
-
+Route::get('profileInstitution/{id}', [profileController::class,'profileInstitution']);
 
 
 
@@ -122,11 +122,10 @@ Route::get('institutionVerified',[NewsController::class,'institutionVerified']);
 // Route::get('all-department',[institutionRegistration::class, 'allDepartment']);
 // Route::get('all-college',[institutionRegistration::class, 'allcollege']);
 
-Route::delete('deleteInstitution/{id}',[institutionRegistration::class,'deleteInstitution']);
+Route::delete('deleteInstitution/{id}', [institutionRegistration::class,'deleteInstitution']);
 
-Route::middleware(['auth:sanctum'])->group(function() {
-Route::post('logout',[AuthController::class, 'logout']);
-
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

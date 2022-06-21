@@ -1,4 +1,4 @@
-import { Form, Input, Button, Checkbox, Upload, message } from "antd";
+import { Form, Input, Button, Checkbox, Upload, message ,Select} from "antd";
 import {
 	UploadOutlined,
 	InboxOutlined,
@@ -6,16 +6,17 @@ import {
 	LoadingOutlined,
 	PlusOutlined,
 } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const NotificationAdd = () => {
+	const [userList, setUserList] = useState([]);
 	const [notification, setNotification] = useState({
 		notificationTitle: "",
 		notificationDetail: "",
 		sender_id: localStorage.getItem("auth_id"),
-		reciever_id: 2,
+		reciever_id: "",
 		seen_status: "False",
 	});
 
@@ -23,18 +24,27 @@ const NotificationAdd = () => {
 		setNotification({ ...notification, [e.target.name]: e.target.value });
 	};
 
+	useEffect(() => {
+		
+			axios.get(`/api/filterUser`).then((res) => {
+				if (res.data.status === 200) {
+				  setUserList(res.data.user);
+				  console.log(res.data.user);
+				}
+			  });
+		  },[]);
+
 	const handleSubmit = async () => {
 		console.log(notification);
-		const fData = new FormData();
-		fData.append("notificationTitle", notification.notificationTitle);
-		fData.append("notificationDetail", notification.notificationDetail);
-		fData.append("sender_id", notification.sender_id);
-		fData.append("reciever_id", notification.reciever_id);
-		fData.append("seen_status", notification.seen_status);
-		console.log("notificcation", notification);
-		console.log(fData, "top.....");
+		const data ={
+			notificationTitle:notification.notificationTitle,
+			notificationDetail:notification.notificationDetail,
+			sender_id:localStorage.getItem('auth_id'),
+			reciever_id: notification.reciever_id,
+			seen_status: "False"
+		}
 		axios.get("/sanctum/csrf-cookie").then((response) => {
-			axios.post("api/postNotification", fData).then((response) => {
+			axios.post("api/postNotification", data).then((response) => {
 				console.log(response);
 				if (response.data.status === 200) {
 					message.success("Notification created succesfully");
@@ -57,6 +67,15 @@ const NotificationAdd = () => {
 			? navigate("advancedSearch", { state: { notification } })
 			: message.info("please fill the notification title and discription");
 	};
+	let options = userList.map((item) => {
+		return { value: item.id, label: item.name, key: item.id };
+	  });
+
+	  const handleInputUser = (e) => {
+		// e.persist();
+		console.log(e);
+		setNotification({ reciever_id: e });
+	  };
 
 	const normFile = (e) => {
 		console.log("Upload event:", e);
@@ -102,7 +121,33 @@ const NotificationAdd = () => {
 					required
 				/>
 			</Form.Item>
-
+			<Form.Item style={{marginLeft:"-13rem"}}label="Choose the User">
+                <Select
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option.children
+                      ?.toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                  filterSort={(optionA, optionB) =>
+                    optionA.children
+                      ?.toLowerCase()
+                      .localeCompare(optionB.children?.toLowerCase())
+                  }
+                  label="Choose a User"
+                  style={{ marginLeft:"-6rem",padding: 0, width:"80%", 
+                  borderRadius: "80px",
+                  marginTop:"0rem",
+                  marginLeft:"-8.4rem",
+                  marginRight:"0rem"
+                 }}
+                  name="reciever_id"
+                  onChange={handleInputUser}
+                  value={notification.reciever_id}
+                  options={options}
+                />
+              </Form.Item>
 			<Form.Item>
 				<Button type="primary" style={{ width: "100%" }} htmlType="submit">
 					Create Notification <SendOutlined />

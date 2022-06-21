@@ -97,7 +97,13 @@ function App() {
 		});
 	};
 	const [image, setImage] = useState();
-	const [first,setFirst] = useState();
+	const [valid,setValid] = useState({
+		first:null,
+		verify:1
+	});
+	let first;
+	// const [verify,setVerify] = useState();
+	let verify;
 	const navigate = useNavigate();
 	const logoutSubmit = (e) => {
 		axios.post("/api/logout").then((res) => {
@@ -125,14 +131,35 @@ function App() {
 		});
 	}, []);
 	useEffect(() => {
+
 		axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
-		  setFirst(response.data.first);
-		  console.log(response.data.first);
-		});
-	  }, []);
+			//   setFirst(response.data.first);
+			first = response.data.first;
+			setValid({
+				first:first
+			})
+			  console.log(valid.first);
+			});
+	}, []);
+
+	useEffect(() => {
+
+	  if(localStorage.getItem('auth_position')==="Instructor")
+		{
+			axios.get(`api/checkVerifyInstructor/${id}`).then((response) => {
+			  verify = response.data.verified;
+			  setValid({
+				verify:verify
+			  })
+			  console.log(response.data.verified);
+			});
+		}
+	}, []);
+
+	  
 	// console.log(localStorage.getItem("auth_profile"));
 	let editProfile = "";
-	if (first=== 1) {
+	if (valid.first=== 1) {
 		if (localStorage.getItem("auth_position") === "Student") {
 			editProfile = "/profilepage";
 		} else if (localStorage.getItem("auth_position") === "Institution") {
@@ -145,8 +172,6 @@ function App() {
 	} else {
 		if (localStorage.getItem("auth_position") === "Student") {
 			editProfile = "/createprofile";
-		} else if (localStorage.getItem("auth_position") === "Institution") {
-			editProfile = "#";
 		} else if (localStorage.getItem("auth_position") === "Instructor") {
 			editProfile = "/createprofileinstructor";
 		} else if (localStorage.getItem("auth_position") === "Hiring Company") {
@@ -239,13 +264,21 @@ function App() {
 						<DashboardOutlined /> Dashboard
 					</Link>
 				</Menu.Item>:null}
-				{localStorage.getItem("auth_position")===null?null:
-
+				{/* {
+					if(localStorage.getItem("auth_position"))===null)
+					{
+						
+					}
+				} */}
+				{(localStorage.getItem("auth_position"))===null?null:
+					(((localStorage.getItem("auth_position")==="Institution")&&(valid.first===1))||((localStorage.getItem("auth_position")==="Instructor") &&(valid.verify===1))||((localStorage.getItem("auth_position")==="Student")&&(valid.first===1))||((localStorage.getItem("auth_position")==="Hiring Company")&&(valid.first===1)))
+					?
 					<Menu.Item key="3">
 						<Link to="/Notification">
 							<BellOutlined /> Notification
 						</Link>
 					</Menu.Item>
+					:null
 					}
 					<Menu.Item key="4">
 						<Link to="/aboutus">
@@ -345,7 +378,7 @@ function App() {
 					<Route path="InstitutionProfile" element={<InstitutionProfile />} />
 					<Route path="HiringProfile" element={<HiringProfile />} />
 					<Route path="signin/forgotpassword" element={<ForgotPassword />} />
-					<Route path="resetPassword" element={<ResetPassword />} />
+					<Route path="resetPassword/:id" element={<ResetPassword />} />
 
 
 				</Routes>
