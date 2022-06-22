@@ -28,15 +28,10 @@ function HiringCompanyCreateProfile() {
     error_list: [],
   });
 
-  //   const [skill,setSkill]= useState({
-  //       newSkill:""
-  //   });
-
   useEffect(() => {
     axios.get(`/api/all-institution`).then((res) => {
       if (res.data.status === 200) {
         setInstitutionList(res.data.institution);
-        console.log(institutionList);
       }
     });
   }, []);

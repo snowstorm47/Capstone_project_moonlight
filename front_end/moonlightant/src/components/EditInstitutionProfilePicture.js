@@ -7,12 +7,13 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
-import { Avatar, Image } from "antd";
+import {Image } from "antd";
 import axios from "axios";
 
 const EditInstitutionProfilePicture = ({ parentToChild }) => {
   const [profilePicture, setProfilePicture] = useState({
     image: "",
+    error_list:[]
   });
   const id = localStorage.getItem("auth_id");
 
@@ -54,6 +55,10 @@ const EditInstitutionProfilePicture = ({ parentToChild }) => {
             }
           });
         } else {
+          setProfilePicture({
+            ...profilePicture,
+            error_list: response.data.validation_errors,
+          });
           message.error("Picture was not updated. Please try again");
         }
       });
@@ -103,6 +108,7 @@ const EditInstitutionProfilePicture = ({ parentToChild }) => {
         title="Edit your profile image"
         visible={isModalVisible}
         onCancel={handleCancel}
+        footer={null}
       >
         <Form
         name="dynamic_form_nest_item"
@@ -141,6 +147,7 @@ const EditInstitutionProfilePicture = ({ parentToChild }) => {
                 Click or drag file to this area to upload
               </p>
             </Upload.Dragger>
+            <span style={{color:"red"}}>{profilePicture.error_list?.image}</span>
           </Form.Item>
         </Form.Item>
         <Form.Item

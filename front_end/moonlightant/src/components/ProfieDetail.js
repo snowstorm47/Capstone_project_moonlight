@@ -47,14 +47,11 @@ const ProfileDetail = () => {
 	
 	const id = localStorage.getItem("auth_id");
 	useEffect(() => {
-		// axios.get('/sanctum/csrf-cookie').then(res => {
 		axios.get(`/api/profile/${id}`).then((res) => {
 			if (res.data.status === 200) {
 				setUserData(res.data);
 				setSkill(res.data.skill);
-				console.log(skills);
 				setHistory(res.data.employmentHistory);
-				console.log("userData...", userData);
 			} else {
 				console.log("couldnt retrieve data");
 			}

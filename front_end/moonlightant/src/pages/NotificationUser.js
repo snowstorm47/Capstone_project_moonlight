@@ -1,11 +1,13 @@
 import React,{ useEffect, Component, useState } from "react";
-import { Button, message, Skeleton, List,Modal } from "antd";
+import { Button, message, Skeleton, List,Modal ,Input} from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import EditNotification from "../components/EditNotification";
+const { Search } = Input;
+
 const NotificationUser = () => {
   const [visible, setVisible] = useState(true);
   const [state, setState] = useState();
@@ -38,9 +40,9 @@ const NotificationUser = () => {
   };
 
 
-  const id = localStorage.getItem('auth_id');
+  const idL = localStorage.getItem('auth_id');
 	useEffect(() => {
-		axios.get(`api/viewNotification/${id}`).then((response) => {
+		axios.get(`api/viewNotification/${idL}`).then((response) => {
 			setState(response.data.notification);
       console.log(response.data.notification);
 			setLoading(false);
@@ -51,7 +53,7 @@ const NotificationUser = () => {
     axios.delete(`/api/deleteNotification/${id}`).then((res) => {
         if (res.data.status === 200) {
           message.success("Notification has been deleted");
-          axios.get(`api/viewNotification/${id}`).then((response) => {
+          axios.get(`api/viewNotification/${idL}`).then((response) => {
             setState(response.data.notification);
             console.log(response.data.notification);
             setLoading(false);
@@ -66,6 +68,20 @@ const NotificationUser = () => {
   const update = (id) => {
 
   }
+  const getAllUser = (value) => {
+		setLoading(true);
+		return axios.get(`api/viewNotification/${idL}`).then((response) => {
+			setState(response.data.notification);
+			setLoading(false);
+		});
+	};
+  const onSearch = (value) => {
+		setState(
+			state.filter((i) => {
+				return i.name.includes(value);
+			})
+		);
+	};
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -77,6 +93,15 @@ const NotificationUser = () => {
 	  onCancel={handleDeleteCancel}>
 	Do You Want to Delete The Notification
   </Modal>
+  <Search
+					placeholder="Search by Name"
+					allowClear
+					onChange={(value)=>{return value==""?null:getAllUser()}}
+					enterButton="Search"
+					size="large"
+					style={{ padding: "40px 20px" }}
+					onSearch={onSearch}
+				/>
         {visible ? (
           
         <List
@@ -148,6 +173,7 @@ const NotificationUser = () => {
           title="Edit Notification"
           visible={isModalVisible}
           onCancel={handleCancel}
+          footer={null}
         >
           <EditNotification parentToChild={idNotification} />
         </Modal>

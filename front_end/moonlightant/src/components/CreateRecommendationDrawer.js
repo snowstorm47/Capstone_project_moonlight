@@ -55,18 +55,16 @@ const CreateRecommendationDrawer = () => {
     };
 
     axios.get("/sanctum/csrf-cookie").then((res) => {
-      console.log("inside csrf");
 
       axios.post(`/api/sendRecommendation`, data).then((res) => {
         if (res.data.status === 200) {
           message.success("Your recommendation is successful");
         } else {
-          console.log("inside else");
           setRecomendation({
             ...recomendation,
             error_list: res.data.validation_errors,
           });
-          console.log(res.data.validation_errors);
+          message.error('Recommendation Failed')
         }
       });
     }, []);

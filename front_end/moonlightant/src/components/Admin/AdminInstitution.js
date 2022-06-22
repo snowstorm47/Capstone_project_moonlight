@@ -72,6 +72,7 @@ const AdminInstitution = () => {
 				.delete(`/api/deleteVerifyNotification?sender_id=${id}`)
 				.then((res) => {
 					if (res.data.status === 200) {
+						message.success('Notification Deleted')
 						axios
 							.get(`api/viewInstitutionNotification/${id}`)
 							.then((response) => {
@@ -81,7 +82,7 @@ const AdminInstitution = () => {
 								setLoading(false);
 							});
 					} else {
-						console.log("Notification not deleted");
+						message.error("Notification not deleted");
 					}
 				});
 			setLoading(false);
@@ -121,12 +122,6 @@ const AdminInstitution = () => {
 				Do You Want to Verify The Institution
 			</Modal>
 
-			<Input.Search
-				style={{ marginBottom: "5rem" }}
-				size="middium"
-				placeholder="Search by name"
-				enterButton
-			/>
 			{visible ? (
 				<List
 					itemLayout="horizontal"

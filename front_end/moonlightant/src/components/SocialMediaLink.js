@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Form, Input, Button, List, Modal, Space } from "antd";
+import { Form, Input, Button, List, Modal, Space, message } from "antd";
 import axios from "axios";
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 
@@ -18,8 +18,6 @@ const SocialMediaLink = () => {
     axios.get(`/api/getSocialMediaLinkSingle/${idLink}`).then((res) => {
       if (res.data.status === 200) {
         setLink(res.data.socialMediaLink);
-        console.log(res.data.socialMediaLink)
-        console.log(idLink);
       } else {
         console.log("couldnt retrieve data");
       }
@@ -39,6 +37,7 @@ const SocialMediaLink = () => {
     {
       link: "",
       user_id: "",
+      error_listupdate:[]
     },
   ]);
   const [socialMediaLinkList, setSocialMediaLinkList] = useState([]);
@@ -46,6 +45,7 @@ const SocialMediaLink = () => {
   const [addSocialMediaLink, setAddSocialMediaLink] = useState({
     link: "",
     user_id: "",
+    error_list:[]
   });
 
   const addLink = (e) => {
@@ -59,9 +59,21 @@ const SocialMediaLink = () => {
 
       axios.post(`/api/addSocialMediaLink`, data).then((res) => {
         if (res.data.status === 200) {
-          console.log("link added");
+          message.success("Social Media Link Added");
+          axios.get(`/api/getSocialMediaLink/${id}`).then((res) => {
+            if (res.data.status === 200) {
+              setSocialMediaLink(res.data);
+              setSocialMediaLinkList(res.data.socialMediaLink);
+            } else {
+              console.log("couldnt retrieve data");
+            }
+          });
         } else {
-          console.log("link not added");
+          setAddSocialMediaLink({
+            ...addSocialMediaLink,
+            error_list: res.data.validation_errors,
+          });
+          message.error("Social Media Link Not Added");
         }
       });
     }, []);
@@ -73,7 +85,16 @@ const SocialMediaLink = () => {
 
       axios.delete(`/api/deleteSocialMediaLink/${id}`).then((res) => {
         if (res.data.status === 200) {
-          console.log("link deleted");
+          message.success("Social Media Link Deleted");
+          axios.get(`/api/getSocialMediaLink/${id}`).then((res) => {
+            if (res.data.status === 200) {
+              setSocialMediaLink(res.data);
+              setSocialMediaLinkList(res.data.socialMediaLink);
+            } else {
+              message.error("Social Media Link Not Deleted");
+
+            }
+          });
         } else {
           console.log("link not deleted");
         }
@@ -84,12 +105,10 @@ const SocialMediaLink = () => {
   
   const id = localStorage.getItem("auth_id");
   useEffect(() => {
-    // axios.get('/sanctum/csrf-cookie').then(res => {
     axios.get(`/api/getSocialMediaLink/${id}`).then((res) => {
       if (res.data.status === 200) {
         setSocialMediaLink(res.data);
         setSocialMediaLinkList(res.data.socialMediaLink);
-        console.log(socialMediaLinkList.link);
       } else {
         console.log("couldnt retrieve data");
       }
@@ -107,10 +126,6 @@ const SocialMediaLink = () => {
     setLink( e.target.value);
   };
 
-  //   const handleClick = () => {
-  //     window.open({socialMediaLink.link});
-  //   };
-
   const editSocialMediaLink = (id) => {
     const data = {
       link: link,
@@ -122,9 +137,13 @@ const SocialMediaLink = () => {
 
       axios.put(`/api/editSocialMediaLink/${id}`, data).then((res) => {
         if (res.data.status === 200) {
-          console.log("Link edited");
+          message.success("Social Media Link Updated");
         } else {
-          console.log("Link not edited");
+          setSocialMediaLink({
+            ...socialMediaLink,
+            error_listupdate: res.data.validation_errors,
+          });
+          message.error("Social Media Link Update Failed");
         }
       });
     }, []);
@@ -173,6 +192,8 @@ const SocialMediaLink = () => {
             onChange={handleInput}
             value={addSocialMediaLink.link}
           />
+        <span style={{color:"red"}}>{addSocialMediaLink.error_list?.link}</span>
+
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
@@ -185,6 +206,7 @@ const SocialMediaLink = () => {
         title="Edit Social Media Link"
         visible={isModalVisible}
         onCancel={handleCancel}
+        footer={null}
       >
         <Form
           onFinish={() => editSocialMediaLink(idLink)}
@@ -200,6 +222,8 @@ const SocialMediaLink = () => {
                 onChange={handleInput}
                 value={link}
               />
+        <span style={{color:"red"}}>{socialMediaLink.error_listupdate?.link}</span>
+
             </Form.Item>
             <br />
           </Space>

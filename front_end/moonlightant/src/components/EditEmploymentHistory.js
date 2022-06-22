@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
-import { DatePicker, Space,Col} from "antd";
+import { message, Space,Col} from "antd";
 
 const EditEmploymentHistory = ({parentToChild}) => {
   const [employmentList, setEmploymentList] = useState({
@@ -17,9 +17,7 @@ const EditEmploymentHistory = ({parentToChild}) => {
     // axios.get('/sanctum/csrf-cookie').then(res => {
     axios.get(`/api/getEmploymentHistory/${parentToChild}`).then((res) => {
       if (res.data.status === 200) {
-        console.log(parentToChild);
         setEmploymentList(res.data);
-        console.log(employmentList);
       } else {
         console.log("couldnt retrieve data");
       }
@@ -40,18 +38,16 @@ const EditEmploymentHistory = ({parentToChild}) => {
 
       axios.put(`/api/editEmploymentHistory/${id}`, data).then((res) => {
         if (res.data.status === 200) {
-          console.log("History edited");
-          // setIsModalVisible(false);
-
+          message.success('Employment History Updated')
         } else {
-          console.log("History not edited");
+          message.error('Employment History Update Failed')
+
         }
       });
     }, []);
   };
 
   const handleInput = (e) => {
-    // e.persist();
     setEmploymentList({ ...employmentList, [e.target.name]: e.target.value });
   };
   return (

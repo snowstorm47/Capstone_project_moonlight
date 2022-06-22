@@ -13,6 +13,7 @@ import { DeleteOutlined, CheckSquareOutlined, ConsoleSqlOutlined } from "@ant-de
 import ".//../styles/newsCard.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const { Search } = Input;
 
 const NotificationInstructorVerify = () => {
 	const [visible, setVisible] = useState(true);
@@ -94,6 +95,20 @@ const NotificationInstructorVerify = () => {
 		});
 	};
 
+	const getAllInstructor = (value) => {
+		setLoading(true);
+		return axios.get(`api/viewNotificationRecieved/${id}`).then((response) => {
+			setState(response.data.notification);
+			setLoading(false);
+		});
+	};
+  const onSearch = (value) => {
+		setState(
+			state.filter((i) => {
+				return i.name.includes(value);
+			})
+		);
+	};
 	return (
 		<div>
 			<Modal
@@ -113,12 +128,15 @@ const NotificationInstructorVerify = () => {
 				Do You Want to Verify The Instructor
 			</Modal>
 
-			<Input.Search
-				style={{ marginBottom: "5rem" }}
-				size="middium"
-				placeholder="Search by name"
-				enterButton
-			/>
+			<Search
+					placeholder="Search by Name"
+					allowClear
+					onChange={(value)=>{return value==""?null:getAllInstructor()}}
+					enterButton="Search"
+					size="large"
+					style={{ padding: "40px 20px" }}
+					onSearch={onSearch}
+				/>
 			{visible ? (
 				<List
 					itemLayout="horizontal"

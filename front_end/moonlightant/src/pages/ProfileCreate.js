@@ -162,6 +162,7 @@ function CreateProfile() {
               Click or drag to upload Profile Image
             </p>
           </Upload.Dragger>
+          <span style={{color:"red"}}>{createProfile.error_list?.image}</span>
         </Form.Item>
         </Col>
           <Col>
@@ -175,6 +176,7 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.phoneNumber}
               />
+          <span style={{color:"red"}}>{createProfile.error_list?.phoneNumber}</span>
             </Form.Item>
           </Col>
         {/* </Col> */}
@@ -183,6 +185,7 @@ function CreateProfile() {
             <Form.Item>
               <label>Gender:</label>
               <select
+              required
                 style={{ width: "50%", padding: 10, marginLeft: "3.7em", borderRadius: "50px" }}
                 name="sex"
                 onChange={handleInput}
@@ -192,6 +195,7 @@ function CreateProfile() {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
+          <span style={{color:"red"}}>{createProfile.error_list?.sex}</span>
             </Form.Item>
           </Col>
 
@@ -207,7 +211,7 @@ function CreateProfile() {
                 value={createProfile.startDateClass}
                 className="form-control"
               />
-              {/* <span>{createProfile.error_list.startDateClass}</span> */}
+              <span>{createProfile.error_list?.startDateClass}</span>
 
               <label>Class end Date: </label>
               <input
@@ -219,7 +223,7 @@ function CreateProfile() {
                 value={createProfile.endDateClass}
                 className="form-control"
               />
-              {/* <span>{createProfile.error_list.endDateClass}</span> */}
+              <span>{createProfile.error_list?.endDateClass}</span>
             </Space>
           </Col>
 
@@ -227,6 +231,7 @@ function CreateProfile() {
             <Divider>Academic</Divider>
             <Form.Item>
               <select
+              required
                 placeholder="Select an Institution"
                 style={{ padding: 10, width: "75%", borderRadius: "80px" }}
                 name="institution_id"
@@ -242,12 +247,14 @@ function CreateProfile() {
                   );
                 })}
               </select>
+          {/* <span style={{color:"red"}}>{createProfile.error_list?.institutionName}</span> */}
             </Form.Item>
           </Col>
 
           <Col>
             <Form.Item>
               <select
+              required
                 placeholder="Select a College"
                 style={{ padding: 10, width: "75%", borderRadius: "80px" }}
                 name="college_id"
@@ -270,6 +277,7 @@ function CreateProfile() {
           <Col>
             <Form.Item>
               <select
+              required
                 placeholder="Select a Department"
                 style={{ padding: 10, width: "75%", borderRadius: "80px"}}
                 name="department_id"
@@ -297,6 +305,7 @@ function CreateProfile() {
                 onChange={(e)=>{setCreateProfile({...createProfile,experience:e})}}
                 value={createProfile.experience}
               />
+          <span style={{color:"red"}}>{createProfile.error_list?.experience}</span>
             </Form.Item>
           </Col>
 
@@ -308,6 +317,7 @@ function CreateProfile() {
                 onChange={handleInput}
                 value={createProfile.GPA}
               />
+          <span style={{color:"red"}}>{createProfile.error_list?.GPA}</span>
             </Form.Item>
           </Col>
 

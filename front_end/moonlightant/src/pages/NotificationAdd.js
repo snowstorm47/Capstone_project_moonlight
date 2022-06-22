@@ -18,6 +18,7 @@ const NotificationAdd = () => {
 		sender_id: localStorage.getItem("auth_id"),
 		reciever_id: "",
 		seen_status: "False",
+		error_list:[]
 	});
 
 	const handleInput = (e) => {
@@ -49,6 +50,10 @@ const NotificationAdd = () => {
 				if (response.data.status === 200) {
 					message.success("Notification created succesfully");
 				} else {
+					setNotification({
+						...notification,
+						error_list: response.data.validation_errors,
+					  });
 					message.error("Notification was not created. Please try again");
 				}
 			});
@@ -58,6 +63,8 @@ const NotificationAdd = () => {
 			...notification,
 			notificationTitle: "",
 			notificationDetail: "",
+			
+
 		});
 	};
 	const navigate = useNavigate();
@@ -74,7 +81,8 @@ const NotificationAdd = () => {
 	  const handleInputUser = (e) => {
 		// e.persist();
 		console.log(e);
-		setNotification({ reciever_id: e });
+	
+		setNotification({ ...notification,reciever_id: e });
 	  };
 
 	const normFile = (e) => {
@@ -108,6 +116,8 @@ const NotificationAdd = () => {
 					onChange={handleInput}
 					required
 				/>
+				<span style={{color:"red"}}>{notification.error_list?.notificationTitle}</span>
+
 			</Form.Item>
 
 			<Form.Item>
@@ -120,6 +130,7 @@ const NotificationAdd = () => {
 					style={{ width: "100%" }}
 					required
 				/>
+				<span style={{color:"red"}}>{notification.error_list?.notificationDetail}</span>
 			</Form.Item>
 			<Form.Item style={{marginLeft:"-13rem"}}label="Choose the User">
                 <Select
@@ -142,6 +153,7 @@ const NotificationAdd = () => {
                   marginLeft:"-8.4rem",
                   marginRight:"0rem"
                  }}
+				 required
                   name="reciever_id"
                   onChange={handleInputUser}
                   value={notification.reciever_id}

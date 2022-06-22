@@ -29,13 +29,6 @@ const SignUp = () => {
       axios.get(`/api/institutions`).then((res) => {
         if (res.data.status === 200) {
           arr = res.data.data;
-          console.log(arr, "...");
-          console.timeEnd();
-          console.log(
-            `nononono ${setinstitutions(res.data.data)}`,
-            { institutions },
-            res.data.data
-          );
         } else {
         }
       });
@@ -45,19 +38,11 @@ const SignUp = () => {
     // e.persist();
     setRegister({ ...registerInput, [e.target.name]: e.target.value });
   };
-  // const handleInputPosition = (e) => {
-  //   // e.persist();
-  //   console.log(e)
-  //   setRegister({ position: e});
-  //   console.log(registerInput.position);
-  // };
-
   const registerSubmit = (e) => {
     console.log(registerInput.email);
     console.log(registerInput.position);
     console.log(registerInput.password);
     console.log(registerInput.name);
-    // e.preventDefault();
 
     const data = {
       email: registerInput.email,
@@ -79,7 +64,6 @@ const SignUp = () => {
             localStorage.setItem("auth_position", res.data.position);
             localStorage.setItem("auth_profile", 0);
             
-            console.log("after auth_token");
             setMessage(res.message);
             if (localStorage.getItem("auth_position") === "Institution") {
               const fData = new FormData();
@@ -93,7 +77,6 @@ const SignUp = () => {
               fData.append("seen_status", "False");
               axios.get("/sanctum/csrf-cookie").then((response) => {
                 axios.post("api/postNotification", fData).then((response) => {
-                  console.log(response);
                   if (response.data.status === 200) {
                     message.success("Notification created succesfully");
                   } else {
@@ -133,7 +116,6 @@ const SignUp = () => {
             // swal("Success", res.data.message, "success");
             navigate("/newsfeed");
           } else {
-            console.log("inside else");
             setFailMessage(res.data.message);
             setRegister({
               ...registerInput,

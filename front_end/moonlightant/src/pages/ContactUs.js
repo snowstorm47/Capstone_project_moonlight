@@ -29,7 +29,6 @@ const ContactUs = () => {
 		axios.get(`/api/admincontact`).then((res) => {
 		  if (res.data.status === 200) {
 			setAdminContact(res.data.contact[0]);
-			console.log(adminContact)
 		  } else {
 			console.log("couldnt retrieve data");
 		  }
@@ -49,7 +48,8 @@ const ContactUs = () => {
 			if (response.data.status === 200) {
 				message.success("Thank You for contacting us!");
 			} else {
-				console.log("sending failed");
+				message.error('Submission Failed')
+
 			}
 		});
 	  }

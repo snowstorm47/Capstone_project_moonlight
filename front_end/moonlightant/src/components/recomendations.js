@@ -1,17 +1,15 @@
-import { Card, List, Avatar,Collapse } from "antd";
+import { Card, List, Avatar } from "antd";
 import { useState,useEffect } from "react";
 import axios from "axios";
 import "../styles/recomendations.css";
 
 const Recomendation = () => {
 	const [recommend, setRecommend] = useState();
-	const { Panel } = Collapse;
 	const id = localStorage.getItem('auth_id');
 	useEffect(() => {
 		axios.get(`/api/getRecommendation/${id}`).then((res) => {
 		  if (res.data.status === 200) {
 			setRecommend(res.data.recommendation);
-			console.log(res.data)
 		  } else {
 			console.log("couldnt retrieve data");
 		  }

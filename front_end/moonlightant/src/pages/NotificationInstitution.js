@@ -1,6 +1,6 @@
 import React, { useEffect, Component, useState } from "react";
 import {
-  Layout,
+  Input,
   Menu,
   Modal,
   Skeleton,
@@ -15,6 +15,7 @@ import { SendTimeExtension, SevenK } from "@mui/icons-material";
 
 // Introduce submenu components
 const SubMenu = Menu.SubMenu;
+const { Search } = Input;
 
 const NotificationInstitution = () => {
   const [visible, setVisible] = useState(true);
@@ -44,10 +45,10 @@ const NotificationInstitution = () => {
     image: "",
     institutionName: "",
   });
-  const id = localStorage.getItem("auth_id");
+  const idL = localStorage.getItem("auth_id");
 
   useEffect(() => {
-    axios.get(`api/showInstitutionNotification/${id}`).then((response) => {
+    axios.get(`api/showInstitutionNotification/${idL}`).then((response) => {
       setState(response.data.notification);
       console.log(response.data.notification);
       setLoading(false);
@@ -62,7 +63,7 @@ const NotificationInstitution = () => {
     axios.put(`/api/seenNotification/${id}`, data).then((res) => {
       if (res.data.status === 200) {
         message.success("Notification in seen box");
-        axios.get(`api/showInstitutionNotification/${id}`).then((response) => {
+        axios.get(`api/showInstitutionNotification/${idL}`).then((response) => {
           setState(response.data.notification);
           console.log(response.data.notification);
           setLoading(false);
@@ -77,7 +78,7 @@ const NotificationInstitution = () => {
     axios.delete(`/api/deleteNotification/${id}`).then((res) => {
       if (res.data.status === 200) {
         message.success("Notification has been deleted");
-        axios.get(`api/showInstitutionNotification/${id}`).then((response) => {
+        axios.get(`api/showInstitutionNotification/${idL}`).then((response) => {
           setState(response.data.notification);
           console.log(response.data.notification);
           setLoading(false);
@@ -87,7 +88,20 @@ const NotificationInstitution = () => {
       }
     });
   };
-
+  const getAllInstitution = (value) => {
+		setLoading(true);
+		return axios.get(`api/showInstitutionNotification/${idL}`).then((response) => {
+			setState(response.data.notification);
+			setLoading(false);
+		});
+	};
+  const onSearch = (value) => {
+		setState(
+			state.filter((i) => {
+				return i.name.includes(value);
+			})
+		);
+	};
 
   return (
     <div>
@@ -96,6 +110,15 @@ const NotificationInstitution = () => {
 	  onCancel={handleCancel}>
 	Do You Want to Delete The Notification
   </Modal>
+  <Search
+					placeholder="Search by Name"
+					allowClear
+					onChange={(value)=>{return value==""?null:getAllInstitution()}}
+					enterButton="Search"
+					size="large"
+					style={{ padding: "40px 20px" }}
+					onSearch={onSearch}
+				/>
       {visible ? (
         <List
           itemLayout="horizontal"
