@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Layout } from "antd";
+import { Card, Row, Col, Layout } from "antd";
 import { Form, Input, Button, Upload } from "antd";
 import { Select } from "antd";
 import { DatePicker, Space, List, Modal } from "antd";
@@ -7,6 +7,7 @@ import { Avatar, Image } from "antd";
 import {  InboxOutlined} from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
+import illustration from "../assets/CompanyAccount.png";
 import { useNavigate } from "react-router-dom";
 import '../App.css';
 
@@ -103,94 +104,95 @@ function HiringCompanyCreateProfile() {
   };
 
   return (
-    <Col
-    className="row1" 
-    style={{ 
-        margin: "3em", 
-        paddingLeft: "35rem",
-        paddingRight: "35rem",
-        backgroundColor:"#f0f2f5",
-        width:"100%" }}>
-      <span>{success}</span>
-      <Form 
-      style={{
-          backgroundColor:"#ffffff",
-          paddingTop:"2rem",
-          paddingLeft:"1rem",
-          paddingRight:"1rem",
-          textAlign:"left",
-      }}
-      onFinish={Profile}>
-        {/* <Col
-          className="row3"
-          span={9}
-          style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
-        > */}
-        
-          <Divider>Create Your Profile </Divider>
-          <Col>
-        <Form.Item
-          name="dragger"
-          valuePropName="fileList"
-          getValueFromEvent={normFile}
-        >
-          <Upload.Dragger
-            name="image"
-            type="file"
-            multiple={false}
-            onChange={(e) =>
-              setCreateProfile({
-                ...createProfile,
-                image: e.fileList[0].originFileObj,
-              })
-            }
-            style={{ width: "100%" }}
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">
-              Click or drag to upload Profile Image
-            </p>
-          </Upload.Dragger>
-          <span style={{color:"red"}}>{createProfile.error_list.image}</span>
-        </Form.Item>
+    <Row style={{
+      paddingTop: "2rem"
+    }}>
+      <Divider>Create Hiring Company Profile</Divider><br  />
+      <Col span={16}
+      style={{backgroundColor: "#ffffff", textAlign: "left",
+        paddingRight: "2rem", paddingLeft:"1rem"
+      }}>
+        <Col>
+          <div className={window.innerWidth<=500?"imageMob":"image"}>
+            <img src={illustration} style={{paddingLeft: "5em", width: "180%"}} className="illustration" alt="" />
+          </div>
         </Col>
-          <Col>
+        <Col>
+        <Card bordered={false} className="homeCard" style={{width: "90%"}}>
+								<h1 style={{ color: "black", fontSize: "2em" }}>
+									Create hiring company's profile here
+								</h1>
+								<span>
+									This page is to create a hiring companies user profile. This account canbe able to view students from various institutions, hire students, as well as view notifications, posts and news from various institutions.
+								</span>
+							</Card>
+        </Col>
+
+      </Col>
+      <Col span={8}>
+        <Form onFinish={Profile}>
+        <Row>
+          
+            <Form.Item
+              name="dragger"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+            >
+              <Upload.Dragger
+                name="image"
+                type="file"
+                multiple={false}
+                onChange={(e) =>
+                  setCreateProfile({
+                    ...createProfile,
+                    image: e.fileList[0].originFileObj,
+                  })
+                }
+                style={{ width: "150%" }}>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">
+                    Click or drag to upload Profile Image
+                  </p>
+              </Upload.Dragger>
+            </Form.Item>
+          
+        </Row>
+        
+
+        <Row>  
             <Form.Item
               label="Phone Number"
-              style={{ width: "76.5%", borderRadius: "50px" }}
+                >
+                <Input
+                  style={{ marginLeft: "0.2em" }}
+                  name="phoneNumber"
+                  onChange={handleInput}
+                  value={createProfile.phoneNumber}
+                />
+                 <span style={{color:"red"}}>{createProfile.error_list.phoneNumber}</span>
+              </Form.Item>
+          
+        </Row>
+        <Row>
+          <Form.Item
+            label="Representative Name"
+             style={{ width: "70%", borderRadius: "50px" }}
             >
               <Input
                 style={{ marginLeft: "0.2em" }}
-                name="phoneNumber"
+                name="representativeName"
                 onChange={handleInput}
-                value={createProfile.phoneNumber}
+                value={createProfile.institutionName}
               />
-          <span style={{color:"red"}}>{createProfile.error_list.phoneNumber}</span>
+          <span style={{color:"red"}}>{createProfile.error_list.institutionName}</span>
             </Form.Item>
-          </Col>
-        {/* </Col> */}
-
-        <Col>
-            <Form.Item
-              label="Representative Full Name"
-              style={{ width: "76.5%", borderRadius: "50px" }}
-            >
-              <Input
-                style={{ marginLeft: "0.2em" }}
-                name="representative"
-                onChange={handleInput}
-                value={createProfile.representative}
-              />
-          <span style={{color:"red"}}>{createProfile.error_list.representative}</span>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item
+        </Row>
+        <Row>
+        <Form.Item
               label="Representative Email"
-              style={{ width: "76.5%", borderRadius: "50px" }}
+              style={{ width: "70%", borderRadius: "50px" }}
             >
               <Input
                 style={{ marginLeft: "0.2em" }}
@@ -200,12 +202,11 @@ function HiringCompanyCreateProfile() {
               />
           <span style={{color:"red"}}>{createProfile.error_list.representativeEmail}</span>
             </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item
+        </Row>
+        <Row>
+        <Form.Item
               label="Describe what your Company does"
-              style={{ width: "76.5%", borderRadius: "50px" }}
+              style={{ width: "90%", borderRadius: "50px" }}
             >
               <Input.TextArea
                 style={{ marginLeft: "0.2em" }}
@@ -215,23 +216,10 @@ function HiringCompanyCreateProfile() {
               />
           <span style={{color:"red"}}>{createProfile.error_list.description}</span>
             </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item label="P.O. Box" style={{ width: "76.5%", borderRadius: "50px" }}>
-              <Input
-                style={{ marginLeft: "0.2em" }}
-                name="poBox"
-                onChange={handleInput}
-                value={createProfile.poBox}
-              />
-          <span style={{color:"red"}}>{createProfile.error_list.poBox}</span>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item label="Location" style={{ width: "76.5%", borderRadius: "50px" }}>
-              <Input
+        </Row>
+        <Row>
+        <Form.Item label="Location" style={{ width: "60%", borderRadius: "50px" }}>
+               <Input
                 style={{ marginLeft: "0.2em" }}
                 name="location"
                 onChange={handleInput}
@@ -239,15 +227,29 @@ function HiringCompanyCreateProfile() {
               />
           <span style={{color:"red"}}>{createProfile.error_list.location}</span>
             </Form.Item>
-          </Col>
+        </Row>
+        <Row>
+        <Form.Item label="P.O. Box" style={{ width: "60%", borderRadius: "50px" }}>
+               <Input
+                style={{ marginLeft: "0.2em" }}
+                name="poBox"
+                onChange={handleInput}
+                value={createProfile.poBox}
+              />
+          <span style={{color:"red"}}>{createProfile.error_list.poBox}</span>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '0.7em', marginTop: '1em'}}>
-              Create Profile
-            </Button>
+            </Form.Item>
+        </Row>
+        <Row>
+        <Form.Item>
+             <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '10em', marginTop: '1em'}}>
+               Create Profile
+             </Button>
           </Form.Item>
-      </Form>
+        </Row>
+    </Form>
     </Col>
+    </Row>
   );
 }
 
