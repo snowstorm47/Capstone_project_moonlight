@@ -8,6 +8,7 @@ import {  InboxOutlined} from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import '../App.css';
 
 // import '/App.css';
 
@@ -71,8 +72,12 @@ function HiringCompanyCreateProfile() {
 
       axios.post(`/api/addHiringCompanyProfile/${id}`, fData).then((res) => {
         if (res.data.status === 200) {
-          //   setSuccess(res.data.message);
-          localStorage.setItem("auth_profile",1);
+          axios
+            .get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`)
+            .then((response) => {
+              localStorage.setItem('first',response.data.first) ;
+          
+            });
           navigate("/");
           console.log('success');
         } else {

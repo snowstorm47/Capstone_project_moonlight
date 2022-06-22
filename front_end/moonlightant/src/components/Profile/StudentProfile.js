@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { List, Image,Row, Col,Card,Avatar } from "antd";
+import { List, Image,Row, Col,Card,Avatar,Collapse} from "antd";
 import { Divider } from "antd";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -9,6 +9,7 @@ function StudentProfile() {
   const [profilePicture, setProfilePicture] = useState({
     image: "",
   });
+	const { Panel } = Collapse;
   const [visible, setVisible] = useState(true);
   const [recommend, setRecommend] = useState();
   const [success, setSuccess] = useState();
@@ -25,7 +26,7 @@ function StudentProfile() {
     department_id: "",
     companyName: "",
     GPA: "",
-    major: "",
+    experience: "",
     startDateClass: "",
     endDateClass: "",
     image: "",
@@ -123,7 +124,7 @@ function StudentProfile() {
 
           <Col>
           <span>
-                <label style={{fontWeight:"bold"}}>Major : </label> {editProfile.major}
+                <label style={{fontWeight:"bold"}}>Experience : </label> {editProfile.experience}
               </span>
               <br/>
               <br/>
@@ -206,8 +207,14 @@ function StudentProfile() {
 								item.image[0].image
 							}/>}
 							title={<span>{item.recommendation.name}</span>}
-							description={item.recommendation.recomendationDetail}
+							description={<Collapse defaultActiveKey={['1']} ghost>
+							<Panel header={item.recommendation.recomendationDetail.slice(0,40)} key="1">
+								<p>{item.recommendation.recomendationDetail}</p>
+							</Panel>
+						</Collapse>}
 						/>
+            
+            
 					</List.Item>
 				)}
 			/><br/>

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ConsoleSqlOutlined } from "@ant-design/icons";
 import { Option } from "antd/lib/mentions";
+import '../App.css';
 
 const SignUp = () => {
   const first = 0;
@@ -77,6 +78,7 @@ const SignUp = () => {
             localStorage.setItem("auth_id", res.data.id);
             localStorage.setItem("auth_position", res.data.position);
             localStorage.setItem("auth_profile", 0);
+            
             console.log("after auth_token");
             setMessage(res.message);
             if (localStorage.getItem("auth_position") === "Institution") {
@@ -102,10 +104,34 @@ const SignUp = () => {
                 });
               });
             }
-            console.log(res.data.message);
-            console.log(first);
+            axios
+            .get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`)
+            .then((response) => {
+              localStorage.setItem('first',response.data.first) ;
+			  if (localStorage.getItem('first') == 0) {
+				if (localStorage.getItem("auth_position") === "Student") {
+				  navigate("/createprofile");
+				} else if (
+				  localStorage.getItem("auth_position") === "Institution"
+				) {
+				  navigate("/createprofileinstitution");
+				} else if (localStorage.getItem("auth_position") === "Instructor") {
+          axios.get(`api/checkVerifyInstructor/${localStorage.getItem("auth_id")}`).then((response) => {
+            localStorage.setItem('verify',response.data.verified);
+          });
+				  navigate("/createprofileinstructor");
+				} else if (
+				  localStorage.getItem("auth_position") === "Hiring Company"
+				) {
+				  navigate("/createprofilehiring");
+				}
+			  } else if (localStorage.getItem('first') == 1){
+				navigate("/newsfeed");
+			  }
+            });
+          
             // swal("Success", res.data.message, "success");
-            navigate("/signin", { state: { first } });
+            navigate("/newsfeed");
           } else {
             console.log("inside else");
             setFailMessage(res.data.message);
@@ -186,6 +212,7 @@ const SignUp = () => {
               <Option value="Instructor">Instructor</Option>
               <Option value="Hiring Company">Hiring Company</Option>
               <Option value="Institution">Institution</Option>
+              {<span style={{color:"red"}}>{registerInput.error_list.position}</span>}
             </Select>
           </Form.Item>
           <Form.Item
@@ -206,6 +233,7 @@ const SignUp = () => {
               onChange={handleInput}
               value={registerInput.email}
             />
+              {<span style={{color:"red"}}>{registerInput.error_list.email}</span>}
           </Form.Item>
           {registerInput.position == "Institution" ? (
             <Form.Item
@@ -237,6 +265,7 @@ const SignUp = () => {
                   </Option>}
                 )}
               </Select>
+              {<span style={{color:"red"}}>{registerInput.error_list.name}</span>}
             </Form.Item>
           ) : (
             <Form.Item
@@ -252,10 +281,12 @@ const SignUp = () => {
               ]}
             >
               <Input
+                type="text"
                 name="name"
                 onChange={handleInput}
                 value={registerInput.name}
               />
+              {<span style={{color:"red"}}>{registerInput.error_list.name}</span>}
             </Form.Item>
           )}
 
@@ -276,6 +307,7 @@ const SignUp = () => {
               onChange={handleInput}
               value={registerInput.password}
             />
+              {<span style={{color:"red"}}>{registerInput.error_list.password}</span>}
           </Form.Item>
           <Form.Item
             labelCol={{ span: 24 }}

@@ -239,6 +239,7 @@ const AdvancedSearch = (props) => {
 		reciever_id: "",
 		seen_status: "False",
 	});
+  const navigate = useNavigate();
 	const profile=(position,id)=>{
 		console.log(id);
 		if (position=== "Student") {

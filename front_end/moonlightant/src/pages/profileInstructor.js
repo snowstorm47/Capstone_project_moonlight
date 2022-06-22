@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Layout } from "antd";
+import { Row, Col, Layout, InputNumber } from "antd";
 import { Form, Input, Button, message } from "antd";
 import { Select } from "antd";
 import { DatePicker, Space, List, Modal } from "antd";
@@ -13,7 +13,8 @@ import AddEmploymentHistory from "../components/AddEmploymentHistory";
 import EditEmploymentHistory from "../components/EditEmploymentHistory";
 import EditInstructorProfilePicture from "../components/EditInstructorProfilePicture";
 import AddCertificate from "../components/AddCertificate";
-// import '/App.css';
+import '../App.css';
+
 
 const { Option } = Select;
 
@@ -66,7 +67,7 @@ function ProfilePageInstructor() {
     department_id: "",
     companyName: "",
     GPA:"",
-    major:"",
+    experience:"",
     startDateClass: "",
     endDateClass: "",
     skill: [],
@@ -168,10 +169,12 @@ function ProfilePageInstructor() {
     const data = {
       phoneNumber: editProfile.phoneNumber,
       sex: editProfile.sex,
-      major: editProfile.major,
+      experience: editProfile.experience,
       name: editProfile.name,
       GPA: editProfile.GPA,
       institution_id: editProfile.institution_id,
+      department_id: editProfile.department_id,
+      college_id: editProfile.college_id,
     };
     const id = localStorage.getItem("auth_id");
     axios.get("/sanctum/csrf-cookie").then((res) => {
@@ -275,12 +278,12 @@ function ProfilePageInstructor() {
           </Col>
 
           <Col>
-            <Form.Item label="Major" style={{ width: "76.5%", borderRadius: "50px" }}>
-              <Input
+            <Form.Item label="Experience" style={{ width: "76.5%", borderRadius: "50px" }}>
+              <InputNumber
                 style={{ marginLeft: "0.2em" }}
-                name="major"
-                onChange={handleInput}
-                value={editProfile.major}
+                name="experience"
+                onChange={(e)=>{setEditProfile({...editProfile,experience:e})}}
+                value={editProfile.experience}
               />
             </Form.Item>
           </Col>
@@ -316,6 +319,46 @@ function ProfilePageInstructor() {
               </select>
             </Form.Item>
           </Col>
+
+          <Col>
+              <Form.Item>
+                <select
+                  placeholder="Select a College"
+                  style={{ padding: 10, width: "75%", borderRadius: "80px" }}
+                  name="college_id"
+                  onChange={handleInput}
+                  value={editProfile.college_id}
+                >
+                  {collegeList.map((item) => {
+                    return (
+                      <option value={item.id} key={item.id}>
+                        {item.collegeName}
+                      </option>
+                    );
+                  })}
+                </select>
+              </Form.Item>
+            </Col>
+
+            <Col>
+              <Form.Item>
+                <select
+                  placeholder="Select a Department"
+                  style={{ padding: 10, width: "75%", borderRadius: "80px" }}
+                  name="department_id"
+                  onChange={handleInput}
+                  value={editProfile.department_id}
+                >
+                  {departmentList.map((item) => {
+                    return (
+                      <option value={item.id} key={item.id}>
+                        {item.departmentName}
+                      </option>
+                    );
+                  })}
+                </select>
+              </Form.Item>
+            </Col>
 
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '0.7em', marginTop: '1em'}}>
