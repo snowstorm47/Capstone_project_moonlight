@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Layout } from "antd";
+import { Row, Col, Layout, InputNumber } from "antd";
 import { Form, Input, Button, Upload } from "antd";
 import { Select } from "antd";
 import { DatePicker, Space, List, Modal } from "antd";
@@ -8,11 +8,8 @@ import { UserOutlined, CloseOutlined, InboxOutlined} from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AddSkill from "../components/AddSkill";
-import AddEmploymentHistory from "../components/AddEmploymentHistory";
-import EditEmploymentHistory from "../components/EditEmploymentHistory";
-import SocialMediaLink from "../components/SocialMediaLink";
-import EditProfilePicture from "./EditProfilePicture";
+import '../App.css';
+
 
 // import '/App.css';
 
@@ -30,7 +27,7 @@ function CreateProfile() {
     college_id: "",
     department_id: "",
     GPA: "",
-    major: "",
+    experience: "",
     startDateClass: "",
     endDateClass: "",
     image: "",
@@ -61,6 +58,7 @@ function CreateProfile() {
 
     setCreateProfile({ ...createProfile, [e.target.name]: e.target.value });
   };
+  
 
   const Profile = (e) => {
     console.log("create");
@@ -69,7 +67,7 @@ function CreateProfile() {
     fData.append("image", createProfile.image);
     fData.append("phoneNumber", createProfile.phoneNumber);
     fData.append("sex", createProfile.sex);
-    fData.append("major", createProfile.major);
+    fData.append("experience", createProfile.experience);
     fData.append("GPA", createProfile.GPA);
     fData.append("institution_id", createProfile.institution_id);
     fData.append("college_id", createProfile.college_id);
@@ -83,9 +81,13 @@ function CreateProfile() {
 
       axios.post(`/api/addProfile/${id}`, fData).then((res) => {
         if (res.data.status === 200) {
-          localStorage.setItem("auth_profile",1);
-          //   setSuccess(res.data.message);
-          navigate("/");
+          axios
+            .get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`)
+            .then((response) => {
+              localStorage.setItem('first',response.data.first) ;
+              
+            });
+          navigate("/newsfeed");
           console.log('success');
         } else {
           console.log("inside else");
@@ -288,12 +290,12 @@ function CreateProfile() {
           </Col>
 
           <Col>
-            <Form.Item label="Major" style={{ width: "76.5%", borderRadius: "50px" }}>
-              <Input
+            <Form.Item label="experience" style={{ width: "76.5%", borderRadius: "50px" }}>
+              <InputNumber
                 style={{ marginLeft: "0.2em" }}
-                name="major"
-                onChange={handleInput}
-                value={createProfile.major}
+                name="experience"
+                onChange={(e)=>{setCreateProfile({...createProfile,experience:e})}}
+                value={createProfile.experience}
               />
             </Form.Item>
           </Col>

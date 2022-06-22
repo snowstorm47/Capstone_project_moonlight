@@ -362,8 +362,13 @@ class profileController extends Controller
     }
     public function profileInstitution($id)
     {
-        $user=User::join('institution', 'institution.user_id', '=', 'users.id')->where('users.id', '=', $request->id)->get();
-        return Response()->json(['data'=>$user]);
+        $user=User::join('institution', 'institution.user_id', '=', 'users.id')->where('users.id', '=', $id)->get(['users.email', 'users.name', 'institution.location', 'institution.phoneNumber', 'institution.poBox','institution.image']);
+        return Response()->json(['status'=>200,'data'=>$user]);
+    }
+    public function profileHiring($id)
+    {
+        $user=User::join('hiringcompany', 'hiringcompany.user_id', '=', 'users.id')->where('users.id', '=', $id)->get(['users.email', 'users.name', 'hiringcompany.location', 'hiringcompany.phoneNumber', 'hiringcompany.poBox','hiringcompany.image']);
+        return Response()->json(['status'=>200,'data'=>$user]);
     }
     public function profile($id)
     {

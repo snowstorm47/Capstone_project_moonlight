@@ -8,11 +8,8 @@ import { UserOutlined, CloseOutlined, InboxOutlined} from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AddSkill from "../components/AddSkill";
-import AddEmploymentHistory from "../components/AddEmploymentHistory";
-import EditEmploymentHistory from "../components/EditEmploymentHistory";
-import SocialMediaLink from "../components/SocialMediaLink";
-import EditProfilePicture from "./EditProfilePicture";
+import '../App.css';
+
 
 // import '/App.css';
 
@@ -56,9 +53,14 @@ function InstitutionCreateProfile() {
 
       axios.post(`/api/addInstitutionProfile/${id}`, fData).then((res) => {
         if (res.data.status === 200) {
-          localStorage.setItem("auth_profile",1);
+          axios
+            .get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`)
+            .then((response) => {
+              localStorage.setItem('first',response.data.first) ;
+          
+            });
           //   setSuccess(res.data.message);
-          navigate("/");
+          navigate("/newsfeed");
           console.log('success');
         } else {
           console.log("inside else");

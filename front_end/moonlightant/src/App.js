@@ -7,7 +7,6 @@ import ContactUs from "./pages/ContactUs";
 import Notification from "./pages/Notification";
 // import SignUp from "./pages/signup";
 import SignUp from "./pages/create";
-import SignIn from "./pages/signin";
 import ProfilePageP from "./pages/profilePage";
 import LogIn from "./pages/login";
 import {
@@ -97,6 +96,7 @@ function App() {
 		});
 	};
 	const [image, setImage] = useState();
+	const [vary, setVary] = useState();
 	const [valid,setValid] = useState({
 		first:null,
 		verify:1
@@ -104,6 +104,7 @@ function App() {
 	let first;
 	// const [verify,setVerify] = useState();
 	let verify;
+	// let vary=false;
 	const navigate = useNavigate();
 	const logoutSubmit = (e) => {
 		axios.post("/api/logout").then((res) => {
@@ -115,51 +116,42 @@ function App() {
 				localStorage.removeItem("auth_name");
 				localStorage.removeItem("auth_position");
 				localStorage.removeItem("auth_id");
+				localStorage.removeItem("first");
+				setVary(!vary);
 				navigate("/");
 			} else {
 			}
 		});
 	};
 	let id = localStorage.getItem("auth_id");
-	useEffect(() => {
-		axios.get(`/api/getProfilePicture/${id}`).then((res) => {
-			if (res.data.status === 200) {
-				setImage(res.data.image);
-			} else {
-				console.log("couldnt retrieve data");
-			}
-		});
-	}, []);
-	useEffect(() => {
+	// useEffect(() => {
+	// 	axios.get(`/api/getProfilePicture/${id}`).then((res) => {
+	// 		if (res.data.status === 200) {
+	// 			setImage(res.data.image);
+	// 		} else {
+	// 			console.log("couldnt retrieve data");
+	// 		}
+	// 	});
+	// }, []);
 
-		axios.get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`).then((response) => {
-			//   setFirst(response.data.first);
-			first = response.data.first;
-			setValid({
-				first:first
-			})
-			  console.log(valid.first);
-			});
-	}, []);
+	// useEffect(() => {
 
-	useEffect(() => {
-
-	  if(localStorage.getItem('auth_position')==="Instructor")
-		{
-			axios.get(`api/checkVerifyInstructor/${id}`).then((response) => {
-			  verify = response.data.verified;
-			  setValid({
-				verify:verify
-			  })
-			  console.log(response.data.verified);
-			});
-		}
-	}, []);
+	//   if(localStorage.getItem('auth_position')==="Instructor")
+	// 	{
+	// 		axios.get(`api/checkVerifyInstructor/${id}`).then((response) => {
+	// 		  verify = response.data.verified;
+	// 		  setValid({
+	// 			verify:verify
+	// 		  })
+	// 		  console.log(valid.verify);
+	// 		});
+	// 	}
+	// }, [vary]);
 
 	  
 	// console.log(localStorage.getItem("auth_profile"));
 	let editProfile = "";
-	if (valid.first=== 1) {
+	if (localStorage.getItem('first')== 1) {
 		if (localStorage.getItem("auth_position") === "Student") {
 			editProfile = "/profilepage";
 		} else if (localStorage.getItem("auth_position") === "Institution") {
@@ -173,11 +165,14 @@ function App() {
 		if (localStorage.getItem("auth_position") === "Student") {
 			editProfile = "/createprofile";
 		} else if (localStorage.getItem("auth_position") === "Instructor") {
+			editProfile = "/createprofileinstitution";
+		} else if (localStorage.getItem("auth_position") === "Instructor") {
 			editProfile = "/createprofileinstructor";
 		} else if (localStorage.getItem("auth_position") === "Hiring Company") {
 			editProfile = "/createprofilehiring";
 		}
 	}
+	console.log(editProfile);
 	const menu = (
 		<Menu selectable={true} style={{ width: "150px" }}>
 			<Menu.Item key="1" onClick={logoutSubmit}>
@@ -271,7 +266,7 @@ function App() {
 					}
 				} */}
 				{(localStorage.getItem("auth_position"))===null?null:
-					(((localStorage.getItem("auth_position")==="Institution")&&(valid.first===1))||((localStorage.getItem("auth_position")==="Instructor") &&(valid.verify===1))||((localStorage.getItem("auth_position")==="Student")&&(valid.first===1))||((localStorage.getItem("auth_position")==="Hiring Company")&&(valid.first===1)))
+					(((localStorage.getItem("auth_position")==="Institution")&&(localStorage.getItem('first')))||((localStorage.getItem("auth_position")==="Instructor") &&(localStorage.getItem('verify')))||((localStorage.getItem("auth_position")==="Student")&&(localStorage.getItem('first')==1))||((localStorage.getItem("auth_position")==="Hiring Company")&&(localStorage.getItem('first'))))
 					?
 					<Menu.Item key="3">
 						<Link to="/Notification">
@@ -282,7 +277,7 @@ function App() {
 					}
 					<Menu.Item key="4">
 						<Link to="/aboutus">
-							<NotificationOutlined /> Aboutus
+							<NotificationOutlined /> About Us
 						</Link>
 					</Menu.Item>
 					{(localStorage.getItem("auth_position")==="Admin" )

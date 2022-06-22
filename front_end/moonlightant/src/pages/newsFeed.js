@@ -20,6 +20,7 @@ import Recomendation from "../components/recomendations";
 import axios from "axios";
 import CreateRecommendationDrawer from "../components/CreateRecommendationDrawer";
 import CreateStudentRecommendation from "../components/CreateStudentRecommendation";
+import ProfileDetailHiring from "../components/profileDetailHiring";
 const { Search } = Input;
 const Newsfeed = () => {
 	let first;
@@ -114,7 +115,7 @@ const Newsfeed = () => {
 			{}
 			<div className="rightContainer">
 				  
-				{window.innerWidth>=500?localStorage.getItem("auth_position") === "Institution"?<ProfileDetailInstitution/>:<ProfileDetail />:null}
+				{window.innerWidth>=500?localStorage.getItem("auth_position") === "Institution"?<ProfileDetailInstitution/>:(localStorage.getItem("auth_position") === "Hiring Company"?<ProfileDetailHiring/>:<ProfileDetail />):null}
 				{localStorage.getItem("auth_position") === "Instructor"? (
 					<CreateRecommendationDrawer/>
 				) : null}

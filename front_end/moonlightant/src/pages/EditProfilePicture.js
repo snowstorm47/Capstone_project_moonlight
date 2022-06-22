@@ -9,11 +9,13 @@ import {
 import React, { useState, useEffect } from "react";
 import { Avatar, Image } from "antd";
 import axios from "axios";
+import '../App.css';
 
 const EditProfilePicture = ({ parentToChild }) => {
   const [profilePicture, setProfilePicture] = useState({
     image: "",
   });
+  const [list, setList] = useState(null);
   const id = localStorage.getItem("auth_id");
 
   useEffect(() => {
@@ -138,6 +140,8 @@ const EditProfilePicture = ({ parentToChild }) => {
                   image: e.fileList[0].originFileObj,
                 })
               }
+  //             {...settings}
+              className={list !== null && list.length === 1 ? 'blocked' : undefined}
               style={{ width: "100%" }}
             >
               <p className="ant-upload-drag-icon">

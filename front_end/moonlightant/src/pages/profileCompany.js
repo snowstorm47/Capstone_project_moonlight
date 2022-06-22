@@ -14,7 +14,8 @@ import EditEmploymentHistory from "../components/EditEmploymentHistory";
 import EditProfilePicture from "./EditProfilePicture";
 import EditHiringProfilePicture from "../components/EditHiringProfilePicture";
 import { borderRadius } from "@mui/system";
-// import '/App.css';
+import '../App.css';
+
 
 const { Option } = Select;
 
