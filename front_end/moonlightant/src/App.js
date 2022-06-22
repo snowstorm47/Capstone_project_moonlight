@@ -58,6 +58,7 @@ import HiringCompany from "./pages/hiringCompany";
 import { LocalHospitalTwoTone } from "@mui/icons-material";
 import ForgotPassword from "./pages/forgotPassword";
 import ResetPassword from "./pages/resetPassword";
+import Footerd from "./pages/footer";
 
 //to generate csrf token
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -375,13 +376,7 @@ function App() {
 
 				</Routes>
 			</Content>
-			<Footer
-				style={{
-					textAlign: "center",
-				}}
-			>
-				Moonlight ©2022 Created by Moonlight PLC
-			</Footer>
+			<Footerd/>
 		</div>
 	);
 }
