@@ -32,7 +32,6 @@ class profileController extends Controller
             'GPA'=>'required',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
-            'image' => 'required',
 
         ]);
         
