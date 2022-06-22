@@ -12,7 +12,8 @@ import AddSkill from "../components/AddSkill";
 import AddEmploymentHistory from "../components/AddEmploymentHistory";
 import EditEmploymentHistory from "../components/EditEmploymentHistory";
 import EditInstitutionProfilePicture from "../components/EditInstitutionProfilePicture";
-// import '/App.css';
+import '../App.css';
+
 
 const { Option } = Select;
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/signIn.css";
 import { useLocation } from "react-router-dom";
+import { WindowsFilled } from "@ant-design/icons";
 const LogIn = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -43,23 +44,26 @@ const LogIn = () => {
           localStorage.setItem("auth_position", res.data.position);
           setMessage(res.data.message);
           console.log(res.data.message);
+          // window.location.reload();
           axios
             .get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`)
             .then((response) => {
               // setFirst(response.data.first);
               // setFirst(0);
-              check = response.data.first;
-              console.log(check)
+              localStorage.setItem('first',response.data.first) ;
               // setValid({...valid,first:check});
               // console.log(valid.first,'valid');
-			  if (check === 0) {
+			  if (localStorage.getItem('first') == 0) {
 				if (localStorage.getItem("auth_position") === "Student") {
 				  navigate("/createprofile");
 				} else if (
 				  localStorage.getItem("auth_position") === "Institution"
 				) {
-				  navigate("/newsfeed");
+				  navigate("/createprofileinstitution");
 				} else if (localStorage.getItem("auth_position") === "Instructor") {
+          axios.get(`api/checkVerifyInstructor/${localStorage.getItem("auth_id")}`).then((response) => {
+            localStorage.setItem('verify',response.data.verified);
+          });
 				  navigate("/createprofileinstructor");
 				} else if (
 				  localStorage.getItem("auth_position") === "Hiring Company"
@@ -145,6 +149,7 @@ const LogIn = () => {
               onChange={handleInput}
               value={loginInput.email}
             />
+            
             <span style={{ color: "red", fontWeight: "normal" }}>
               {loginInput.error_list.email}
             </span>

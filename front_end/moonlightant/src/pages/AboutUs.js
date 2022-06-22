@@ -44,8 +44,8 @@ function AboutUs() {
           style={{
             backgroundImage:
             `url(
-              "http://localhost:8000/uploads/ProfilePicture/" +
-              ${editAboutus.image}
+              "http://localhost:8000/uploads/AboutusPicture/${editAboutus.image}"
+              
             )`,
             backgroundPosition: "center",
             backgroundSize: "cover",
@@ -66,14 +66,14 @@ function AboutUs() {
             >
               <Title 
               style={{ 
-                color: "#000000",
+                color: "#ffffff",
                 opacity:1,
                   }} 
               level={1}>
                 <br/>
                 {editAboutus.imageTitle}
               </Title>
-              <Title level={5} style={{ color: "#000000",opacity:1, textAlign: "left" , marginLeft:"30px" }}>
+              <Title level={5} style={{ color: "#ffffff",opacity:1, textAlign: "left" , marginLeft:"30px" }}>
                 {editAboutus.imageDetail}
               </Title>
             {/* </Col> */}
@@ -128,15 +128,16 @@ function AboutUs() {
       <br />
       <Row>
         <Col span={12}>
-          <Image
-            height="90%"
+          <img
+            height="80%"
             width="80%"
             name="TitleOneImage"
+            alt="title"
             src={
               "http://localhost:8000/uploads/AboutusPicture/" +
               editAboutus.TitleOneImage
             }
-          ></Image>
+          />
         </Col>
         <Col span={12}>
           <br />
@@ -160,15 +161,15 @@ function AboutUs() {
           </Text>
         </Col>
         <Col span={12}>
-          <Image
-            height="90%"
+          <img
+            height="80%"
             width="80%"
             name="TitleTwoImage"
             src={
               "http://localhost:8000/uploads/AboutusPicture/" +
               editAboutus.TitleTwoImage
             }
-          ></Image>
+          />
         </Col>
       </Row>
       <br />
@@ -179,15 +180,15 @@ function AboutUs() {
 
       <Row>
         <Col span={12}>
-          <Image
-            height="90%"
+          <img
+            height="80%"
             width="80%"
             name="TitleThreeImage"
             src={
               "http://localhost:8000/uploads/AboutusPicture/" +
               editAboutus.TitleThreeImage
             }
-          ></Image>
+          />
         </Col>
         <Col span={12}>
           <br />

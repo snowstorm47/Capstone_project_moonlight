@@ -20,9 +20,11 @@ function InstructorProfile() {
     endDate: "",
     sex: "",
     institutionName:"",
+    collegeName:"",
+    departmentName:"",
     companyName: "",
     GPA: "",
-    major: "",
+    experience: "",
     startDateClass: "",
     endDateClass: "",
     image: "",
@@ -107,7 +109,7 @@ function InstructorProfile() {
 
           <Col>
           <span>
-                <label style={{fontWeight:"bold"}}>Major : </label> {editProfile.major}
+                <label style={{fontWeight:"bold"}}>Experience : </label> {editProfile.experience}
               </span>
               <br/>
               <br/>
@@ -133,6 +135,20 @@ function InstructorProfile() {
             <Divider>Academic</Divider>
             <span>
                 <label style={{fontWeight:"bold"}}>Institution : </label> {editProfile.institutionName}
+              </span>
+              <br/>
+              <br/>
+          </Col>
+          <Col>
+          <span>
+                <label style={{fontWeight:"bold"}}>College : </label> {editProfile.collegeName}
+              </span>
+              <br/>
+              <br/>
+          </Col>
+          <Col>
+          <span>
+                <label style={{fontWeight:"bold"}}>Department : </label> {editProfile.departmentName}
               </span>
               <br/>
               <br/>

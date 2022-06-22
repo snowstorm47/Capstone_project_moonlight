@@ -247,6 +247,7 @@ const AdvancedSearch = (props) => {
 		reciever_id: "",
 		seen_status: "False",
 	});
+  const navigate = useNavigate();
 	const profile=(position,id)=>{
 		if (position=== "Student") {
 			navigate("/StudentProfile",{state:{id}});

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Layout, message } from "antd";
+import { Row, Col, Layout, message, InputNumber } from "antd";
 import { Form, Input, Button, Typography } from "antd";
 import { Select } from "antd";
 import { Card, Space, List, Modal } from "antd";
@@ -14,15 +14,14 @@ import EditEmploymentHistory from "../components/EditEmploymentHistory";
 import SocialMediaLink from "../components/SocialMediaLink";
 import EditProfilePicture from "./EditProfilePicture";
 import AddCertificate from "../components/AddCertificate";
-
-// import '/App.css';
+import '../App.css';
 
 const { Option } = Select;
 
 function ProfilePageP() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleCertificate, setIsModalVisibleCertificate] = useState(false);
-
+  const [list, setList] = useState(null);
   const showModal = (id) => {
     setIsModalVisible(true);
     setIds({ id: id });
@@ -64,7 +63,7 @@ function ProfilePageP() {
     department_id: "",
     companyName: "",
     GPA: "",
-    major: "",
+    experience : "",
     startDateClass: "",
     endDateClass: "",
     image: "",
@@ -163,7 +162,7 @@ function ProfilePageP() {
     const data = {
       phoneNumber: editProfile.phoneNumber,
       sex: editProfile.sex,
-      major: editProfile.major,
+      experience: editProfile.experience,
       name: editProfile.name,
       GPA: editProfile.GPA,
       startDateClass: editProfile.startDateClass,
@@ -276,14 +275,14 @@ function ProfilePageP() {
 
             <Col>
               <Form.Item
-                label="Major"
+                label="Experience"
                 style={{ width: "76.5%", borderRadius: "50px" }}
               >
-                <Input
+                <InputNumber
                   style={{ marginLeft: "0.2em" }}
-                  name="major"
-                  onChange={handleInput}
-                  value={editProfile.major}
+                  name="experience"
+                  onChange={(e)=>{setEditProfile({...editProfile,experience:e})}}
+                  value={editProfile.experience}
                 />
                 {/* <span style={{color:"red"}}>{editProfile.error_list.major}</span> */}
               </Form.Item>
@@ -388,20 +387,7 @@ function ProfilePageP() {
 
             <Col>
               <Space direction="vertical" size={12} style={{ padding: 10 }}>
-                {/* <Form.Item
-      name="startDateClass"
-      onChange={handleInput}
-      value={editProfile.startDateClass}
-      >
-    <DatePicker/>
-    </Form.Item>
-    <Form.Item
-    name="endDateClass"
-    onChange={handleInput}
-    value={editProfile.endDateClass}
-    >
-    <DatePicker/>
-    </Form.Item> */}
+                
                 <label>Start Date:</label>
                 <input
                   style={{ marginLeft: "1em" }}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Layout } from "antd";
+import { Row, Col, Layout, InputNumber } from "antd";
 import { Form, Input, Button, Upload } from "antd";
 import { Select } from "antd";
 import { DatePicker, Space, List, Modal } from "antd";
@@ -8,11 +8,8 @@ import { UserOutlined, CloseOutlined, InboxOutlined} from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AddSkill from "../components/AddSkill";
-import AddEmploymentHistory from "../components/AddEmploymentHistory";
-import EditEmploymentHistory from "../components/EditEmploymentHistory";
-import SocialMediaLink from "../components/SocialMediaLink";
-import EditProfilePicture from "./EditProfilePicture";
+import '../App.css';
+
 
 // import '/App.css';
 
@@ -20,13 +17,17 @@ const { Option } = Select;
 
 function InstructorCreateProfile() {
   const [institutionList, setInstitutionList] = useState([]);
+  const [collegeList, setCollegeList] = useState([]);
+  const [departmentList, setDepartmentList] = useState([]);
   const [success, setSuccess] = useState();
   const [createProfile, setCreateProfile] = useState({
     phoneNumber: "",
     sex: "",
     institution_id: "",
+    college_id: "",
+    department_id: "",
     GPA: "",
-    major: "",
+    experience: "",
     image: "",
     error_list: [],
   });
@@ -39,7 +40,8 @@ function InstructorCreateProfile() {
     axios.get(`/api/all-institution`).then((res) => {
       if (res.data.status === 200) {
         setInstitutionList(res.data.institution);
-        console.log(institutionList);
+        setCollegeList(res.data.college);
+        setDepartmentList(res.data.department);
       }
     });
   }, []);
@@ -62,7 +64,9 @@ function InstructorCreateProfile() {
     fData.append("image", createProfile.image);
     fData.append("phoneNumber", createProfile.phoneNumber);
     fData.append("sex", createProfile.sex);
-    fData.append("major", createProfile.major);
+    fData.append("experience", createProfile.experience);
+    fData.append("college_id", createProfile.college_id);
+    fData.append("department_id", createProfile.department_id);
     fData.append("GPA", createProfile.GPA);
     fData.append("verificationStatus", 0);
     fData.append("institution_id", createProfile.institution_id);
@@ -74,8 +78,12 @@ function InstructorCreateProfile() {
 
       axios.post(`/api/addInstructorProfile/${id}`, fData).then((res) => {
         if (res.data.status === 200) {
-          localStorage.setItem("auth_profile",1);
-          //   setSuccess(res.data.message);
+          axios
+            .get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`)
+            .then((response) => {
+              localStorage.setItem('first',response.data.first) ;
+          
+            });
           navigate("/");
           console.log('success');
         } else {
@@ -206,14 +214,56 @@ function InstructorCreateProfile() {
               
             </Form.Item>
           </Col>
+          <Col>
+            <Form.Item>
+              <select
+                placeholder="Select a College"
+                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
+                name="college_id"
+                onChange={handleInput}
+                value={createProfile.college_id}
+              >
+                <option value="">Select College</option>
+
+                {collegeList.map((item) => {
+                  return (
+                    <option value={item.id} key={item.id}>
+                      {item.collegeName}
+                    </option>
+                  );
+                })}
+              </select>
+            </Form.Item>
+          </Col>
 
           <Col>
-            <Form.Item label="Major" style={{ width: "76.5%", borderRadius: "50px" }}>
-              <Input
-                style={{ marginLeft: "0.2em" }}
-                name="major"
+            <Form.Item>
+              <select
+                placeholder="Select a Department"
+                style={{ padding: 10, width: "75%", borderRadius: "80px"}}
+                name="department_id"
                 onChange={handleInput}
-                value={createProfile.major}
+                value={createProfile.department_id}
+              >
+                <option value="">Select Department</option>
+
+                {departmentList.map((item) => {
+                  return (
+                    <option value={item.id} key={item.id}>
+                      {item.departmentName}
+                    </option>
+                  );
+                })}
+              </select>
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item label="experience" style={{ width: "76.5%", borderRadius: "50px" }}>
+              <InputNumber
+                style={{ marginLeft: "0.2em" }}
+                name="experience"
+                onChange={(e)=>{setCreateProfile({...createProfile,experience:e})}}
+                value={createProfile.experience}
               />
           <span style={{color:"red"}}>{createProfile.error_list.major}</span>
 
