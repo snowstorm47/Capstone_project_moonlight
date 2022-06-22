@@ -58,12 +58,6 @@ const AdminPost = () => {
 			>
 				Do You Want to Delete The Post
 			</Modal>
-			<Input.Search
-				style={{ marginBottom: "5rem" }}
-				size="middium"
-				placeholder="Search by name"
-				enterButton
-			/>
 			{state?.map((item) => (
 				<Card
 					style={{

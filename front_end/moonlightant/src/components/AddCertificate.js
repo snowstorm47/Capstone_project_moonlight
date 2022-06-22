@@ -8,6 +8,7 @@ const  AddCertificate = () =>{
     const [certificate, setCertificate] = useState({
         certificate: "",
         description: "",
+        error_list:[]
     });
     const id = localStorage.getItem("auth_id");
 
@@ -21,6 +22,10 @@ const  AddCertificate = () =>{
         if (res.data.status === 200) {
           message.success("Certificate added");
         } else {
+          setCertificate({
+            ...certificate,
+            error_list: res.data.validation_errors,
+          });
           message.error("Certificate not added");
         }
       });
@@ -52,6 +57,7 @@ const  AddCertificate = () =>{
                 onChange={handleInput}
                 value={certificate.description}
               />
+             <span style={{color:"red"}}>{certificate.error_list?.description}</span>
             </Form.Item>
             <Form.Item
               name="certificate"
@@ -77,6 +83,7 @@ const  AddCertificate = () =>{
                   Click or drag file to this area to upload
                 </p>
               </Upload.Dragger>
+             <span style={{color:"red"}}>{certificate.error_list?.certificate}</span>
             </Form.Item>
             <Form.Item>
               <Button

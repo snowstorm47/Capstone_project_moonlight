@@ -29,8 +29,6 @@ function AboutUs() {
     axios.get(`/api/aboutus`).then((res) => {
       if (res.data.status === 200) {
         setEditAboutus(res.data.aboutus[0]);
-         console.log(res.data.aboutus[0]);
-        console.log(editAboutus);
       } else {
         console.log("couldnt retrieve data");
       }
@@ -50,7 +48,7 @@ function AboutUs() {
             backgroundPosition: "center",
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
-            height: "400px",
+            height: "300px",
             width: "80",
           }}
           name="image"
@@ -129,8 +127,8 @@ function AboutUs() {
       <Row>
         <Col span={12}>
           <img
-            height="80%"
-            width="80%"
+            height="70%"
+            width="50%"
             name="TitleOneImage"
             alt="title"
             src={
@@ -162,8 +160,8 @@ function AboutUs() {
         </Col>
         <Col span={12}>
           <img
-            height="80%"
-            width="80%"
+            height="70%"
+            width="30%"
             name="TitleTwoImage"
             src={
               "http://localhost:8000/uploads/AboutusPicture/" +
@@ -181,8 +179,8 @@ function AboutUs() {
       <Row>
         <Col span={12}>
           <img
-            height="80%"
-            width="80%"
+            height="70%"
+            width="50%"
             name="TitleThreeImage"
             src={
               "http://localhost:8000/uploads/AboutusPicture/" +

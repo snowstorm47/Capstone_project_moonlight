@@ -13,6 +13,7 @@ import axios from "axios";
 const EditInstructorProfilePicture = ({ parentToChild }) => {
   const [profilePicture, setProfilePicture] = useState({
     image: "",
+    error_list:[]
   });
   const id = localStorage.getItem("auth_id");
 
@@ -54,6 +55,10 @@ const EditInstructorProfilePicture = ({ parentToChild }) => {
             }
           });
         } else {
+          setProfilePicture({
+            ...profilePicture,
+            error_list: response.data.validation_errors,
+          });
           message.error("Picture was not updated. Please try again");
         }
       });
@@ -102,6 +107,7 @@ const EditInstructorProfilePicture = ({ parentToChild }) => {
         title="Edit your profile image"
         visible={isModalVisible}
         onCancel={handleCancel}
+        footer={null}
       >
         <Form
         name="dynamic_form_nest_item"
@@ -140,6 +146,7 @@ const EditInstructorProfilePicture = ({ parentToChild }) => {
                 Click or drag file to this area to upload
               </p>
             </Upload.Dragger>
+            <span style={{color:"red"}}>{profilePicture.error_list?.image}</span>
           </Form.Item>
         </Form.Item>
         <Form.Item

@@ -52,18 +52,16 @@ const CreateStudentRecommendation = () => {
         };
 
         axios.get("/sanctum/csrf-cookie").then((res) => {
-            console.log("inside csrf");
       
             axios.post(`/api/sendRecommendation`, data).then((res) => {
               if (res.data.status === 200) {
                 message.success("Your recommendation is successful");
               } else {
-                console.log("inside else");
                 setRecomendation({
                   ...recomendation,
                   error_list: res.data.validation_errors,
                 });
-                console.log(res.data.validation_errors);
+                message.error('Recommendation Failed')
               }
             });
           }, []);
@@ -75,12 +73,9 @@ const CreateStudentRecommendation = () => {
       });
   
       const handleInputStudent = (e) => {
-        // e.persist();
-        console.log(e);
         setRecomendation({ student_id: e});
       };
       const handleInput = (e) => {
-          // e.persist();
       setRecomendation({ ...recomendation, [e.target.name]: e.target.value });
         };
 
@@ -146,7 +141,7 @@ const CreateStudentRecommendation = () => {
                 onChange={handleInput}
                 value={recomendation.recomendationDetail}
               />
-          {/* <span style={{color:"red"}}>{editProfile.error_list.name}</span> */}
+          <span style={{color:"red"}}>{recomendation.error_list.recomendationDetail}</span>
             </Form.Item>
           </Col>
           <Col>
@@ -170,6 +165,7 @@ const CreateStudentRecommendation = () => {
           marginTop:"1rem",
           marginLeft:"-8.4rem",
           marginRight:"-7rem" }}
+          required
           name="student_id"
           onChange={handleInputStudent}
           value={recomendation.student_id}

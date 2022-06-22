@@ -27,8 +27,6 @@ const ProfileDetailHiring = () => {
 		axios.get(`/api/profileHiring/${id}`).then((res) => {
 			if (res.data.status === 200) {
 				setUserData(res.data.data);
-				console.log(res.data,'...../...');
-				console.log("userData...", userData);
 			} else {
 				console.log("couldnt retrieve data");
 			}

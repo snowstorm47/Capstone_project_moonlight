@@ -1,11 +1,4 @@
-import { Form, Input, Button, Checkbox, Upload, message } from "antd";
-import {
-  UploadOutlined,
-  InboxOutlined,
-  SendOutlined,
-  LoadingOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { Form, Input, Button, message } from "antd";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -15,7 +8,7 @@ const EditNotification = ({parentToChild}) => {
     notificationTitle: "",
     id:"",
     notificationDetail: "",
-    // notificationImage: "",
+    error_list:[]
   });
 
   useEffect(() => {
@@ -36,11 +29,6 @@ const EditNotification = ({parentToChild}) => {
       "notificationTitle" : notification.notificationTitle,
       "notificationDetail" : notification.notificationDetail
     }
-    // const fData = new FormData();
-    // fData.append("notificationImage", notification.notificationImage);
-    // fData.append("notificationTitle", notification.notificationTitle);
-    // fData.append("notificationDetail", notification.notificationDetail);
-    // console.log(fData);
     axios.get("/sanctum/csrf-cookie").then((response) => {
       axios.put(`api/updateNotification/${id}`, data)
         .then((response) => {
@@ -48,6 +36,10 @@ const EditNotification = ({parentToChild}) => {
           if (response.data.status === 200) {
             message.success("Notification updated succesfully");
           } else {
+            setNotification({
+              ...notification,
+              error_list: response.data.validation_errors,
+            });
             message.error("Notification was not updated. Please try again");
           }
         });
@@ -57,15 +49,6 @@ const EditNotification = ({parentToChild}) => {
   const handleInput = (e) => {
     setNotification({ ...notification, [e.target.name]: e.target.value });
   };
-//   const normFile = (e) => {
-//     console.log("Upload event:", e);
-
-//     if (Array.isArray(e)) {
-//       return e;
-//     }
-
-//     return e && e.fileList;
-//   };
 
   return (
     <Form
@@ -87,6 +70,8 @@ const EditNotification = ({parentToChild}) => {
           onChange={handleInput}
           required
         />
+        <span style={{color:"red"}}>{notification.error_list?.notificationTitle}</span>
+
       </Form.Item>
 
       <Form.Item>
@@ -99,34 +84,9 @@ const EditNotification = ({parentToChild}) => {
           style={{ width: "100%" }}
           required
         />
+        <span style={{color:"red"}}>{notification.error_list?.notificationDetail}</span>
       </Form.Item>
-      {/* <Form.Item>
-        <Form.Item
-          name="dragger"
-          valuePropName="fileList"
-          getValueFromEvent={normFile}
-        >
-          <Upload.Dragger
-            name="notificationImage"
-            type="file"
-            multiple={false}
-            onChange={(e) =>
-              setNotification({
-                ...notification,
-                notificationImage: e.fileList[0].originFileObj,
-              })
-            }
-            style={{ width: "100%" }}
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">
-              Click or drag file to this area to upload
-            </p>
-          </Upload.Dragger>
-        </Form.Item>
-      </Form.Item> */}
+      
       <Form.Item
         wrapperCol={{
           offset: 8,

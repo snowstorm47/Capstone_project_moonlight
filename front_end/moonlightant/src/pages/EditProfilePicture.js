@@ -14,6 +14,7 @@ import '../App.css';
 const EditProfilePicture = ({ parentToChild }) => {
   const [profilePicture, setProfilePicture] = useState({
     image: "",
+    error_list:[]
   });
   const [list, setList] = useState(null);
   const id = localStorage.getItem("auth_id");
@@ -64,6 +65,10 @@ const EditProfilePicture = ({ parentToChild }) => {
     
 
         } else {
+          setProfilePicture({
+            ...profilePicture,
+            error_list: response.data.validation_errors,
+          });
           message.error("Picture was not updated. Please try again");
         }
       });
@@ -151,6 +156,7 @@ const EditProfilePicture = ({ parentToChild }) => {
                 Click or drag file to this area to upload
               </p>
             </Upload.Dragger>
+            <span style={{color:"red"}}>{profilePicture.error_list?.image}</span>
           </Form.Item>
         </Form.Item>
         

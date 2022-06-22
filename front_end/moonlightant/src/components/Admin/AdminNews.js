@@ -78,12 +78,6 @@ const AdminNews = () => {
 			>
 				Do You Want to Delete The News
 			</Modal>
-			<Input.Search
-				style={{ marginBottom: "5rem" }}
-				size="middium"
-				placeholder="Search by name"
-				enterButton
-			/>
 			<List
 				itemLayout="vertical"
 				size="large"

@@ -301,6 +301,7 @@ function AdminAboutus() {
                 Click or drag file to this area to upload
               </p>
             </Upload.Dragger>
+            <span style={{color:"red"}}>{editAboutus.error_list?.image}</span>
           </Form.Item>
           {/* <Form.Item
             wrapperCol={{
@@ -340,6 +341,7 @@ function AdminAboutus() {
                 Click or drag file to this area to upload
               </p>
             </Upload.Dragger>
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleOneImage}</span>
           </Form.Item>
           
         </Form>
@@ -370,6 +372,7 @@ function AdminAboutus() {
                 Click or drag file to this area to upload
               </p>
             </Upload.Dragger>
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleTwoImage}</span>
           </Form.Item>
           
         </Form>
@@ -400,6 +403,7 @@ function AdminAboutus() {
                 Click or drag file to this area to upload
               </p>
             </Upload.Dragger>
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleThreeImage}</span>
           </Form.Item>
         </Form>
       </Modal>
@@ -474,6 +478,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.ourVision}
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.ourVision}</span>
               </Form.Item>
               <Form.Item
                 label="Our Vision Detail"
@@ -484,6 +489,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.ourVisionDetail}
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.ourVisionDetail}</span>
               </Form.Item>
             </Col>
             <Col>
@@ -497,6 +503,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.ourMission}
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.ourMission}</span>
               </Form.Item>
               <Form.Item
                 label="Our Mission Detail"
@@ -508,6 +515,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.ourMissionDetail}
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.ourMissionDetail}</span>
               </Form.Item>
             </Col>
 
@@ -522,6 +530,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.ourTeam} //change this
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.ourTeam}</span>
               </Form.Item>
               <Form.Item
                 label="Our Team Detail"
@@ -533,6 +542,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.ourTeamDetail} //change this
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.ourTeamDetail}</span>
               </Form.Item>
             </Col>
 
@@ -577,6 +587,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.TitleOne} //change this
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleOne}</span>
               </Form.Item>
               <Form.Item
                 label="Title One Detail"
@@ -588,6 +599,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.TitleOneDetail} //change this
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleOneDetail}</span>
               </Form.Item>
               
             </Col>
@@ -631,6 +643,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.TitleTwo} //change this
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleTwo}</span>
               </Form.Item>
               <Form.Item
                 label="Title Two Detail"
@@ -642,6 +655,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.TitleTwoDetail} //change this
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleTwoDetail}</span>
               </Form.Item>
             </Col>
             <Col>
@@ -684,6 +698,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.TitleThree} //change this
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleThree}</span>
               </Form.Item>
               <Form.Item
                 label="Title Three Detail"
@@ -695,6 +710,7 @@ function AdminAboutus() {
                   onChange={handleInput}
                   value={editAboutus.TitleThreeDetail} //change this
                 />
+            <span style={{color:"red"}}>{editAboutus.error_list?.TitleThreeDetail}</span>
               </Form.Item>
             </Col>
             <Form.Item>

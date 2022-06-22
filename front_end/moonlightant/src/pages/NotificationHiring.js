@@ -1,6 +1,6 @@
 import React, { useEffect, Component, useState } from "react";
 import {
-  Layout,
+  Input,
   Menu,
   Modal,
   Skeleton,
@@ -15,13 +15,13 @@ import { SendTimeExtension, SevenK } from "@mui/icons-material";
 
 // Introduce submenu components
 const SubMenu = Menu.SubMenu;
-
+const { Search } = Input;
 const NotificationHiring = () => {
   const [visible, setVisible] = useState(true);
 	const [isModalVisible, setIsModalVisible] = useState(false);
   const [state, setState] = useState();
   const [loading, setLoading] = useState(true);
-  const id = localStorage.getItem("auth_id");
+  const idL = localStorage.getItem("auth_id");
   const [ids,setIds]=useState({id:''})
 	let iduserget;
   const showModal = (id) => {
@@ -40,7 +40,7 @@ const NotificationHiring = () => {
 	
   };
   useEffect(() => {
-    axios.get(`api/showHiringCompanyNotification/${id}`).then((response) => {
+    axios.get(`api/showHiringCompanyNotification/${idL}`).then((response) => {
       setState(response.data.notification);
       console.log(response.data.notification);
       setLoading(false);
@@ -55,9 +55,8 @@ const NotificationHiring = () => {
     axios.put(`/api/seenNotification/${id}`, data).then((res) => {
       if (res.data.status === 200) {
         message.success("Notification in seen box");
-        axios.get(`api/showHiringCompanyNotification/${id}`).then((response) => {
+        axios.get(`api/showHiringCompanyNotification/${idL}`).then((response) => {
           setState(response.data.notification);
-          console.log(response.data.notification);
           setLoading(false);
         });
       } else {
@@ -70,7 +69,7 @@ const NotificationHiring = () => {
     axios.delete(`/api/deleteNotification/${id}`).then((res) => {
       if (res.data.status === 200) {
         message.success("Notification has been deleted");
-        axios.get(`api/showHiringCompanyNotification/${id}`).then((response) => {
+        axios.get(`api/showHiringCompanyNotification/${idL}`).then((response) => {
           setState(response.data.notification);
           console.log(response.data.notification);
           setLoading(false);
@@ -80,7 +79,21 @@ const NotificationHiring = () => {
       }
     });
   };
+  const getAllHiring = (value) => {
+		setLoading(true);
+		return axios.get(`api/showHiringCompanyNotification/${idL}`).then((response) => {
+			setState(response.data.notification);
+			setLoading(false);
+		});
+	};
 
+  const onSearch = (value) => {
+		setState(
+			state.filter((i) => {
+				return i.name.includes(value);
+			})
+		);
+	};
 
   return (
     <div>
@@ -89,6 +102,15 @@ const NotificationHiring = () => {
 	  onCancel={handleCancel}>
 	Do You Want to Delete The Notification
   </Modal>
+  <Search
+					placeholder="search"
+					allowClear
+					onChange={(value)=>{return value==""?null:getAllHiring()}}
+					enterButton="Search"
+					size="large"
+					style={{ padding: "40px 20px" }}
+					onSearch={onSearch}
+				/>
       {visible ? (
         <List
           itemLayout="horizontal"

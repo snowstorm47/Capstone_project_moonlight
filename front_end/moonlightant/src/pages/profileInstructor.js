@@ -22,11 +22,19 @@ function ProfilePageInstructor() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleCertificate, setIsModalVisibleCertificate] = useState(false);
   const [idsCertificate, setIdsCertificate] = useState({ id: "" });
-
+  const [isModalVisibleSkill, setIsModalVisibleSkill] = useState(false);
+  const [idsSkill, setIdsSkill] = useState({ id: "" });
+  
   const showModal = () => {
     setIsModalVisible(true);
   };
-
+  const showModalSkill = (id) => {
+    console.log("id")
+    // setIsModalVisibleSkill(true);
+    setIdsSkill({ id: id });
+    
+  };
+  
   // const handleOk = () => {
   //   setIsModalVisible(false);
   // };
@@ -108,6 +116,7 @@ function ProfilePageInstructor() {
   }, []);
 
   const deleteCertificate = (id) => {
+    
     axios.delete(`/api/deleteCertificate/${id}`).then((res) => {
       if (res.data.status === 200) {
         message.success("Certificate deleted");
@@ -138,9 +147,20 @@ function ProfilePageInstructor() {
       console.log("inside csrf");
 
       axios.delete(`/api/deleteSkill/${id}`).then((res) => {
+        console.log(id)
         if (res.data.status === 200) {
+          message.success('Skill deleted')
+          axios.get(`/api/profile/${id}`).then((res) => {
+            if (res.data.status === 200) {
+              setEditProfile(res.data);
+              setSkillList(res.data.skill);
+            } else {
+              console.log("couldnt retrieve data");
+            }
+            });
           console.log("skill deleted");
         } else {
+          message.error('Skill not deleted')
           console.log("skill not deleted");
         }
       });
@@ -153,8 +173,10 @@ function ProfilePageInstructor() {
 
       axios.delete(`/api/deleteEmployment/${id}`).then((res) => {
         if (res.data.status === 200) {
+          message.success('Employment History deleted')
           console.log("employment deleted");
         } else {
+          message.error('Employment History deleted')
           console.log("employment not deleted");
         }
       });
@@ -182,15 +204,14 @@ function ProfilePageInstructor() {
 
       axios.put(`/api/updateInstructorProfile/${id}`, data).then((res) => {
         if (res.data.status === 200) {
-          setSuccess("Your profile has been updated Succcessfully");
-          navigate("/");
-          console.log(success);
+          message.success('Profile Updated')
         } else {
           console.log("inside else");
           setEditProfile({
             ...editProfile,
             error_list: res.data.validation_errors,
           });
+          message.error('Profile Update Failed')
           console.log(res.data.validation_errors);
         }
       });
@@ -204,6 +225,15 @@ function ProfilePageInstructor() {
   const handleCancelCertificate = () => {
     setIsModalVisibleCertificate(false);
   };
+  const handleOkSkill = (id) => {
+    console.log(id);
+    setIsModalVisibleSkill(false);
+    deleteSkill(id);
+  };
+
+  const handleCancelSkill = () => {
+    setIsModalVisibleSkill(false);
+  };
 
   <Avatar icon={<UserOutlined />} />;
   return (
@@ -216,6 +246,14 @@ function ProfilePageInstructor() {
         onCancel={handleCancelCertificate}
       >
         Do You Want to Delete The Certificate
+      </Modal>
+      <Modal
+        title="Delete Skill"
+        visible={isModalVisibleSkill}
+        onOk={() => handleOkSkill(idsSkill.id)}
+        onCancel={handleCancelSkill}
+      >
+        Do You Want to Delete The Skill
       </Modal>
       <Col
         className="row"
@@ -247,6 +285,8 @@ function ProfilePageInstructor() {
                 onChange={handleInput}
                 value={editProfile.name}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.name}</span>
+
             </Form.Item>
           </Col>
 
@@ -258,6 +298,7 @@ function ProfilePageInstructor() {
                 onChange={handleInput}
                 value={editProfile.phoneNumber}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.phoneNumber}</span>
             </Form.Item>
           </Col>
 
@@ -266,6 +307,7 @@ function ProfilePageInstructor() {
             <Form.Item>
               <label>Gender:</label>
               <select
+                required
                 style={{ width: 120, padding: 10, marginLeft: "3.7em", borderRadius: "50px" }}
                 name="sex"
                 onChange={handleInput}
@@ -274,6 +316,7 @@ function ProfilePageInstructor() {
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
+            <span style={{color:"red"}}>{editProfile.error_list?.sex}</span>
             </Form.Item>
           </Col>
 
@@ -285,6 +328,7 @@ function ProfilePageInstructor() {
                 onChange={(e)=>{setEditProfile({...editProfile,experience:e})}}
                 value={editProfile.experience}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.experience}</span>
             </Form.Item>
           </Col>
 
@@ -296,6 +340,7 @@ function ProfilePageInstructor() {
                 onChange={handleInput}
                 value={editProfile.GPA}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.GPA}</span>
             </Form.Item>
           </Col>
 
@@ -303,6 +348,7 @@ function ProfilePageInstructor() {
             <Divider>Academic</Divider>
             <Form.Item>
               <select
+                required
                 placeholder="Select an Institution"
                 style={{ padding: 10, width: "75%", borderRadius: "80px" }}
                 name="institution_id"
@@ -317,12 +363,14 @@ function ProfilePageInstructor() {
                   );
                 })}
               </select>
+            <span style={{color:"red"}}>{editProfile.error_list?.institutionName}</span>
             </Form.Item>
           </Col>
 
           <Col>
               <Form.Item>
                 <select
+                  required
                   placeholder="Select a College"
                   style={{ padding: 10, width: "75%", borderRadius: "80px" }}
                   name="college_id"
@@ -337,12 +385,14 @@ function ProfilePageInstructor() {
                     );
                   })}
                 </select>
+            <span style={{color:"red"}}>{editProfile.error_list?.collegeName}</span>
               </Form.Item>
             </Col>
 
             <Col>
               <Form.Item>
                 <select
+                  required
                   placeholder="Select a Department"
                   style={{ padding: 10, width: "75%", borderRadius: "80px" }}
                   name="department_id"
@@ -357,6 +407,7 @@ function ProfilePageInstructor() {
                     );
                   })}
                 </select>
+            <span style={{color:"red"}}>{editProfile.error_list?.departmentName}</span>
               </Form.Item>
             </Col>
 
@@ -369,7 +420,7 @@ function ProfilePageInstructor() {
         <Divider>Skills</Divider>
         <Col>
           {skillList.map((item) => (
-            <button
+            <span
               key={item.id}
               value={item.skill}
               style={{
@@ -384,10 +435,10 @@ function ProfilePageInstructor() {
               
               <Button
                 type="text"
-                onClick={() => deleteSkill(item.id)}
+                onClick={() => showModalSkill(item.id)}
                 icon={<CloseOutlined size="2px" />}
               />
-            </button>
+            </span>
           ))}
         </Col>
 
@@ -458,6 +509,7 @@ function ProfilePageInstructor() {
                     title="Edit Employment History"
                     visible={isModalVisible}
                     onCancel={handleCancel}
+                    footer={null}
                   >
                     <EditEmploymentHistory parentToChild={item.id} />
                   </Modal>

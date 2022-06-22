@@ -55,7 +55,7 @@ const AdminContactDetail = () => {
         if (res.data.status === 200) {
           message.success("updated contact")
         } else {
-          console.log("couldnt update data");
+          message.error("couldnt update data");
         }
       });
   }

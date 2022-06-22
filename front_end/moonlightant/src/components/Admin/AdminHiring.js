@@ -15,6 +15,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AdminHiring = () => {
+	const { Search } = Input;
 	const [visible, setVisible] = useState(true);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [ids, setIds] = useState({ id: "", user_id: "" });
@@ -29,7 +30,7 @@ const AdminHiring = () => {
 		setIsModalVisible(false);
 		deleteHiringCompany(id, user_id);
 	};
-
+	
 	const handleCancel = () => {
 		setIsModalVisible(false);
 	};
@@ -48,7 +49,7 @@ const AdminHiring = () => {
 			setLoading(false);
 		});
 	}, []);
-
+	
 	const deleteHiringCompany = (id, user_id) => {
 		axios
 			.delete(`/api/deleteHiringCompany?id=${id}&user_id=${user_id}`)
@@ -75,12 +76,7 @@ const AdminHiring = () => {
 			>
 				Do You Want to Delete The Company
 			</Modal>
-			<Input.Search
-				style={{ marginBottom: "5rem" }}
-				size="middium"
-				placeholder="Search by name"
-				enterButton
-			/>
+			
 			{visible ? (
 				<List
 					itemLayout="horizontal"
