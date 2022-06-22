@@ -14,7 +14,7 @@ class instructor extends Model
         'phoneNumber',
         'GPA',
         'verificationStatus',
-        'major',
+        'experience',
         'sex',
         'image'
     ];

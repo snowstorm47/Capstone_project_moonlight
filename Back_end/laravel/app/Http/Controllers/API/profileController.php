@@ -27,7 +27,7 @@ class profileController extends Controller
             
             'phoneNumber'=>'required|max:13|min:10',
             'sex'=>'required',
-            'major'=>'required',
+            'experience'=>'required',
             'name'=>'required|max:191',
             'GPA'=>'required',
             'startDateClass'=>'required',
@@ -57,7 +57,7 @@ class profileController extends Controller
                 $student ->sex = $request->input('sex');
                 $student ->institution_id = $request->input('institution_id');
                 $student ->college_id = $request->input('college_id');
-                $student ->major = $request->input('major');
+                $student ->experience = $request->input('experience');
                 $student ->GPA = $request->input('GPA');
                 $student ->department_id = $request->input('department_id');
                 $student ->StartDateClass = $request->input('startDateClass');
@@ -122,8 +122,8 @@ class profileController extends Controller
             
             'phoneNumber'=>'required|max:13|min:10',
             'sex'=>'required',
-            'major'=>'required',
-            'GPA'=>'required',
+            'experience'=>'required',
+            'GPA'=>'required|numeric|between:1.50,4.00',
             'startDateClass'=>'required',
             'endDateClass'=>'required|after:startDate',
             'institution_id' => 'required',
@@ -145,7 +145,7 @@ class profileController extends Controller
                 $filename= date('YmdHi').$file->getClientOriginalName();
                 $file-> move(public_path('uploads/ProfilePicture'), $filename);
                 $student->phoneNumber = $request->phoneNumber;
-                $student->major = $request->major;
+                $student->experience = $request->experience;
                 $student->startDateClass = $request->startDateClass;
                 $student->endDateClass = $request->endDateClass;
                 $student->GPA = $request->GPA;
@@ -227,9 +227,20 @@ class profileController extends Controller
                 }
             }
         }
-    }
-    public function addSkill(Request $request)
-    {
+}
+    public function addSkill(Request $request){
+        $validator = Validator::make($request->all(),[
+            'skill'=>'required',
+        ]);
+        
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
         $skill = new skill;
         $skill->skill = $request->input('skill');
         $skill->user_id = $request->input('user_id');
@@ -240,9 +251,24 @@ class profileController extends Controller
                 "result"=>"skill added"]);
         }
     }
+    }
 
-    public function addEmploymentHistory(Request $request)
-    {
+    public function addEmploymentHistory(Request $request){
+        $validator = Validator::make($request->all(),[
+            'companyName'=>'required',
+            'position'=>'required',
+            'startDate'=>'required',
+            'endDate'=>'required|after:startDate',
+        ]);
+        
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
         $employmentHistory = new employmentHistory;
         $employmentHistory->user_id = $request->input('user_id');
         $employmentHistory->companyName = $request->input('companyName');
@@ -256,7 +282,7 @@ class profileController extends Controller
                 "status"=>200,
                 "result"=>"Employment History added"
             ]);
-        }
+        }}
     }
 
     public function addCertificate(Request $request)
@@ -286,8 +312,19 @@ class profileController extends Controller
         }
     }
 
-    public function addSocialMediaLink(Request $request)
-    {
+    public function addSocialMediaLink(Request $request){
+        $validator = Validator::make($request->all(),[
+            'link'=>'required',
+        ]);
+        
+        if($validator->fails())
+        {
+            return response()->json([
+                'validation_errors'=> $validator->messages(),
+            ]);
+        }
+        else
+        {
         $socialMediaLink = new socialMediaLink;
         $socialMediaLink ->link  = $request->input('link');
         $socialMediaLink ->user_id = $request->input('user_id');
@@ -296,7 +333,7 @@ class profileController extends Controller
             return response()->json([
                 "status"=>200,
                 "result"=>"socialMediaLink added"]);
-        }
+        }}
     }
     
     public function checkCreateProfile(Request $request)
@@ -351,7 +388,7 @@ class profileController extends Controller
         $startDateClass= DB::table('student')->where('user_id', $id)->value('startDateClass');
         $endDateClass= DB::table('student')->where('user_id', $id)->value('endDateClass');
         $sex = DB::table('student')->where('user_id', $id)->value('sex');
-        $major = DB::table('student')->where('user_id', $id)->value('major');
+        $experience = DB::table('student')->where('user_id', $id)->value('experience');
         $GPA = DB::table('student')->where('user_id', $id)->value('GPA');
         $image = DB::table('student')->where('user_id', $id)->value('image');
         //should I add instructor_id foreign key in users table
@@ -378,7 +415,7 @@ class profileController extends Controller
                     'startDateClass'=>$startDateClass,
                     'endDateClass'=>$endDateClass,
                     'sex'=>$sex,
-                    'major'=>$major,
+                    'experience'=>$experience,
                     'GPA'=>$GPA,
                     'image'=>$image,
                     'recommendationDetail'=>$recommendationDetail,
