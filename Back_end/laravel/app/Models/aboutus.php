@@ -24,6 +24,8 @@ class aboutus extends Model
         'TitleThreeDetail',
         'TitleThree',
         'image',
+        'imageDetail',
+        'imageTitle',
         'TitleOneImage',
         'TitleTwoImage',
         'TitleThreeImage'     

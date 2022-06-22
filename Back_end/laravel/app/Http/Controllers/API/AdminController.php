@@ -102,6 +102,8 @@ class AdminController extends Controller
             'TitleTwoDetail'=>'required',
             'TitleThree'=>'required',
             'TitleThreeDetail'=>'required',
+            'imageTitle'=>'required',
+            'imageDetail'=>'required',
         ]);
         
         if($validator->fails())
@@ -125,6 +127,8 @@ class AdminController extends Controller
         $aboutus->TitleTwoDetail = $request->TitleTwoDetail;
         $aboutus->TitleThree = $request->TitleThree;
         $aboutus->TitleThreeDetail = $request->TitleThreeDetail;
+        $aboutus->imageTitle = $request->imageTitle;
+        $aboutus->imageDetail = $request->imageDetail;
         $aboutus->save();
         if($aboutus)
         {
@@ -246,6 +250,7 @@ public function editTitleThreeImage(Request $request,$id)
         ]);
     }
 }
+
 public function editBackgroundAboutus(Request $request,$id){
     $validator = Validator::make($request->all(),[
             

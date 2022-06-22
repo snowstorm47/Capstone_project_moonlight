@@ -11,7 +11,7 @@ class student extends Model
     public $table = "student";
     public $timestamps = false;
     protected $fillable = [
-        'major',
+        'experience',
         'user_id',
         'department_id',
         'college_id',
