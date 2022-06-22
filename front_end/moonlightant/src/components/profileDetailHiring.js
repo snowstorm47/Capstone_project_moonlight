@@ -6,7 +6,7 @@ import verified from "../assets/verifiedblack.svg";
 import { Verified } from "@mui/icons-material";
 import axios from "axios";
 
-const ProfileDetailInstitution = () => {
+const ProfileDetailHiring = () => {
 	const [userData, setUserData] = useState([]);
 
 	const [skills, setSkill] = useState([]);
@@ -24,7 +24,7 @@ const ProfileDetailInstitution = () => {
 	const id = localStorage.getItem("auth_id");
 	useEffect(() => {
 		// axios.get('/sanctum/csrf-cookie').then(res => {
-		axios.get(`/api/profileInstitution/${id}`).then((res) => {
+		axios.get(`/api/profileHiring/${id}`).then((res) => {
 			if (res.data.status === 200) {
 				setUserData(res.data.data);
 				console.log(res.data,'...../...');
@@ -80,7 +80,7 @@ const ProfileDetailInstitution = () => {
 						textAlign: "center",
 					}}
 				>
-					{console.log('shad',userData)}
+				{console.log('sdsdawd',userData)}	
 					<strong>{userData[0]?.name}</strong>
 					{localStorage.getItem("auth_position") === "Instructor" ? (
 						<Verified
@@ -119,4 +119,4 @@ const ProfileDetailInstitution = () => {
 		
 	);
 };
-export default ProfileDetailInstitution;
+export default ProfileDetailHiring;

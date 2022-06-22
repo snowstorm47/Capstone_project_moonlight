@@ -16,7 +16,7 @@ const NewsDetail = () => {
 					<Avatar
 						size="large"
 						src={
-							"http://localhost:8000/uploads/NewsPictures/" + state.item.image
+							"http://localhost:8000/uploads/NewsPictures/" + state.item?.profile
 						}
 					/>
 					<a

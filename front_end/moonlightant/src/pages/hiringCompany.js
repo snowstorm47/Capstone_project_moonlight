@@ -87,7 +87,7 @@ const HiringCompany = () => {
 		});
 	}, []);
 	const handleSearch = (value) => {
-		console.log(value, "...");
+		value?
 		axios
 			.get(`/api/advancedSearch`)
 			.then((res) => {
@@ -98,10 +98,15 @@ const HiringCompany = () => {
 			})
 			.then((data) => {
 				setResult(
-					data.filter((item) => {
-						item.skill.map((skillObj) => skillObj.skill).includes(value);
-					})
+					data.filter((item) => 
+						item.skill.map((skillObj) => skillObj.skill).includes(value)
+					)
 				);
+			}):axios.get(`/api/advancedSearch`).then((res) => {
+				if (res.data.status === 200) {
+					setResult(res.data.data);
+				} else {
+				}
 			});
 	};
 	const [search, setSearch] = useState("");
@@ -197,10 +202,12 @@ const HiringCompany = () => {
 					<Input.Search
 						style={{ width: "60rem" }}
 						size="middium"
+						allowClear
 						placeholder="Search using skill"
 						enterButton
 						value={search}
-						onChange={(e) => setSearch(e.target.value)}
+						onChange={(e) => e!=''?setSearch(e.target.value):console.log('else')}
+						onCl
 						onSearch={(e) => handleSearch(e)}
 					/>
 

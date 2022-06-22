@@ -1,6 +1,7 @@
 .newsDetailContainer {
 	padding-left: 10%;
 	width: 100%;
+	flex:1;
 	flex-direction: row;
 	display: flex;
 }

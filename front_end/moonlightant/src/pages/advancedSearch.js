@@ -41,6 +41,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 
 const AdvancedSearch = (props) => {
+  const navigate=useNavigate();
   const notif = useLocation();
   const [count, setCount] = useState(0);
   const sendNotification = () => {
@@ -85,6 +86,7 @@ const AdvancedSearch = (props) => {
         }
       })
       .then((data) => {
+   
         setSearchResults(
           data.filter((item) => {
             let date=new Date();
@@ -97,28 +99,19 @@ const AdvancedSearch = (props) => {
               (search.institution
                 ? item.student[0]?.institution_id === search.institution
                 : true) &&
+                (search.college
+                  ? item.student[0]?.college_id === search.college
+                  : true) &&
+                  
               (search.department
-                ? item.student[0]?.department === search.department
-                : true) &&
-              (search.endDate
-                ? search.endDate >= item.student[0].endDateClass
-                : true)&&(
-                  search.educationStatus?search.educationStatus=='Graduation'?(()=>{
-                    let date=new Date();
-                    let endDate=new Date(item.student[0]?.endDateClass);
-                    if(date.getFullYear()>=endDate.getFullYear()){ return true;}
-                    else{
-                      return false;
-                    }
-                   }):(()=>{
-                    let date=new Date();
-                    let endDate=new Date(item.student[0]?.endDateClass);
-                    if(date.getFullYear()<=endDate.getFullYear()){ return true;}
-                    else{
-                      return false;
-                    }
-                   }):true
-                )
+                ? item.student[0]?.department_id === search.department
+                : true)&&
+                (search.educationStatus?(search.educationStatus=="Graduated"?
+                (new Date().getFullYear())>=(new Date(item.student[0]?.endDateClass)).getFullYear():
+                (new Date().getFullYear())<(new Date(item.student[0]?.endDateClass)).getFullYear()):true
+                )&&(search.endDate
+                    ?search.endDate==(new Date(item.student[0]?.endDateClass)).getFullYear()
+                    : true) 
             ) {
               return true;
             } else {
@@ -255,7 +248,6 @@ const AdvancedSearch = (props) => {
 		seen_status: "False",
 	});
 	const profile=(position,id)=>{
-		console.log(id);
 		if (position=== "Student") {
 			navigate("/StudentProfile",{state:{id}});
 		} else if (position === "Institution") {
@@ -422,22 +414,26 @@ const AdvancedSearch = (props) => {
         </Select>
         <Select
           placeholder="college"
+          value={search.college}
           onChange={(e) => {
-            setSearch({ ...search, department: e });
+
+            setSearch({ ...search, college: e });
           }}
           style={{ width: "45%", margin: "5px" }}
         >
           {college.map((item) => (
             <Select.Option style={{ width: "auto" }} value={item.id}>
-              {item.departmentName}
+              {item.collegeName}
             </Select.Option>
           ))}
         </Select>
         <Select
           placeholder="Department"
+          value={search.department}
           onChange={(e) => {
-            e.preventDefault();
-            setSearch({ ...search, field: e });
+            console.log(e,'...');
+
+            setSearch({ ...search, department: e });
           }}
           style={{
             width: "45%",
@@ -466,13 +462,17 @@ const AdvancedSearch = (props) => {
         </Radio.Group>
         <br />
        {search.educationStatus=="Graduated"?(<> <normal style={{ paddingTop: 10 }}>Date of graduation</normal>
-        <DatePicker
-          picker="year"
-          value={search.endDate}
-          format={"m/d/Y"}
-          onChange={(e)=>{setSearch({...search,endDate:e.date})}}
-          style={{ width: "100%" }}
-        /><br/></>):null}
+       <input
+                
+                type="date"
+                name="endDate"
+                format={"Y"}
+               
+                // value={search.endDate}
+                onChange={(e)=>{setSearch({...search,endDate:(new Date(e.target.value)).getFullYear()});
+              console.log(search.endDate,'....date')}}
+                
+              /><br/></>):null}
         
    
         <Button
