@@ -48,11 +48,7 @@ const LogIn = () => {
           axios
             .get(`api/checkCreateProfile?id=${localStorage.getItem("auth_id")}`)
             .then((response) => {
-              // setFirst(response.data.first);
-              // setFirst(0);
               localStorage.setItem('first',response.data.first) ;
-              // setValid({...valid,first:check});
-              // console.log(valid.first,'valid');
 			  if (localStorage.getItem('first') == 0) {
 				if (localStorage.getItem("auth_position") === "Student") {
 				  navigate("/createprofile");

@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Card, Avatar } from "antd";
-import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
-import food from "../assets/man.jpg";
-import verified from "../assets/verifiedblack.svg";
+import { UserOutlined } from "@ant-design/icons";
 import { Verified } from "@mui/icons-material";
 import axios from "axios";
 
 const ProfileDetailInstitution = () => {
 	const [userData, setUserData] = useState([]);
-
-	const [skills, setSkill] = useState([]);
-	const [history, setHistory] = useState([]);
 	let showProfile = "";
 	if (localStorage.getItem("auth_position") === "Student") {
 		showProfile = "/StudentProfile";
@@ -23,12 +18,9 @@ const ProfileDetailInstitution = () => {
 	}
 	const id = localStorage.getItem("auth_id");
 	useEffect(() => {
-		// axios.get('/sanctum/csrf-cookie').then(res => {
 		axios.get(`/api/profileInstitution/${id}`).then((res) => {
 			if (res.data.status === 200) {
 				setUserData(res.data.data);
-				console.log(res.data,'...../...');
-				console.log("userData...", userData);
 			} else {
 				console.log("couldnt retrieve data");
 			}

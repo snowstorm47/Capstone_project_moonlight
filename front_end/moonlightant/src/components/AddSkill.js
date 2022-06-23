@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Input, Button, message } from "antd";
 import axios from "axios";
 
 const  AddSkill = () =>{
     
     const [skillList, setSkillList] = useState({
         skill: "",
-        user_id:""
+        user_id:"",
+        error_List:[]
     });
 
     const addSkill = (e) => {
@@ -21,9 +22,13 @@ const  AddSkill = () =>{
   
         axios.post(`/api/addSkill`, data).then((res) => {
           if (res.data.status === 200) {
-              console.log("skill added");
+            message.success('Skill Added')
           } else {
-            console.log("skill not added");
+            setSkillList({
+              ...skillList,
+              error_list: res.data.validation_errors,
+            });
+            message.error('Skill Add Failed')
           }
         });
       }, []);
@@ -45,6 +50,9 @@ const  AddSkill = () =>{
                 onChange={handleInput}
                 value={skillList.skill}
               />
+             <span style={{color:"red"}}>{skillList.error_list?.skill}</span>
+              </Form.Item>
+              <Form.Item>
               <Button type="primary" htmlType="submit" style={{marginTop: '1em', borderRadius: "80px"}}>
                   Add Skill
               </Button>

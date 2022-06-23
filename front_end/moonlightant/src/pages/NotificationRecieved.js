@@ -1,18 +1,19 @@
 import React, { useEffect, Component, useState } from "react";
-import { Layout, Menu, Modal, Skeleton, List, message ,Button } from "antd";
+import { Input, Menu, Modal, Skeleton, List, message ,Button } from "antd";
 import { CheckCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { SendTimeExtension, SevenK } from "@mui/icons-material";
 
 // Introduce submenu components
 const SubMenu = Menu.SubMenu;
+const { Search } = Input;
 
 const NotificationRecieved = () => {
   const [visible, setVisible] = useState(true);
   const [state, setState] = useState();
   const [loading, setLoading] = useState(true);
 
-  const id = localStorage.getItem("auth_id");
+  const idL = localStorage.getItem("auth_id");
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 	const [ids,setIds]=useState({id:'',user_id:''})
@@ -35,13 +36,27 @@ const NotificationRecieved = () => {
 	
   };
   useEffect(() => {
-    axios.get(`api/viewNotificationRecieved/${id}`).then((response) => {
+    axios.get(`api/viewNotificationRecieved/${idL}`).then((response) => {
       setState(response.data.notification);
       console.log(response.data.notification);
       setLoading(false);
     });
   }, []);
 
+  const getAllStudent = (value) => {
+		setLoading(true);
+		return axios.get(`api/viewNotificationRecieved/${idL}`).then((response) => {
+			setState(response.data.notification);
+			setLoading(false);
+		});
+	};
+  const onSearch = (value) => {
+		setState(
+			state.filter((i) => {
+				return i.name.includes(value);
+			})
+		);
+	};
   const seen = (id) => {
     const data = {
         seen_status: 'True'
@@ -50,7 +65,7 @@ const NotificationRecieved = () => {
             axios.put(`/api/seenNotification/${id}`, data).then((res) => {
           if (res.data.status === 200) {
 			message.success("Notification in seen box");
-      axios.get(`api/viewNotificationRecieved/${id}`).then((response) => {
+      axios.get(`api/viewNotificationRecieved/${idL}`).then((response) => {
         setState(response.data.notification);
         console.log(response.data.notification);
         setLoading(false);
@@ -65,7 +80,7 @@ const NotificationRecieved = () => {
         axios.delete(`/api/deleteNotification/${id}`).then((res) => {
             if (res.data.status === 200) {
               message.success("Notification has been deleted");
-              axios.get(`api/viewNotificationRecieved/${id}`).then((response) => {
+              axios.get(`api/viewNotificationRecieved/${idL}`).then((response) => {
                 setState(response.data.notification);
                 console.log(response.data.notification);
                 setLoading(false);
@@ -83,6 +98,15 @@ const NotificationRecieved = () => {
 	  onCancel={handleCancel}>
 	Do You Want to Delete The Notification
   </Modal>
+  <Search
+					placeholder="Search by Name"
+					allowClear
+					onChange={(value)=>{return value==""?null:getAllStudent()}}
+					enterButton="Search"
+					size="large"
+					style={{ padding: "40px 20px" }}
+					onSearch={onSearch}
+				/>
       {visible ? (
         <List
           itemLayout="horizontal"

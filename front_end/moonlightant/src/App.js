@@ -118,6 +118,7 @@ function App() {
 				localStorage.removeItem("auth_position");
 				localStorage.removeItem("auth_id");
 				localStorage.removeItem("first");
+				localStorage.removeItem("verify");
 				setVary(!vary);
 				navigate("/");
 			} else {
@@ -172,17 +173,13 @@ function App() {
 
 	// useEffect(() => {
 
-	//   if(localStorage.getItem('auth_position')==="Instructor")
-	// 	{
-	// 		axios.get(`api/checkVerifyInstructor/${id}`).then((response) => {
-	// 		  verify = response.data.verified;
-	// 		  setValid({
-	// 			verify:verify
-	// 		  })
-	// 		  console.log(valid.verify);
-	// 		});
-	// 	}
-	// }, [vary]);
+	  if(localStorage.getItem('auth_position')==="Instructor")
+		{
+			axios.get(`api/checkVerifyInstructor/${id}`).then((response) => {
+			  localStorage.setItem('verify',response.data.verified) 
+			 
+		}
+	);}
 
 	  
 	// console.log(localStorage.getItem("auth_profile"));
@@ -306,8 +303,8 @@ function App() {
 						
 					}
 				} */}
-				{(localStorage.getItem("auth_position"))===null?null:
-					(((localStorage.getItem("auth_position")==="Institution")&&(localStorage.getItem('first')))||((localStorage.getItem("auth_position")==="Instructor") &&(localStorage.getItem('verify')))||((localStorage.getItem("auth_position")==="Student")&&(localStorage.getItem('first')==1))||((localStorage.getItem("auth_position")==="Hiring Company")&&(localStorage.getItem('first'))))
+				{(localStorage.getItem("auth_position"))===null||(localStorage.getItem("auth_position")==="Admin")?null:
+					(((localStorage.getItem("auth_position")==="Institution")&&(localStorage.getItem('first')))||((localStorage.getItem("auth_position")==="Instructor") &&(localStorage.getItem('verify')==1))||((localStorage.getItem("auth_position")==="Student")&&(localStorage.getItem('first')==1))||((localStorage.getItem("auth_position")==="Hiring Company")&&(localStorage.getItem('first'))))
 					?
 					<Menu.Item key="3">
 						<Link to="/Notification">

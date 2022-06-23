@@ -128,8 +128,7 @@ const Newsfeed = () => {
 				<Search
 					placeholder="search"
 					allowClear
-		
-					onChange={(value)=>{return value?null:getAllNews}}
+					onChange={(value)=>{return value==""?null:getAllNews()}}
 					enterButton="Search"
 					size="large"
 					style={{ padding: "40px 20px" }}

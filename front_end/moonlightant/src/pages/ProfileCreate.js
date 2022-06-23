@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Layout, InputNumber } from "antd";
+import { Card, Row, Col, Layout, InputNumber } from "antd";
 import { Form, Input, Button, Upload } from "antd";
 import { Select } from "antd";
 import { DatePicker, Space, List, Modal } from "antd";
 import { Avatar, Image } from "antd";
 import { UserOutlined, CloseOutlined, InboxOutlined} from "@ant-design/icons";
 import { Divider } from "antd";
+import illustration from "../assets/createUserAccount.png";
 import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
 import '../App.css';
 
@@ -112,78 +114,84 @@ function CreateProfile() {
   };
 
   return (
-    <Col
-    className="row1" 
-    style={{ 
-        margin: "3em", 
-        paddingLeft: "35rem",
-        paddingRight: "35rem",
-        backgroundColor:"#f0f2f5",
-        width:"100%" }}>
-      <span>{success}</span>
-      <Form 
-      style={{
-          backgroundColor:"#ffffff",
-          paddingTop:"2rem",
-          paddingLeft:"1rem",
-          paddingRight:"1rem",
-          textAlign:"left",
-      }}
-      onFinish={Profile}>
-        {/* <Col
-          className="row3"
-          span={9}
-          style={{ margin: "0.5em", paddingRight: "1em", textAlign: "left" }}
-        > */}
-        
-          <Divider>Create Your Profile </Divider>
-          <Col>
-        <Form.Item
-          name="dragger"
-          valuePropName="fileList"
-          getValueFromEvent={normFile}
-        >
-          <Upload.Dragger
-            name="image"
-            type="file"
-            multiple={false}
-            onChange={(e) =>
-              setCreateProfile({
-                ...createProfile,
-                image: e.fileList[0].originFileObj,
-              })
-            }
-            style={{ width: "100%" }}
-          >
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">
-              Click or drag to upload Profile Image
-            </p>
-          </Upload.Dragger>
-        </Form.Item>
+
+    <Row style={{
+      paddingTop: "2rem"
+    }}>
+      <Divider>Create User Profile</Divider><br  />
+      <Col span={16}
+      style={{backgroundColor: "#ffffff", textAlign: "left",
+        paddingRight: "2rem", paddingLeft:"1rem"
+      }}>
+        <Col>
+          <div className={window.innerWidth<=500?"imageMob":"image"}>
+            <img src={illustration} style={{paddingLeft:"10em", width: "130%"}} className="illustration" alt="" />
+          </div>
         </Col>
-          <Col>
+        <Col>
+        <Card bordered={false} className="homeCard" style={{width: "100%"}}>
+								<h1 style={{ color: "black", fontSize: "2em" }}>
+									Create your user profile here
+								</h1>
+								<span>
+									This page is to create a user account so that you can make a profile that will be visible by other users, institutions, instructors and hiring companies. 
+								</span>
+							</Card>
+        </Col>
+
+      </Col>
+      <Col span={8}>
+        <Form onFinish={Profile}>
+        <Row>
+          
+            <Form.Item
+              name="dragger"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+            >
+              <Upload.Dragger
+                name="image"
+                type="file"
+                multiple={false}
+                onChange={(e) =>
+                  setCreateProfile({
+                    ...createProfile,
+                    image: e.fileList[0].originFileObj,
+                  })
+                }
+                style={{ width: "150%" }}>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">
+                    Click or drag to upload Profile Image
+                  </p>
+              </Upload.Dragger>
+          <span style={{color:"red"}}>{createProfile.error_list?.image}</span>
+            </Form.Item>
+          
+        </Row>
+        <Row>
+          
             <Form.Item
               label="Phone Number"
-              style={{ width: "76.5%", borderRadius: "50px" }}
-            >
-              <Input
-                style={{ marginLeft: "0.2em" }}
-                name="phoneNumber"
-                onChange={handleInput}
-                value={createProfile.phoneNumber}
-              />
-            </Form.Item>
-          </Col>
-        {/* </Col> */}
-
-        <Col>
-            <Form.Item>
-              <label>Gender:</label>
-              <select
-                style={{ width: "50%", padding: 10, marginLeft: "3.7em", borderRadius: "50px" }}
+                >
+                <Input
+                  style={{ marginLeft: "0.2em" }}
+                  name="phoneNumber"
+                  onChange={handleInput}
+                  value={createProfile.phoneNumber}
+                />
+          <span style={{color:"red"}}>{createProfile.error_list?.phoneNumber}</span>
+              </Form.Item>
+          
+        </Row>
+        <Row>
+          <Form.Item>
+           <label>Gender:
+            <select
+            required
+              style={{ marginLeft:"1em", borderRadius: "50px" }}
                 name="sex"
                 onChange={handleInput}
                 value={createProfile.sex}
@@ -192,69 +200,72 @@ function CreateProfile() {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-            </Form.Item>
-          </Col>
+            </label>
+          <span style={{color:"red"}}>{createProfile.error_list?.sex}</span>
+          </Form.Item>          
+        </Row>
+        <Row>
+          <Space direction="vertical" size={12}>
+            <label>Class start Date: 
+            <input
+              style={{ borderRadius: "80px", marginLeft: '1em'}}
+              type="date"
+              name="startDateClass"
+              format={"m/d/Y"}
+              onChange={handleInput}
+              value={createProfile.startDateClass}
+              className="form-control"
+            />
+            </label>
+            <span>{createProfile.error_list?.startDateClass}</span>
 
-          <Col>
-            <Space direction="vertical" size={12} style={{ padding: 10 }}>
-              <label>Class start Date: </label>
-              <input
-                style={{ borderRadius: "80px", marginLeft: '1em'}}
-                type="date"
-                name="startDateClass"
-                format={"m/d/Y"}
-                onChange={handleInput}
-                value={createProfile.startDateClass}
-                className="form-control"
-              />
-              {/* <span>{createProfile.error_list.startDateClass}</span> */}
-
-              <label>Class end Date: </label>
-              <input
-                style={{ borderRadius: "80px", marginLeft: '1em', border: 'outset'}}
-                type="date"
-                name="endDateClass"
-                format={"m/d/Y"}
-                onChange={handleInput}
-                value={createProfile.endDateClass}
-                className="form-control"
-              />
-              {/* <span>{createProfile.error_list.endDateClass}</span> */}
-            </Space>
-          </Col>
-
-          <Col>
-            <Divider>Academic</Divider>
+            <label>Class end Date: 
+            <input
+              style={{ borderRadius: "80px", marginLeft: '1em', border: 'outset'}}
+              type="date"
+              name="endDateClass"
+              format={"m/d/Y"}
+              onChange={handleInput}
+              value={createProfile.endDateClass}
+              className="form-control"
+            />
+            </label>
+            <span>{createProfile.error_list?.endDateClass}</span>
+          </Space>          
+        </Row>
+        <Row>
+        <Divider style={{marginRight:"3em"}} orientation={"left"}>Academic</Divider>
+          <Form.Item>
+            <select
+              required
+              placeholder="Select an Institution"
+              style={{ padding: 8, borderRadius: "80px" }}
+              name="institution_id"
+              onChange={handleInput}
+              value={createProfile.institution_id}
+            >
+            <option value="" style={{width: "120%"}}>Select Institution</option>
+            {institutionList.map((item) => {
+              return (
+                <option value={item.id} key={item.id}>
+                  {item.institutionName}
+                </option>
+              );
+            })}
+            </select>
+          </Form.Item>
+        </Row>
+        <Row>
             <Form.Item>
               <select
-                placeholder="Select an Institution"
-                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
-                name="institution_id"
-                onChange={handleInput}
-                value={createProfile.institution_id}
-              >
-                <option value="">Select Institution</option>
-                {institutionList.map((item) => {
-                  return (
-                    <option value={item.id} key={item.id}>
-                      {item.institutionName}
-                    </option>
-                  );
-                })}
-              </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item>
-              <select
+              required
                 placeholder="Select a College"
-                style={{ padding: 10, width: "75%", borderRadius: "80px" }}
+                style={{ padding: 8, borderRadius: "80px" }}
                 name="college_id"
                 onChange={handleInput}
                 value={createProfile.college_id}
               >
-                <option value="">Select College</option>
+                <option value="" style={{width: "130%"}}>Select College</option>
 
                 {collegeList.map((item) => {
                   return (
@@ -265,18 +276,18 @@ function CreateProfile() {
                 })}
               </select>
             </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item>
+        </Row>
+        <Row>
+           <Form.Item>
               <select
+              required
                 placeholder="Select a Department"
-                style={{ padding: 10, width: "75%", borderRadius: "80px"}}
+                style={{ padding: 8, borderRadius: "80px"}}
                 name="department_id"
                 onChange={handleInput}
                 value={createProfile.department_id}
               >
-                <option value="">Select Department</option>
+                <option value="" style={{width: "120%"}}>Select Department</option>
 
                 {departmentList.map((item) => {
                   return (
@@ -286,38 +297,43 @@ function CreateProfile() {
                   );
                 })}
               </select>
-            </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item label="experience" style={{ width: "76.5%", borderRadius: "50px" }}>
-              <InputNumber
-                style={{ marginLeft: "0.2em" }}
+            </Form.Item> 
+        </Row>
+        <Row>
+        <Form.Item label="Experience" style={{ borderRadius: "50px" }}>
+             <InputNumber
+                style={{ marginLeft: "0.2em", width: "60%" }}
                 name="experience"
                 onChange={(e)=>{setCreateProfile({...createProfile,experience:e})}}
                 value={createProfile.experience}
               />
+          <span style={{color:"red"}}>{createProfile.error_list?.experience}</span>
             </Form.Item>
-          </Col>
-
-          <Col>
-            <Form.Item label="GPA" style={{ width: "76.5%", borderRadius: "50px" }}>
-              <Input
-                style={{ marginLeft: "0.2em" }}
+        </Row>
+        <Row>
+        <Form.Item label="GPA" style={{ borderRadius: "50px" }}>
+             <Input
+                style={{ marginLeft: "0.2em", width: "50%" }}
                 name="GPA"
                 onChange={handleInput}
                 value={createProfile.GPA}
               />
+          <span style={{color:"red"}}>{createProfile.error_list?.GPA}</span>
             </Form.Item>
-          </Col>
-
+        </Row>
+        <Row>
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '0.7em', marginTop: '1em'}}>
+            <Button type="primary" htmlType="submit" style={{ borderRadius: "80px", marginLeft: '10em', marginTop: '1em'}}>
               Create Profile
             </Button>
           </Form.Item>
-      </Form>
-    </Col>
+        </Row>
+
+
+        </Form>
+      </Col>
+    </Row>
+    
   );
 }
 

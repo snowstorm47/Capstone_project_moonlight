@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Layout } from "antd";
-import { Form, Input, Button, Typography } from "antd";
+import { Row, Col} from "antd";
+import { Form, Input, Button } from "antd";
 import { Select } from "antd";
-import { DatePicker, Space, List, Modal } from "antd";
-import { Avatar, Image } from "antd";
-import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { Avatar,message} from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AddSkill from "../components/AddSkill";
-import AddEmploymentHistory from "../components/AddEmploymentHistory";
-import EditEmploymentHistory from "../components/EditEmploymentHistory";
-import EditProfilePicture from "./EditProfilePicture";
 import EditHiringProfilePicture from "../components/EditHiringProfilePicture";
-import { borderRadius } from "@mui/system";
 import '../App.css';
 
 
@@ -87,15 +81,14 @@ function ProfilePageCompany() {
 
       axios.put(`/api/updateHiringCompanyProfile/${id}`, data).then((res) => {
         if (res.data.status === 200) {
-          setSuccess("Your profile has been updated Succcessfully");
-          navigate("/");
-          console.log(success);
+          message.success('Update Profile')
         } else {
           console.log("inside else");
           setEditProfile({
             ...editProfile,
             error_list: res.data.validation_errors,
           });
+          message.error('Profile Update Failed')
           console.log(res.data.validation_errors);
         }
       });
@@ -159,6 +152,8 @@ function ProfilePageCompany() {
                 onChange={handleInput}
                 value={editProfile.name}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.name}</span>
+
             </Form.Item>
           </Col>
 
@@ -172,6 +167,7 @@ function ProfilePageCompany() {
                 onChange={handleInput}
                 value={editProfile.representative}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.representative}</span>
             </Form.Item>
           </Col>
 
@@ -191,6 +187,7 @@ function ProfilePageCompany() {
                 value={editProfile.representativeEmail}
                 style={{ marginLeft: "4.6em" }}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.representativeEmail}</span>
             </Form.Item>
           </Col>
 
@@ -205,6 +202,7 @@ function ProfilePageCompany() {
                 onChange={handleInput}
                 value={editProfile.phoneNumber}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.phoneNumber}</span>
             </Form.Item>
           </Col>
 
@@ -219,6 +217,7 @@ function ProfilePageCompany() {
                 onChange={handleInput}
                 value={editProfile.poBox} //change this
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.poBox}</span>
             </Form.Item>
           </Col>
 
@@ -233,6 +232,7 @@ function ProfilePageCompany() {
                 onChange={handleInput}
                 value={editProfile.location} //change this
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.location}</span>
             </Form.Item>
           </Col>
 
@@ -247,6 +247,7 @@ function ProfilePageCompany() {
                 onChange={handleInput}
                 value={editProfile.description} //change this
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.description}</span>
             </Form.Item>
           </Col>
 

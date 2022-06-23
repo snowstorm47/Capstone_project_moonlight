@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button } from "antd";
 import axios from "axios";
-import { DatePicker, Space } from "antd";
+import { message, Space } from "antd";
 
 const AddEmploymentHistory = () => {
   const [employmentList, setEmploymentList] = useState({
@@ -9,7 +9,8 @@ const AddEmploymentHistory = () => {
     position: "",
     startDate: "",
     endDate: "",
-    user_id:""
+    user_id:"",
+    error_List:[]
   });
   const addEmployment = () => {
     const data = {
@@ -25,9 +26,13 @@ const AddEmploymentHistory = () => {
 
       axios.post(`/api/addEmploymentHistory`, data).then((res) => {
         if (res.data.status === 200) {
-          console.log("History added");
+          message.success('Employment History Added');
         } else {
-          console.log("History not added");
+          setEmploymentList({
+            ...employmentList,
+            error_list: res.data.validation_errors,
+          });
+          message.error('Employment History Add Failed')
         }
       });
     }, []);
@@ -52,6 +57,8 @@ const AddEmploymentHistory = () => {
           onChange={handleInput}
           value={employmentList.companyName}
            />
+      <span style={{color:"red"}}>{employmentList.error_list?.companyName}</span>
+
         </Form.Item>
 
         <Form.Item>
@@ -60,6 +67,8 @@ const AddEmploymentHistory = () => {
           name="position"
           onChange={handleInput}
           value={employmentList.position} />
+      <span style={{color:"red"}}>{employmentList.error_list?.position}</span>
+
         </Form.Item>
 
         <Form.Item>
@@ -72,6 +81,7 @@ const AddEmploymentHistory = () => {
               value={employmentList.startDate}
               className="form-control"
             />
+      <span style={{color:"red"}}>{employmentList.error_list?.startDate}</span>
           </Space>
         </Form.Item>
         <Form.Item>
@@ -84,6 +94,8 @@ const AddEmploymentHistory = () => {
               value={employmentList.endDate}
               className="form-control"
             />
+      <span style={{color:"red"}}>{employmentList.error_list?.endDate}</span>
+
           </Space>
         </Form.Item>
       </Space>

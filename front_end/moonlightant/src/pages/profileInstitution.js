@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Layout } from "antd";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Input, Button, message} from "antd";
 import { Select } from "antd";
-import { DatePicker, Space, List, Modal } from "antd";
-import { Avatar, Image } from "antd";
-import { UserOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import { Divider } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import AddSkill from "../components/AddSkill";
-import AddEmploymentHistory from "../components/AddEmploymentHistory";
-import EditEmploymentHistory from "../components/EditEmploymentHistory";
 import EditInstitutionProfilePicture from "../components/EditInstitutionProfilePicture";
 import '../App.css';
 
@@ -68,15 +64,14 @@ function ProfilePageInstitution() {
 
       axios.put(`/api/updateInstitutionProfile/${id}`, data).then((res) => {
         if (res.data.status === 200) {
-          setSuccess("Your profile has been updated Succcessfully");
-          navigate("/");
-          console.log(success);
+          message.success('Profile Updated')
         } else {
           console.log("inside else");
           setEditProfile({
             ...editProfile,
             error_list: res.data.validation_errors,
           });
+          message.success('Profile Update Failed')
           console.log(res.data.validation_errors);
         }
       });
@@ -135,6 +130,8 @@ function ProfilePageInstitution() {
                 onChange={handleInput}
                 value={editProfile.institutionName}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.institutionName}</span>
+
             </Form.Item>
           </Col>
           <Col>
@@ -145,6 +142,7 @@ function ProfilePageInstitution() {
                 onChange={handleInput}
                 value={editProfile.phoneNumber}
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.phoneNumber}</span>
             </Form.Item>
           </Col>
 
@@ -156,6 +154,7 @@ function ProfilePageInstitution() {
                 onChange={handleInput}
                 value={editProfile.location}//change this
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.location}</span>
             </Form.Item>
           </Col>
 
@@ -167,6 +166,7 @@ function ProfilePageInstitution() {
                 onChange={handleInput}
                 value={editProfile.poBox}//change this
               />
+            <span style={{color:"red"}}>{editProfile.error_list?.poBox}</span>
             </Form.Item>
           </Col>
           <Form.Item>

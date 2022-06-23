@@ -32,10 +32,10 @@ class aboutusSeeder extends Seeder
             'TitleThreeDetail' => 'Get news from multiple institutions located in different cities across the country with the option to filter it to your personal institution of choice. Also be able to send or post news or notification of your own either as a student, instructor, hiring company or institution and communicate with users of the system easily. Be on top of any news being posted by your respective institution to get the latest news of what is happening and what kind of jobs are available even in your institution.  ',
             'imageDetail'=>"We developed this website to make connections between students, institution, instructors and hiring companies. The level of connection of students and institutions is to the level where the institution can help the students to find their dream job as well as give them advice whenever they need it. The students are also connected with the instructors for recommendation and verification features. The instructors can recommend the students to hiring companies to make them get better jobs. This connection works from institution to other institution and from one system to another too. ",
             'imageTitle'=>"Connecting Everyone",
-            'image' =>'202205311734lily.jpg',
-            'TitleOneImage' =>'202205311734lily.jpg',
-            'TitleTwoImage' =>'202205311734lily.jpg',
-            'TitleThreeImage' =>'202205311734lily.jpg'
+            'image' =>'202206222208new.png',
+            'TitleOneImage' =>'202206222158stay connected.png',
+            'TitleTwoImage' =>'202206222159Find jobs.png',
+            'TitleThreeImage' =>'202206222159Get latest.png'
         ]);
     }
 }
