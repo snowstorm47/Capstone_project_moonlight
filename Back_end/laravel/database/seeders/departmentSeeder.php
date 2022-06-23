@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class departmentSeeder extends Seeder
 {
@@ -63,9 +64,8 @@ class departmentSeeder extends Seeder
             'department of Psychology',
             'department of Archaeology',
             'department of Internal Medicine',
-            'department of Ethical Education']; 
+            'department of Ethical Education'];
         foreach ($list as $list) {
-           
             DB::table('department')->insert([
             'departmentName'=>$list,
         ]);

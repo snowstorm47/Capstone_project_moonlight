@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class collegeSeeder extends Seeder
 {
@@ -25,13 +26,11 @@ class collegeSeeder extends Seeder
             'College of Medicine and Health Science.',
             'College of Business and Economics.',
             'College of Agriculture and Environmental Science.',
-            'School of Law.']; 
+            'School of Law.'];
         foreach ($list as $list) {
-           
             DB::table('college')->insert([
             'collegeName'=>$list,
         ]);
         }
-    
     }
 }
