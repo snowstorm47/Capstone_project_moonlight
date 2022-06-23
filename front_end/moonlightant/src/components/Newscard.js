@@ -91,7 +91,8 @@ const Newscard = ({ state, loading }) => {
 									overflow: "hidden",
 
 								}}
-								avatar={<Avatar size="large"	src={
+								avatar={<Avatar size="large"	
+								src={
 									"http://localhost:8000/uploads/ProfilePicture/" +
 									item?.profile
 								}
@@ -109,8 +110,9 @@ const Newscard = ({ state, loading }) => {
 									overflow: "hidden",
 									textOverflow: "ellipsis",
 								}}
+								dangerouslySetInnerHTML={{__html:item.body}}
 							>
-								{item.body}
+								
 							</div>
 						</List.Item>
 					</>

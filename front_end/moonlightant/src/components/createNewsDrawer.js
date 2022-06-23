@@ -4,6 +4,7 @@ import { Form, Input } from "antd";
 import { UploadOutlined, InboxOutlined, SendOutlined } from "@ant-design/icons";
 import "../styles/newscreate.css";
 import axios from "axios";
+import { Editor } from "@tinymce/tinymce-react";
 
 const NewsDrawer = () => {
 	const [visible, setVisible] = useState(false);
@@ -110,13 +111,22 @@ const NewsDrawer = () => {
 							</Form.Item>
 							<Form.Item name={["user", "Body"]} required>
 								<label>Body</label>
-								<Input.TextArea
+								<Editor
+								value={news.body}
+								name='body'
+								init={{
+								height: 500,
+								menubar: false
+								}}
+								onEditorChange={(e)=>{console.log(e,'text.....');setNews({...news,body:e})}}
+							/>
+								{/* <Input.TextArea
 									size="large"
 									name="body"
 									value={news.body}
 									onChange={handleInput}
 									style={{ width: "100%" }}
-								/>
+								/> */}
 							</Form.Item>
 							<Form.Item>
 								<Form.Item

@@ -96,6 +96,9 @@ const AdvancedSearch = (props) => {
                     .map((skillObj) => skillObj.skill)
                     .includes(search.skill)
                 : true) &&
+                (search.experience
+                  ? item.student[0]?.experience >= search.experience
+                  : true) &&
               (search.institution
                 ? item.student[0]?.institution_id === search.institution
                 : true) &&
@@ -754,79 +757,154 @@ const AdvancedSearch = (props) => {
             >
               <List
                 dataSource={searchResults}
-                renderItem={(item) => (
-                  <List.Item key={item.user.id}>
-                    <List.Item.Meta />
-                    <div
+                renderItem={(item) => ((localStorage.getItem("auth_position")=="Hiring Company")?
+                 ( (item.user.position=="Admin"||item.user.position=="Hiring Company"||item.user.name==localStorage.getItem("auth_name"))?
+                null: (<List.Item key={item.user.id}>
+                  <List.Item.Meta />
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Checkbox
+                      style={{ paddingLeft: "10px", paddingRight: "20px" }}
+                      value={item.user.id}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          const arr = selected;
+                          arr?.push(item.user.id);
+                          setSelected(arr);
+                        } else {
+                          const arr = selected;
+
+                          arr.splice(arr.indexOf(e.target.value), 1);
+                          setSelected(arr);
+                        }
+                      }}
+                    />
+                    <Meta
+                      style={{ textAlign: "left", alignSelf: "flex-start" }}
+                      avatar={
+                        <Avatar
+                          src={
+                            "http://localhost:8000/uploads/ProfilePicture/" +
+                            item.student[0]?.image
+                          }
+                          icon={<UserOutlined />}
+                        />
+                      }
+                      icon={<UserOutlined />}
+                      title={item.user.name}
+                      description={item.user.email}
+                    />
+                    <button
+                      onClick={() => setState(item)}
                       style={{
-                        width: "100%",
-                        display: "flex",
-                        flexDirection: "row",
+                        borderRadius: "100px",
+                        border: "0px",
+                        backgroundColor: "white",
+                        marginLeft: "auto",
                       }}
                     >
-                      <Checkbox
-                        style={{ paddingLeft: "10px", paddingRight: "20px" }}
-                        value={item.user.id}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            const arr = selected;
-                            arr?.push(item.user.id);
-                            setSelected(arr);
-                          } else {
-                            const arr = selected;
+                      {item.user.name === state?.user.name ? (
+                        <EyeOutlined
+                          style={{
+                            color: "white",
+                            padding: 4,
+                            backgroundColor: "#0080ff",
+                            borderRadius: "100Px",
+                          }}
+                          value={item}
+                          onClick={() => {
+                            setState(item);
+                          }}
+                        />
+                      ) : (
+                        <EyeOutlined
+                          style={{ padding: 4 }}
+                          value={item.user.name}
+                          onclick={() => setState(item)}
+                        />
+                      )}
+                    </button>
+                  </div>
+                </List.Item>)):
+                (item.user.position=="Admin")?
+                null: (<List.Item key={item.user.id}>
+                  <List.Item.Meta />
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <Checkbox
+                      style={{ paddingLeft: "10px", paddingRight: "20px" }}
+                      value={item.user.id}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          const arr = selected;
+                          arr?.push(item.user.id);
+                          setSelected(arr);
+                        } else {
+                          const arr = selected;
 
-                            arr.splice(arr.indexOf(e.target.value), 1);
-                            setSelected(arr);
-                          }
-                        }}
-                      />
-                      <Meta
-                        style={{ textAlign: "left", alignSelf: "flex-start" }}
-                        avatar={
-                          <Avatar
-                            src={
-                              "http://localhost:8000/uploads/ProfilePicture/" +
-                              item.student[0]?.image
-                            }
-                            icon={<UserOutlined />}
-                          />
+                          arr.splice(arr.indexOf(e.target.value), 1);
+                          setSelected(arr);
                         }
-                        icon={<UserOutlined />}
-                        title={item.user.name}
-                        description={item.user.email}
-                      />
-                      <button
-                        onClick={() => setState(item)}
-                        style={{
-                          borderRadius: "100px",
-                          border: "0px",
-                          backgroundColor: "white",
-                          marginLeft: "auto",
-                        }}
-                      >
-                        {item.user.name === state?.user.name ? (
-                          <EyeOutlined
-                            style={{
-                              color: "white",
-                              padding: 4,
-                              backgroundColor: "#0080ff",
-                              borderRadius: "100Px",
-                            }}
-                            value={item}
-                            onClick={() => {
-                              setState(item);
-                            }}
-                          />
-                        ) : (
-                          <EyeOutlined
-                            style={{ padding: 4 }}
-                            value={item.user.name}
-                            onclick={() => setState(item)}
-                          />
-                        )}
-                      </button>
-                    </div>
-                  </List.Item>
+                      }}
+                    />
+                    <Meta
+                      style={{ textAlign: "left", alignSelf: "flex-start" }}
+                      avatar={
+                        <Avatar
+                          src={
+                            "http://localhost:8000/uploads/ProfilePicture/" +
+                            item.student[0]?.image
+                          }
+                          icon={<UserOutlined />}
+                        />
+                      }
+                      icon={<UserOutlined />}
+                      title={item.user.name}
+                      description={item.user.email}
+                    />
+                    <button
+                      onClick={() => setState(item)}
+                      style={{
+                        borderRadius: "100px",
+                        border: "0px",
+                        backgroundColor: "white",
+                        marginLeft: "auto",
+                      }}
+                    >
+                      {item.user.name === state?.user.name ? (
+                        <EyeOutlined
+                          style={{
+                            color: "white",
+                            padding: 4,
+                            backgroundColor: "#0080ff",
+                            borderRadius: "100Px",
+                          }}
+                          value={item}
+                          onClick={() => {
+                            setState(item);
+                          }}
+                        />
+                      ) : (
+                        <EyeOutlined
+                          style={{ padding: 4 }}
+                          value={item.user.name}
+                          onclick={() => setState(item)}
+                        />
+                      )}
+                    </button>
+                  </div>
+                </List.Item>)
+                
                 )}
               />
             </InfiniteScroll>

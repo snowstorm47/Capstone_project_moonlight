@@ -90,7 +90,6 @@ const LogIn = () => {
     <div
       style={{
         width: "100%",
-
         display: "flex",
         height: 640,
         justifyContent: "center",
@@ -183,7 +182,7 @@ const LogIn = () => {
             name="remember"
             valuePropName="checked"
           >
-            <Checkbox style={{}}>Remember me</Checkbox>
+           
           </Form.Item>
 
           <Form.Item style={{}}>

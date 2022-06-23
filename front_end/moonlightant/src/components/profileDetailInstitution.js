@@ -57,7 +57,7 @@ const ProfileDetailInstitution = () => {
 					xl: 70,
 					xxl: 100,
 				}}
-				src={"http://localhost:8000/uploads/ProfilePicture/" + userData.image}
+				src={"http://localhost:8000/uploads/ProfilePicture/" + userData[0]?.image}
 				icon={<UserOutlined />}
 				style={{
 					zIndex: 10,

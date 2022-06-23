@@ -16,6 +16,8 @@ import {
 	EllipsisOutlined,
 	HeartOutlined,
 	ShareAltOutlined,
+	UserAddOutlined,
+	UserOutlined,
 } from "@ant-design/icons";
 const { Option } = Select;
 
@@ -42,11 +44,7 @@ const PostCard = ({ state }) => {
 							style={{ padding: 10 }}
 						/>
 					}
-					actions={[
-						<ShareAltOutlined key="share" />,
-						<HeartOutlined key="like" />,
-						<EllipsisOutlined key="ellipsis" />,
-					]}
+					
 				>
 					<Card bordered={false}>{item.postdata.body}</Card>
 					<Meta
@@ -56,6 +54,7 @@ const PostCard = ({ state }) => {
 									"http://localhost:8000/uploads/ProfilePicture/" +
 									item.profileImage[0]?.image
 								}
+								icon={<UserOutlined/>}
 							/>
 						}
 						title={item.postdata.name}

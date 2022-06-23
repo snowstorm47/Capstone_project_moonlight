@@ -80,12 +80,14 @@ class profileController extends Controller
     
     public function getProfilePicture($id)
     {
-        $image = DB::table('student')->where('user_id', $id)->value('image');
+        $image = DB::table('student')->where('user_id', $id)->get('student.image');
         return response()->json([
             'status'=> 200,
             'image'=>$image
         ]);
     }
+
+
     public function editProfilePicture(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -227,62 +229,59 @@ class profileController extends Controller
                 }
             }
         }
-}
-    public function addSkill(Request $request){
-        $validator = Validator::make($request->all(),[
+    }
+    public function addSkill(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'skill'=>'required',
         ]);
         
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
                 'validation_errors'=> $validator->messages(),
             ]);
-        }
-        else
-        {
-        $skill = new skill;
-        $skill->skill = $request->input('skill');
-        $skill->user_id = $request->input('user_id');
-        $skill->save();
-        if ($skill) {
-            return response()->json([
+        } else {
+            $skill = new skill;
+            $skill->skill = $request->input('skill');
+            $skill->user_id = $request->input('user_id');
+            $skill->save();
+            if ($skill) {
+                return response()->json([
                 "status"=>200,
                 "result"=>"skill added"]);
+            }
         }
     }
-    }
 
-    public function addEmploymentHistory(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function addEmploymentHistory(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'companyName'=>'required',
             'position'=>'required',
             'startDate'=>'required',
             'endDate'=>'required|after:startDate',
         ]);
         
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
                 'validation_errors'=> $validator->messages(),
             ]);
-        }
-        else
-        {
-        $employmentHistory = new employmentHistory;
-        $employmentHistory->user_id = $request->input('user_id');
-        $employmentHistory->companyName = $request->input('companyName');
-        $employmentHistory->position = $request->input('position');
-        $employmentHistory->startDate = $request->input('startDate');
-        $employmentHistory->endDate = $request->input('endDate');
-        $employmentHistory->save();
+        } else {
+            $employmentHistory = new employmentHistory;
+            $employmentHistory->user_id = $request->input('user_id');
+            $employmentHistory->companyName = $request->input('companyName');
+            $employmentHistory->position = $request->input('position');
+            $employmentHistory->startDate = $request->input('startDate');
+            $employmentHistory->endDate = $request->input('endDate');
+            $employmentHistory->save();
 
-        if ($employmentHistory) {
-            return response()->json([
+            if ($employmentHistory) {
+                return response()->json([
                 "status"=>200,
                 "result"=>"Employment History added"
             ]);
-        }}
+            }
+        }
     }
 
     public function addCertificate(Request $request)
@@ -312,28 +311,27 @@ class profileController extends Controller
         }
     }
 
-    public function addSocialMediaLink(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function addSocialMediaLink(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'link'=>'required',
         ]);
         
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json([
                 'validation_errors'=> $validator->messages(),
             ]);
-        }
-        else
-        {
-        $socialMediaLink = new socialMediaLink;
-        $socialMediaLink ->link  = $request->input('link');
-        $socialMediaLink ->user_id = $request->input('user_id');
-        $socialMediaLink ->save();
-        if ($socialMediaLink) {
-            return response()->json([
+        } else {
+            $socialMediaLink = new socialMediaLink;
+            $socialMediaLink ->link  = $request->input('link');
+            $socialMediaLink ->user_id = $request->input('user_id');
+            $socialMediaLink ->save();
+            if ($socialMediaLink) {
+                return response()->json([
                 "status"=>200,
                 "result"=>"socialMediaLink added"]);
-        }}
+            }
+        }
     }
     
     public function checkCreateProfile(Request $request)

@@ -81,7 +81,7 @@ const HiringCompany = () => {
 	useEffect(() => {
 		axios.get(`/api/advancedSearch`).then((res) => {
 			if (res.data.status === 200) {
-				setResult(res.data.data);
+				setResult(res.data.data.filter((item)=>(item.user.position=="Admin"||item.user.position=="Institution"||item.user.position=="Hiring Company"||item.user.name==localStorage.getItem("auth_name"))?false:true));
 			} else {
 			}
 		});
@@ -230,6 +230,7 @@ const HiringCompany = () => {
 					pagination={true}
 					dataSource={result}
 					renderItem={(item) => (
+
 						<List.Item>
 							<Card
 								style={{
@@ -284,7 +285,7 @@ const HiringCompany = () => {
 								</Button>
 							</Card>
 						</List.Item>
-					)}
+				)}
 				/>
 
 				<Modal

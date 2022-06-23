@@ -27,7 +27,7 @@ const ProfileDetailHiring = () => {
 		axios.get(`/api/profileHiring/${id}`).then((res) => {
 			if (res.data.status === 200) {
 				setUserData(res.data.data);
-				console.log(res.data,'...../...');
+				console.log(userData,'...../...');
 				console.log("userData...", userData);
 			} else {
 				console.log("couldnt retrieve data");
@@ -48,6 +48,7 @@ const ProfileDetailHiring = () => {
 				backgroundImage: `url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs8XGHyMmmTM7yi39nHzdGsfyCU7xl0_LwRQ&usqp=CAU")`,
 			}}
 		>
+
 			<Avatar
 				size={{
 					xs: 24,
@@ -57,7 +58,10 @@ const ProfileDetailHiring = () => {
 					xl: 70,
 					xxl: 100,
 				}}
-				src={"http://localhost:8000/uploads/ProfilePicture/" + userData.image}
+				src={
+					"http://localhost:8000/uploads/ProfilePicture/" +
+					userData[0]?.image
+				  }
 				icon={<UserOutlined />}
 				style={{
 					zIndex: 10,
@@ -80,7 +84,7 @@ const ProfileDetailHiring = () => {
 						textAlign: "center",
 					}}
 				>
-				{console.log('sdsdawd',userData)}	
+					
 					<strong>{userData[0]?.name}</strong>
 					{localStorage.getItem("auth_position") === "Instructor" ? (
 						<Verified

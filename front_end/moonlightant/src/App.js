@@ -96,7 +96,7 @@ function App() {
 			),
 		});
 	};
-	const [image, setImage] = useState();
+	const [image, setImage] = useState("");
 	const [vary, setVary] = useState();
 	const [valid,setValid] = useState({
 		first:null,
@@ -125,15 +125,50 @@ function App() {
 		});
 	};
 	let id = localStorage.getItem("auth_id");
-	// useEffect(() => {
-	// 	axios.get(`/api/getProfilePicture/${id}`).then((res) => {
-	// 		if (res.data.status === 200) {
-	// 			setImage(res.data.image);
-	// 		} else {
-	// 			console.log("couldnt retrieve data");
-	// 		}
-	// 	});
-	// }, []);
+	useEffect(() => {
+		if(localStorage.getItem('auth_position')=='Student'){
+		axios.get(`/api/getProfilePicture/${id}`).then((res) => {
+			console.log('profile......',res.data.image[0].image);
+			if (res.data.status === 200) {
+				setImage(res.data.image[0].image);
+				
+			} else {
+				console.log("couldnt retrieve data");
+			}
+		});}
+		else if(localStorage.getItem('auth_position')=='Hiring Company'){
+			axios.get(`/api/getProfilePictureHiring/${id}`).then((res) => {
+				console.log('profile......',res.data.image[0].image);
+				if (res.data.status === 200) {
+					setImage(res.data.image[0].image);
+					
+				} else {
+					console.log("couldnt retrieve data");
+				}
+			});}
+			else if(localStorage.getItem('auth_position')=='Institution'){
+				axios.get(`/api/getProfilePictureInstitution/${id}`).then((res) => {
+					console.log('profile......',res.data.image[0].image);
+					if (res.data.status === 200) {
+						setImage(res.data.image[0].image);
+						
+					} else {
+						console.log("couldnt retrieve data");
+					}
+				});}
+				else{
+					axios.get(`/api/getProfilePictureInstructor/${id}`).then((res) => {
+						console.log('profile......',res.data.image[0].image);
+						if (res.data.status === 200) {
+							setImage(res.data.image[0].image);
+							
+						} else {
+							console.log("couldnt retrieve data");
+						}
+					});
+				}
+		console.log('profileInIf......',image);
+	}, []);
 
 	// useEffect(() => {
 
@@ -195,6 +230,7 @@ function App() {
 				<Menu.Item key="6" style={{ marginLeft: "auto" }}>
 					<Link to="/signin">Login</Link>
 				</Menu.Item>
+				{console.log('profile...im',image)}
 				<Menu.Item key="7">
 					<Link to="/signup" style={{ left: "auto" }}>
 						Sign Up
@@ -206,8 +242,12 @@ function App() {
 		AuthButtons = (
 			<Menu.Item key="7" style={{ marginLeft: "auto", borderColor: "white" }}>
 				<Dropdown overlay={menu} placement="bottomRight">
+				
 					<Avatar
-						src={"http://localhost:8000/uploads/ProfilePicture/" + image}
+						src={
+							"http://localhost:8000/uploads/ProfilePicture/" +
+							image
+						}
 						icon={<UserOutlined />}
 						size={50}
 						style={{ zIndex: 10, border: "2px solid #1890ff" }}

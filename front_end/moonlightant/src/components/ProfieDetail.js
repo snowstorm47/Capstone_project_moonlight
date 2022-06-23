@@ -68,7 +68,7 @@ const ProfileDetail = () => {
 				marginRight: 10,
 				marginLeft: 10,
 				width: "20%",
-				position: "fixed",
+				position:'fixed',
 				height: "auto",
 				borderRadius: 10,
 				backgroundImage: `url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs8XGHyMmmTM7yi39nHzdGsfyCU7xl0_LwRQ&usqp=CAU")`,
